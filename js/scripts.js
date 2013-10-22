@@ -17,6 +17,12 @@ $(function(){
     //     .width('150%')
     //     .css('left', 0);
 
+    //Início
+    $('div#sidebar').hide();
+    $('div.direita')
+        .addClass('col-md-12')
+        .removeClass('col-md-push-4');
+
     //Date & Time Pickers
     $('#date').datepicker();
     $('input#time').timepicker();

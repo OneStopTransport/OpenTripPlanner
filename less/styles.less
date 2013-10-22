@@ -1,3 +1,4 @@
+/* Funções INICIO */
 .clearfix() {
   &:before,
   &:after {
@@ -8,13 +9,16 @@
     clear: both;
   }
 }
+/* Funções FIM */
+div.escondido { display: none; }
 body {
+    //Mesma altura da barra de menus fixa do topo
     padding-top: 70px;
     div.container-full { width: 97%; margin: 0 auto; }
     div.mapa { min-height: 150px; }
     div.tab-content { padding-top: 20px; }
 }
-/* Menu com o botão direito */
+/* Menu com o botão direito INICIO */
 .leaflet-contextmenu {
     display: none; box-shadow: 0 1px 7px rgba(0,0,0,0.4); -webkit-border-radius: 4px; border-radius: 4px; padding: 4px 0; background-color: #fff; cursor: default; -webkit-user-select: none; -moz-user-select: none; user-select: none;
     a.leaflet-contextmenu-item {
@@ -28,11 +32,9 @@ body {
 }
 .leaflet-contextmenu-icon { margin: 2px 8px 0 0; width: 16px; height: 16px; float: left; border: 0; }
 .leaflet-contextmenu-separator { border-bottom: 1px solid #ccc; margin: 5px 0 }
+/* Menu com o botão direito FIM */
 div#sidebar, div#mapa { /*position: absolute; top: 60px;*/ }
-div#sidebar {
-    /*left: 0; width: 30%; display: none;*/
-    div.escondido { display: none; }
-}
+div#sidebar { /*left: 0; width: 30%; display: none;*/ }
 div#mapa { /*left: 31%; width: 68%;*/ }
 div.instrucoes { width: 100px; height: 100px; background: #F30; display: none; }
 div#direcoes {

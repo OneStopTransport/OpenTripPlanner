@@ -197,7 +197,7 @@ Rotas = {
 
                             //Pontos para cada troca de rota
                             Rotas.criar_pontos(leg, latlngs);
-                            
+
                             //Instruções. O step é array para gerar sub-steps.
                             var ins = {
                                 distancia:  leg.distance.toFixed(2),

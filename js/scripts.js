@@ -30,9 +30,11 @@ $(function(){
     //Mostra os passos de cada instrução
     $('a.direcoes').on('click', function(e){
         fechado = $(this).hasClass('fechado');
+        link = $(this).parent();
 
-        if ( fechado == true )
+        if ( true == fechado )
         {
+            $(link).addClass('active');
             $(this).removeClass('fechado');
             $('div#sidebar').show();
             $('div.direita')
@@ -47,6 +49,7 @@ $(function(){
         }
         else
         {
+            $(link).removeClass('active');
             $(this).addClass('fechado');
             $('div#sidebar').hide();
             $('div.direita')

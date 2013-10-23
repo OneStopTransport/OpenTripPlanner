@@ -37,21 +37,29 @@ div#sidebar, div#mapa { /*position: absolute; top: 60px;*/ }
 div#sidebar { /*left: 0; width: 30%; display: none;*/ }
 div#mapa { /*left: 31%; width: 68%;*/ }
 div.instrucoes { width: 100px; height: 100px; background: #F30; display: none; }
+div.info_trip {
+    border: 1px solid #CCC; padding: 5px;
+}
 div#direcoes {
     ul.direcoes {
         list-style: none; margin: 0; padding: 0;
         li {
-            line-height: 20px; margin-bottom: 10px; cursor: pointer; font-size: 0.875em;
-            &:nth-child(even) { color: #F30; }
+            line-height: 20px; padding: 10px 0; cursor: pointer; font-size: 0.875em; border-top: 1px solid #CCC;
+            &:nth-child(even) { background: #F1EEE8; }
+            &:first-child { border-top: 0; }
             ul {
-                list-style: none; margin: 0; padding-top: 0; margin-left: -30px;
+                list-style: none; margin: 0; padding-top: 0; padding-bottom: 0px; margin-left: -30px;
                 &.escondido { display: none; }
+                li {
+                    border: 0;
+                    &:nth-child(even) { background: none; }
+                }
             }
         }
         /* Para a API da OneTripPlanner */
         &[data-api="resultados_otp"] {
             span.norte_sul {
-                display: inline-block; width: 30px; height: 30px; float: left;
+                display: inline-block; width: 30px; height: 30px; float: left; display: none;
                 &.EAST { background: #333; }
                 &.WEST { background: #F30; }
                 &.NORTH { background: #CCC; }
@@ -61,6 +69,9 @@ div#direcoes {
                 &.SOUTHEAST { background: #CCC; }
                 &.SOUTHWWEST { background: #999; }
             }
+            span.modos { display: inline-block; width: 20px; height: 20px; margin-right: 10px; float: left; }
+            span.modo_BUS { background: url('../images/map/stop/bus20.png') no-repeat left top; }
+            span.modo_WALK { background: url('../images/map/stop/walk20.png') no-repeat left top; }
             span.direcao {
                 width: 30px; height: 30px; display: inline-block; float: left;
                 &.CIRCLE_CLOCKWISE { background: url('../images/directions/circle_clockwise.png') no-repeat left top; }

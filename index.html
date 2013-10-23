@@ -61,11 +61,34 @@
 
             <div class="direita col-md-8 col-md-push-4">
                 <div id="mapa" class="mapa">&nbsp;</div>
-                <div class="instrucoes">Aqui era pra saber as instruções</div>
             </div>
 
             <div id="sidebar" class="col-md-4 col-md-pull-8">
-                <div id="direcoes">&nbsp;</div>
+                <!-- Direções após a chamada à API -->
+                <div class="resultados">
+                    <!-- Info da trip INICIO -->
+                    <div class="info_trip">
+                        Detalhes da viagem <br>
+                        Data e hora <br>
+                        Hora <br>
+                        Validade <br>
+                        <br>
+                        Distância total (pesquisar qualé a var) <br>
+                        - Distância à pé (em metros) <br>
+                        - Distância de autocarro (em metros) (pesquisar qual é a var) <br>
+                        Duração em minutos (TOTAL) <br>
+                        - Duração em minutos à pé (quando aplicável) <br>
+                        - Duração em minutos de autocarro (quando aplicável) <br>
+                        <br>
+                        Início da viagem (timestamp) <br>
+                        Fim da viagem (timestamp)
+                    </div>
+                    <!-- Info da trip FIM -->
+
+                    <!-- Resposta da API INICIO -->
+                    <div id="direcoes">&nbsp;</div>
+                    <!-- Resposta da API FIM -->
+                </div>
                 <!-- Formulário INICIO -->
                 <form class="form-horizontal" role="form" id="trip_plan_form">
                     <div class="form-group">

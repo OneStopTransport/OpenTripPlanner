@@ -155,6 +155,7 @@ Rotas = {
         var instrucoes = [];
         var toLat, toLon;
         var cores = [];
+        var instrucoes_gerais = [];
         // console.log(objeto_json);
         $.each(objeto_json, function(index, value){
             if ( typeof(value.from.lat) != 'undefined' || typeof(value.from.lon) != 'undefined' )
@@ -169,6 +170,14 @@ Rotas = {
                     //@TODO Programar as várias opções de itinerários.
                     if ( i == 0 )
                     {
+                        var ins_ger = {
+                            walkTime:       legs.walkTime,
+                            walkDistance:   legs.walkDistance,
+                            startTime:      legs.startTime,
+                            endTime:        legs.endTime,
+                            duration:       legs.duration
+                        };
+                        instrucoes_gerais.push(ins_ger);
                         //Subcontador
                         j = 0;
                         $.each(legs.legs, function(index, leg){
@@ -236,6 +245,11 @@ Rotas = {
         //Escrever as direções
         this.escrever_direcoes(instrucoes);
 
+        console.log( instrucoes_gerais );
+        $.each(instrucoes_gerais, function(index, value){
+            $('div#direcoes').append('Duration: ' + value.duration + ' walktime:' + value.walkTime + '<br>startTime: ' + value.startTime + ' walkDistance: ' + value.walkDistance);
+        });
+
         /*O fitBounds mais o getBounds servem para centralizar a rota
          dentro do mapa. Porém as vezes se o width estiver
          mal, a centralização fica péssima. true story.*/
@@ -281,8 +295,17 @@ Rotas = {
     formata_html: function(obj, i)
     {
         var contador = '';
-        ('undefined' != typeof(i)) ? contador = i + '. ' : '';
-        return '<li><span class="norte_sul ' + obj.norte_sul + '"></span> <span class="direcao ' + obj.direcao + '"></span><span class="texto"> ' + contador + obj.rua + ' em ' + obj.distancia + ' metros</span><div class="clearfix"></div>'
+
+        retorno = '<li>';
+        //As rotas principais têm um contador
+        if ( 'undefined' != typeof(i) )
+            contador = i + '. ';
+        else
+            retorno += '<span class="norte_sul ' + obj.norte_sul + '"></span> <span class="direcao ' + obj.direcao + '"></span>';
+
+        retorno += '<span class="texto"> ' + contador + obj.rua + ' em ' + obj.distancia + ' metros</span><div class="clearfix"></div>';
+
+        return retorno;
     },
     //Cor de autocarro, cor de automóvel, cor de moonwalk
     cores: function(modo) {

@@ -9,7 +9,7 @@ $(function() {
 
         $('div#sidebar').show();
 
-        altura = $(window).height();
+        altura  = $(window).height();
         largura = $(window).width();
 
         fechado = $('a.direcoes').hasClass('fechado');
@@ -17,11 +17,9 @@ $(function() {
         {
             $('a.direcoes').removeClass('fechado');
             $('div#sidebar').show();
-            // $('div.mapa')
-            //     .animate({
-            //         width: '68%',
-            //         left: '31%'
-            // }, 600);
+            $('div.direita')
+                .removeClass('col-md-12')
+                .addClass('col-md-push-4');
         }
 
         e.preventDefault();

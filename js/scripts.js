@@ -9,14 +9,6 @@ $(function(){
     };
     resize_window();
 
-    // $('div.direita').animate({
-    //     width: '100%',
-    //     left: 0
-    // }, 600);
-    // $('div.mapa')
-    //     .width('150%')
-    //     .css('left', 0);
-
     //Início
     $('div#sidebar').hide();
     $('div.direita')
@@ -30,7 +22,8 @@ $(function(){
     //Mostra os passos de cada instrução
     $('a.direcoes').on('click', function(e){
         fechado = $(this).hasClass('fechado');
-        link = $(this).parent();
+        //Pai do <a>, neste caso <li>
+        link    = $(this).parent();
 
         if ( true == fechado )
         {
@@ -40,11 +33,6 @@ $(function(){
             $('div.direita')
                 .removeClass('col-md-12')
                 .addClass('col-md-push-4');
-            // $('div.mapa')
-            //     .animate({
-            //         width:  '68%',
-            //         left:   '31%'
-            // }, 600);
 
         }
         else
@@ -55,12 +43,8 @@ $(function(){
             $('div.direita')
                 .addClass('col-md-12')
                 .removeClass('col-md-push-4');
-            // $('div.mapa')
-            //     .animate({
-            //         width:  '100%',
-            //         left:   '0'
-            // }, 600);
         }
+
         e.preventDefault();
     });
 
@@ -69,10 +53,11 @@ $(function(){
         link = $(this);
         $('div.escondido').toggle('slow', function(){
             if ( $(this).css('display') == 'none')
-                $(link).html('Clique aqui para mais opções');
+                $(link).html(locale.messages.more_options);
             else
-                $(link).html('Clique aqui para menos opções');
+                $(link).html(locale.messages.less_options);
         });
+
         e.preventDefault();
     });
 

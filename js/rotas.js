@@ -31,7 +31,7 @@ Rotas = {
         if ( typeof(m1) == 'undefined' )
         {
             $('h4.modal-title').html('Error');
-            $('div.mensagem').html('<i class="glyphicon glyphicon-exclamation-sign"></i> É necessário definir um ponto de partida');
+            $('div.mensagem').html('<i class="glyphicon glyphicon-exclamation-sign"></i> ' + locale.messages.miss_origin);
             $("#myModal").modal();
 
             return false;
@@ -40,7 +40,7 @@ Rotas = {
         if ( typeof(m2) == 'undefined' )
         {
             $('h4.modal-title').html('Error');
-            $('div.mensagem').html('<i class="glyphicon glyphicon-exclamation-sign"></i> É necessário definir um ponto de chegada.');
+            $('div.mensagem').html('<i class="glyphicon glyphicon-exclamation-sign"></i> ' + locale.messages.miss_destiny);
             $("#myModal").modal();
 
             return false;

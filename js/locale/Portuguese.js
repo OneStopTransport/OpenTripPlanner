@@ -55,5 +55,11 @@ locale = {
             ['2.500',  '9 km/h'],
             ['2.778',  '10 km/h'] 
         ]
+    },
+    messages: {
+        more_options:   'Clique aqui para mais opções',
+        less_options:   'Clique aqui para menos opções',
+        miss_origin:    'É necessário definir um ponto de partida',
+        miss_destiny:   'É necessário definir um ponto de chegada.'
     }
 }

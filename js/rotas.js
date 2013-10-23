@@ -255,10 +255,11 @@ Rotas = {
             display: 'block'
         }, 600).empty();
         //Gravo as direções
+        var i = 1;
         $.each(direcoes, function(index, value){
             if ( typeof(value) != 'undefined' )
             {
-                html += Rotas.formata_html(value);
+                html += Rotas.formata_html(value, i);
                 //Subrotas
                 if ( typeof(value.steps) != 'undefined' )
                 {
@@ -268,6 +269,7 @@ Rotas = {
                     });
                     html += '</ul>';
                 }
+                ++i;
                 html += '</li>';
             }
         });
@@ -276,9 +278,11 @@ Rotas = {
         html += '</ul><div class="clearfix"></div><br><br>';
         $('div#direcoes').html(html);
     },
-    formata_html: function(obj)
+    formata_html: function(obj, i)
     {
-        return '<li><span class="norte_sul ' + obj.norte_sul + '"></span> <span class="direcao ' + obj.direcao + '"></span><span class="texto"> ' + obj.rua + ' em ' + obj.distancia + ' metros</span><div class="clearfix"></div>'
+        var contador = '';
+        ('undefined' != typeof(i)) ? contador = i + '. ' : '';
+        return '<li><span class="norte_sul ' + obj.norte_sul + '"></span> <span class="direcao ' + obj.direcao + '"></span><span class="texto"> ' + contador + obj.rua + ' em ' + obj.distancia + ' metros</span><div class="clearfix"></div>'
     },
     //Cor de autocarro, cor de automóvel, cor de moonwalk
     cores: function(modo) {

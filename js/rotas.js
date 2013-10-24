@@ -156,6 +156,7 @@ Rotas = {
         var toLat, toLon;
         var cores = [];
         var instrucoes_gerais = [];
+        var walkTotal = 0;
         // console.log(objeto_json);
         $.each(objeto_json, function(index, value){
             if ( typeof(value.from.lat) != 'undefined' || typeof(value.from.lon) != 'undefined' )
@@ -171,6 +172,7 @@ Rotas = {
                     if ( i == 0 )
                     {
                         var ins_ger = {
+                            data_hora:      value.date,
                             walkTime:       legs.walkTime,
                             walkDistance:   legs.walkDistance,
                             startTime:      legs.startTime,
@@ -178,6 +180,7 @@ Rotas = {
                             duration:       legs.duration
                         };
                         instrucoes_gerais.push(ins_ger);
+
                         //Subcontador
                         j = 0;
                         $.each(legs.legs, function(index, leg){
@@ -207,10 +210,10 @@ Rotas = {
                             //Pontos para cada troca de rota
                             Rotas.criar_pontos(leg, latlngs);
 
-                            //Instruções. O step é array para gerar sub-steps.
+                            //Instruções. O step é array para gerar sub-steps - próximo bloco.
                             var ins = {
                                 distancia:  leg.distance.toFixed(2),
-                                rua:        leg.mode + ' ' + leg.to.name,
+                                rua:        '<span class="modos modo_' + leg.mode + '"></span>' + ' ' + leg.to.name,
                                 direcao:    '',
                                 norte_sul:  '',
                                 steps:      []
@@ -228,6 +231,7 @@ Rotas = {
                                         norte_sul:  step.absoluteDirection
                                     }
                                     instrucoes[j].steps.push(passos);
+                                    walkTotal += step.distance;
                                 });
                             }
                             ++j;
@@ -245,10 +249,8 @@ Rotas = {
         //Escrever as direções
         this.escrever_direcoes(instrucoes);
 
-        console.log( instrucoes_gerais );
-        $.each(instrucoes_gerais, function(index, value){
-            $('div#direcoes').append('Duration: ' + value.duration + ' walktime:' + value.walkTime + '<br>startTime: ' + value.startTime + ' walkDistance: ' + value.walkDistance);
-        });
+        //Informações globais
+        Rotas.informacoes(instrucoes_gerais, walkTotal);
 
         /*O fitBounds mais o getBounds servem para centralizar a rota
          dentro do mapa. Porém as vezes se o width estiver
@@ -258,6 +260,35 @@ Rotas = {
         //Just in case
         polyline.bringToFront();
         // console.log(points);
+    },
+    //Informações globais
+    informacoes: function(info, walkTotal) {
+        // console.log( instrucoes_gerais );
+        $.each(info, function(index, value){
+            var hora        = Rotas.formata_data(value.data_hora);
+            var duration    = Math.floor( value.duration / 60000 );
+            var walkTime    = Math.floor( value.walkTime / 60 );
+            var startTime   = Rotas.formata_data(value.startTime);
+            var endTime     = Rotas.formata_data(value.endTime);
+            var du_trans    = duration - walkTime;
+            var di_trans    = walkTotal - value.walkDistance;
+            $('div.resultados div.info_trip').removeClass('escondido');
+
+            var div_trip = 'div.resultados div.info_trip ';
+            $(div_trip + 'dt.hora').next('dd').html(hora);
+            $(div_trip + 'dt.distancia_total').next('dd').html(walkTotal.toFixed(2) + ' m');
+            $(div_trip + 'dt.distancia_pe').next('dd').html(value.walkDistance.toFixed(2) + ' m');
+            $(div_trip + 'dt.distancia_transportes').next('dd').html(di_trans.toFixed(2) + ' m');
+            $(div_trip + 'dt.duracao_total').next('dd').html(duration + ' min');
+            $(div_trip + 'dt.duracao_pe').next('dd').html(walkTime + ' min');
+            $(div_trip + 'dt.duracao_transportes').next('dd').html(du_trans + ' min');
+            $(div_trip + 'dt.inicio_viagem').next('dd').html(startTime);
+            $(div_trip + 'dt.fim_viagem').next('dd').html(endTime);
+                // .html('Duration: ' + duration + ' minutos, walktime: ' + walkTime
+                //     + ' minutos<br>startTime: ' + startTime + ', stopTime: ' + endTime
+                //     + '<br>walkDistance: ' + value.walkDistance.toFixed(2) + ' metros');
+        });
+        $('div.info_trip').show();
     },
     //Vai a div direcoes e escreve as direções como ul>li
     escrever_direcoes: function(direcoes){
@@ -303,16 +334,18 @@ Rotas = {
         else
             retorno += '<span class="norte_sul ' + obj.norte_sul + '"></span> <span class="direcao ' + obj.direcao + '"></span>';
 
-        retorno += '<span class="texto"> ' + contador + obj.rua + ' em ' + obj.distancia + ' metros</span><div class="clearfix"></div>';
+        retorno += '<span class="texto"> ' + obj.rua + ' em ' + obj.distancia + ' metros</span><div class="clearfix"></div>';
 
         return retorno;
     },
-    //Cor de autocarro, cor de automóvel, cor de moonwalk
+    //Cor de autocarro, cor de automóvel, cor de moonwalk -> else
     cores: function(modo) {
         if ( modo == 'WALK' )
             return '#111';
         else if ( modo == 'BUS' )
             return '#FF0000';
+        else
+            return '#3E85C3';
     },
     //Limpa todos os percursos.
     clearMap: function() {
@@ -347,7 +380,7 @@ Rotas = {
         }
         else
         {
-            info += '@TODO Informações do caminho a pé';
+            info += '@TODO Informações do caminho por outros métodos';
         }
         return info;
     },
@@ -372,7 +405,7 @@ Rotas = {
         pontos.push(marker);
     },
     formata_data: function(data) {
-        date = new Date(data / 1000);
+        date = new Date(data);
         hours = date.getHours();
         minutes = date.getMinutes();
 

@@ -3,6 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="./css/bootstrap.min.css">
     <link rel="stylesheet" href="./css/datepicker.css">
@@ -68,20 +69,39 @@
                 <div class="resultados">
                     <!-- Info da trip INICIO -->
                     <div class="info_trip">
-                        Detalhes da viagem <br>
-                        Data e hora <br>
-                        Hora <br>
-                        Validade <br>
-                        <br>
-                        Distância total (pesquisar qualé a var) <br>
-                        - Distância à pé (em metros) <br>
-                        - Distância de autocarro (em metros) (pesquisar qual é a var) <br>
-                        Duração em minutos (TOTAL) <br>
-                        - Duração em minutos à pé (quando aplicável) <br>
-                        - Duração em minutos de autocarro (quando aplicável) <br>
-                        <br>
-                        Início da viagem (timestamp) <br>
-                        Fim da viagem (timestamp)
+                        <h4 class="titulo_detalhes" data-handlebars>{{labels.trip_details}}</h4>
+                        <dl>
+                            <dt class="primeiro data_hora" data-handlebars>{{labels.date_time}}</dt>
+                            <dd class="primeiro">dd/mm/yyyy @ hh:ii</dd>
+
+                            <dt class="hora" data-handlebars>{{labels.time}}</dt>
+                            <dd>hh:ii:ss</dd>
+
+                            <dt class="validade" data-handlebars>**{{labels.validity}}</dt>
+                            <dd>dd/mm/yyyy @ hh:ii:ss</dd>
+
+                            <dt class="distancia_total" data-handlebars>**{{labels.total_distance}}</dt>
+                            <dd>↓ distancia_total ↓</dd>
+                                <dt class="sub distancia_pe" data-handlebars>{{labels.by_foot}}</dt>
+                                <dd class="sub">distancia_pe</dd>
+
+                                <dt class="sub distancia_transportes" data-handlebars>**{{labels.by_transport}}</dt>
+                                <dd class="sub">distance_autocarro</dd>
+
+                            <dt class="duracao_total" data-handlebars>{{labels.total_duration}}</dt>
+                            <dd>duracao_total</dd>
+                                <dt class="sub duracao_pe" data-handlebars>{{labels.by_foot}}</dt>
+                                <dd class="sub">duracao_pe</dd>
+
+                                <dt class="sub duracao_transportes" data-handlebars>{{labels.by_transport}}</dt>
+                                <dd class="sub">duracao_autocarro</dd>
+
+                            <dt class="inicio_viagem" data-handlebars>{{labels.startTime}}</dt>
+                            <dd>inicio_viagem</dd>
+
+                            <dt class="fim_viagem" data-handlebars>{{labels.endTime}}</dt>
+                            <dd>fim_viagem</dd>
+                        </dl>
                     </div>
                     <!-- Info da trip FIM -->
 

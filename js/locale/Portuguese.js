@@ -19,7 +19,17 @@ locale = {
         maxWalkDistance:    'Distância máxima a pé',
         walkSpeed:          'Velocidade a pé',
         wheelchair:         'Accessível à cadeira de rodas',
-        planTrip:           'Simular percurso'
+        planTrip:           'Simular percurso',
+        trip_details:       'Detalhes da viagem',
+        date_time:          'Data e Hora',
+        time:               'Hora',
+        validity:           'Validade',
+        total_distance:     'Distância total',
+        by_foot:            'A pé', 
+        by_transport:       'Transportes',
+        total_duration:     'Duração total',
+        startTime:          'Início',
+        endTime:            'Fim'
     },
     vectors: {
         modes: [

@@ -188,6 +188,8 @@ Rotas = {
                             var fromEncoded = L.Polyline.fromEncoded(leg.legGeometry.points);
                             //O retorno do fromEncoded é sempre um mega-objeto
                             var obj_to_push = fromEncoded.getLatLngs();
+
+                            //Só é utilizada neste for.
                             var points1 = [];
                             for ( var i = 0; i < obj_to_push.length; i++ )
                             {
@@ -196,14 +198,15 @@ Rotas = {
                                 points1.push(latlngs);
                                 // points.push(latlngs);
                             }
+                            //Necessário para distinguir os tipos de rota
                             polyline = new L.Polyline(points1, {
                                 weight:         5,
                                 opacity:        0.8,
                                 smoothFactor:   1,
                                 color:          Rotas.cores(leg.mode)
                             })
-                            .bindPopup(Rotas.info_popup(leg))
-                            .addTo(map);
+                                .bindPopup(Rotas.info_popup(leg))
+                                .addTo(map);
 
                             //@TODO Verificar onde estão as paragens de autocarro.
 
@@ -231,9 +234,17 @@ Rotas = {
                                         norte_sul:  step.absoluteDirection
                                     }
                                     instrucoes[j].steps.push(passos);
-                                    walkTotal += step.distance;
                                 });
                             }
+
+                            //Verificar se a conta está correta. Parece que não
+                            if ( leg.mode == 'BUS' )
+                            {
+                                walkTotal += leg.distance;
+                                console.log('O walkTotal é: ' + walkTotal.toFixed(2));
+                            }
+
+                            //Este contador serve para as sub-instruções
                             ++j;
                         });
                     }
@@ -276,12 +287,15 @@ Rotas = {
 
             var div_trip = 'div.resultados div.info_trip ';
             $(div_trip + 'dt.hora').next('dd').html(hora);
+            
             $(div_trip + 'dt.distancia_total').next('dd').html(walkTotal.toFixed(2) + ' m');
             $(div_trip + 'dt.distancia_pe').next('dd').html(value.walkDistance.toFixed(2) + ' m');
             $(div_trip + 'dt.distancia_transportes').next('dd').html(di_trans.toFixed(2) + ' m');
+            
             $(div_trip + 'dt.duracao_total').next('dd').html(duration + ' min');
             $(div_trip + 'dt.duracao_pe').next('dd').html(walkTime + ' min');
             $(div_trip + 'dt.duracao_transportes').next('dd').html(du_trans + ' min');
+            
             $(div_trip + 'dt.inicio_viagem').next('dd').html(startTime);
             $(div_trip + 'dt.fim_viagem').next('dd').html(endTime);
                 // .html('Duration: ' + duration + ' minutos, walktime: ' + walkTime

@@ -37,8 +37,23 @@ div#sidebar, div#mapa { /*position: absolute; top: 60px;*/ }
 div#sidebar { /*left: 0; width: 30%; display: none;*/ }
 div#mapa { /*left: 31%; width: 68%;*/ }
 div.instrucoes { width: 100px; height: 100px; background: #F30; display: none; }
+/* Informações globais */
 div.info_trip {
-    border: 1px solid #CCC; padding: 5px;
+    border: 1px solid #CCC; padding: 10px; /*display: none;*/
+    dl {
+        dt, dd { padding: 5px 0; font-size: 0.875em; border-top: 1px solid #F1EEE8; }
+        dt {
+            float: left; width: 120px; padding-right: 5px;
+            &:after { content: ': '; }
+            &.sub { text-align: right; }
+        }
+        dd {
+            &.sub { }
+        }
+        dt.sub, dd.sub { font-size: 0.75em; border-top: 0; display: none; }
+        dt.primeiro, dd.primeiro { border-top: 0; }
+    }
+    span.info { display: block; }
 }
 div#direcoes {
     ul.direcoes {

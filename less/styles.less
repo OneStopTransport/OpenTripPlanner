@@ -48,12 +48,21 @@ div.info_trip {
             &.sub { text-align: right; }
         }
         dd {
-            &.sub { }
+            &.sub {
+                /**/
+            }
+            &.link {
+                cursor: pointer;
+                span.baixo:after { content: '↓'; padding-right: 5px; }
+                span.cima:after { content: '↑'; padding-right: 5px; }
+            }
         }
         dt.sub, dd.sub { font-size: 0.75em; border-top: 0; display: none; }
         dt.primeiro, dd.primeiro { border-top: 0; }
     }
     span.info { display: block; }
+    /* Se este a NÃO for um btn btn-[qualquer], um margin: 10 0; fica bom */
+    a.esconder_info { margin: 10px 0; }
 }
 div#direcoes {
     ul.direcoes {

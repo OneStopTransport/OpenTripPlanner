@@ -61,6 +61,42 @@ $(function(){
         e.preventDefault();
     });
 
+    $('dd.link').on('click', function(e){
+        data_mostrar = $(this).data('mostrar');
+        // THIS = $(this);
+        var dtds = 'dt[data-mostrado="' + data_mostrar + '"], dd[data-mostrado="' + data_mostrar + '"]';
+        $(dtds).toggle();
+        visivel = $(dtds).css('display');
+
+        if ( visivel == 'block' )
+        {
+            $(this)
+                .children('.setinhas')
+                .removeClass('baixo')
+                .addClass('cima');
+        }
+        else
+        {
+            $(this)
+                .children('.setinhas')
+                .removeClass('cima')
+                .addClass('baixo');
+        }
+    });
+
+    //
+    $('a.esconder_info').on('click', function(e){
+        $('div.info_trip dl').toggle();
+
+        dl_show = $('div.info_trip dl').css('display');
+        if ( dl_show == 'block' )
+            $(this).html('<i class="glyphicon glyphicon-eye-close"></i>');
+        else
+            $(this).html('<i class="glyphicon glyphicon-eye-open"></i>');
+
+        e.preventDefault();
+    });
+
     //Objetos que não estão no DOM original
     $('body').on('click', 'ul.direcoes li', function() {
         proximo = $(this).children(".escondido");

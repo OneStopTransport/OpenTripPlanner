@@ -186,6 +186,7 @@ Rotas = {
                         $.each(legs.legs, function(index, leg){
                             //js/Polyline.encoded.js
                             var fromEncoded = L.Polyline.fromEncoded(leg.legGeometry.points);
+
                             //O retorno do fromEncoded é sempre um mega-objeto
                             var obj_to_push = fromEncoded.getLatLngs();
 
@@ -276,31 +277,30 @@ Rotas = {
     informacoes: function(info, walkTotal) {
         // console.log( instrucoes_gerais );
         $.each(info, function(index, value){
-            var hora        = Rotas.formata_data(value.data_hora);
+            var data_hora   = Rotas.formata_data(value.data_hora);
+            var hora        = Rotas.formata_hora(value.data_hora);
             var duration    = Math.floor( value.duration / 60000 );
             var walkTime    = Math.floor( value.walkTime / 60 );
-            var startTime   = Rotas.formata_data(value.startTime);
-            var endTime     = Rotas.formata_data(value.endTime);
+            var startTime   = Rotas.formata_hora(value.startTime);
+            var endTime     = Rotas.formata_hora(value.endTime);
             var du_trans    = duration - walkTime;
             var di_trans    = walkTotal - value.walkDistance;
             $('div.resultados div.info_trip').removeClass('escondido');
 
             var div_trip = 'div.resultados div.info_trip ';
+            $(div_trip + 'dt.data_hora').next('dd').html(data_hora);
             $(div_trip + 'dt.hora').next('dd').html(hora);
             
-            $(div_trip + 'dt.distancia_total').next('dd').html(walkTotal.toFixed(2) + ' m');
+            $(div_trip + 'dt.distancia_total').next('dd').children('.texto').html(walkTotal.toFixed(2) + ' m');
             $(div_trip + 'dt.distancia_pe').next('dd').html(value.walkDistance.toFixed(2) + ' m');
             $(div_trip + 'dt.distancia_transportes').next('dd').html(di_trans.toFixed(2) + ' m');
             
-            $(div_trip + 'dt.duracao_total').next('dd').html(duration + ' min');
+            $(div_trip + 'dt.duracao_total').next('dd').children('.texto').html(duration + ' min');
             $(div_trip + 'dt.duracao_pe').next('dd').html(walkTime + ' min');
             $(div_trip + 'dt.duracao_transportes').next('dd').html(du_trans + ' min');
             
             $(div_trip + 'dt.inicio_viagem').next('dd').html(startTime);
             $(div_trip + 'dt.fim_viagem').next('dd').html(endTime);
-                // .html('Duration: ' + duration + ' minutos, walktime: ' + walkTime
-                //     + ' minutos<br>startTime: ' + startTime + ', stopTime: ' + endTime
-                //     + '<br>walkDistance: ' + value.walkDistance.toFixed(2) + ' metros');
         });
         $('div.info_trip').show();
     },
@@ -390,7 +390,7 @@ Rotas = {
             info += 'Autocarro ' + obj.route + ' <br>';
             info += 'Entrar na paragem: ' + obj.from.stopCode + ' <br>';
             info += 'Descer na paragem: ' + obj.to.stopCode + '<br>Serviço prestado por: ' + obj.agencyName;
-            info += '<br>Partida às: ' + this.formata_data(obj.to.departure) + ', Chegada ao destinho às: ' + this.formata_data(obj.to.arrival);
+            info += '<br>Partida às: ' + this.formata_hora(obj.to.departure) + ', Chegada ao destinho às: ' + this.formata_hora(obj.to.arrival);
         }
         else
         {
@@ -418,11 +418,34 @@ Rotas = {
         //este array (var pontos) serve para apagar aquando da atualização dos marcadores
         pontos.push(marker);
     },
-    formata_data: function(data) {
-        date = new Date(data);
-        hours = date.getHours();
-        minutes = date.getMinutes();
+    formata_hora: function(hora) {
+        date = new Date(hora);
+        hours = Rotas.zero_data(date.getHours());
+        minutes = Rotas.zero_data(date.getMinutes());
 
         return hours + ':' + minutes;
+    },
+    formata_data: function(data) {
+        var data_obj = new Date(data);
+
+        data = Rotas.zero_data(data_obj.getDate(), 2)
+            + '/'
+            + Rotas.zero_data(data_obj.getMonth() + 1, 2)
+            + '/'
+            + Rotas.zero_data(data_obj.getFullYear(), 4);
+        hours = data_obj.getHours();
+        minutes = data_obj.getMinutes();
+
+        console.log( data_obj );
+
+        return data + ' ' + hours + ':' + minutes;
+    },
+    zero_data: function(num, count) {
+        var z = num + '';
+        while (z.length < count) {
+            z = "0" + z;
+        }
+
+        return z;
     }
 };

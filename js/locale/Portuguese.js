@@ -70,6 +70,8 @@ locale = {
         more_options:   'Clique aqui para mais opções',
         less_options:   'Clique aqui para menos opções',
         miss_origin:    'É necessário definir um ponto de partida',
-        miss_destiny:   'É necessário definir um ponto de chegada.'
+        miss_destiny:   'É necessário definir um ponto de chegada.',
+        hide_info:      'Esconder info',
+        show_info:      'Mostrar info'
     }
 }

@@ -171,7 +171,7 @@ Rotas = {
                 points.push(latlngs);
                 $.each(value.itineraries, function(index, legs){
                     //Pega o primeiro itinerário
-                    //@TODO Programar as várias opções de itinerários.
+                    //@TODO: Programar as várias opções de itinerários.
                     if ( i == 0 )
                     {
                         var ins_ger = {
@@ -199,8 +199,8 @@ Rotas = {
                             {
                                 var latlngs = new L.latLng(obj_to_push[i].lat, obj_to_push[i].lng);
                                 // points[j] = latlngs;
-                                points1.push(latlngs);
                                 // points.push(latlngs);
+                                points1.push(latlngs);
                             }
                             //Necessário para distinguir os tipos de rota
                             polyline = new L.Polyline(points1, {
@@ -209,10 +209,10 @@ Rotas = {
                                 smoothFactor:   1,
                                 color:          Rotas.cores(leg.mode)
                             })
-                                .bindPopup(Rotas.info_popup(leg))
-                                .addTo(map);
+                            .bindPopup(Rotas.info_popup(leg))
+                            .addTo(map);
 
-                            //@TODO Verificar onde estão as paragens de autocarro.
+                            //@TODO: Verificar onde estão as paragens de autocarro.
                             //Pontos para cada troca de rota
                             Rotas.criar_pontos(leg, latlngs);
 
@@ -240,7 +240,7 @@ Rotas = {
                                 });
                             }
 
-                            //Verificar se a conta está correta. Parece que não
+                            //@TODO: Verificar se a conta está correta. Parece que não
                             if ( leg.mode == "BUS" )
                                 Rotas.distanciaTransporte += leg.distance;
                             else if ( leg.mode == "WALK" )

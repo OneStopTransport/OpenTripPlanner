@@ -293,15 +293,15 @@ Rotas = {
             var div_trip = 'div.resultados div.info_trip ';
             $(div_trip + 'dt.data_hora').next('dd').html(data_hora);
             $(div_trip + 'dt.hora').next('dd').html(hora);
-            
+
             $(div_trip + 'dt.distancia_total').next('dd').children('.texto').html(walkTotal.toFixed(2) + ' m');
             $(div_trip + 'dt.distancia_pe').next('dd').html(Rotas.distanciaPe.toFixed(2) + ' m');
             $(div_trip + 'dt.distancia_transportes').next('dd').html(Rotas.distanciaTransporte.toFixed(2) + ' m');
-            
+
             $(div_trip + 'dt.duracao_total').next('dd').children('.texto').html(duration + ' min');
             $(div_trip + 'dt.duracao_pe').next('dd').html(walkTime + ' min');
             $(div_trip + 'dt.duracao_transportes').next('dd').html(du_trans + ' min');
-            
+
             $(div_trip + 'dt.inicio_viagem').next('dd').html(startTime);
             $(div_trip + 'dt.fim_viagem').next('dd').html(endTime);
         });
@@ -393,7 +393,7 @@ Rotas = {
             info += 'Autocarro ' + obj.route + ' <br>';
             info += 'Entrar na paragem: ' + obj.from.stopCode + ' <br>';
             info += 'Descer na paragem: ' + obj.to.stopCode + '<br>Serviço prestado por: ' + obj.agencyName;
-            info += '<br>Partida às: ' + this.formata_hora(obj.to.departure) + ', Chegada ao destinho às: ' + this.formata_hora(obj.to.arrival);
+            info += '<br>Partida às: ' + this.formata_hora(obj.to.departure) + ', Chegada ao destino às: ' + this.formata_hora(obj.to.arrival);
         }
         else
         {
@@ -424,7 +424,7 @@ Rotas = {
     formata_hora: function(hora) {
         date = new Date(hora);
         hours = Rotas.zero_data(date.getHours());
-        minutes = Rotas.zero_data(date.getMinutes());
+        minutes = Rotas.zero_data(date.getMinutes(), 2);
 
         return hours + ':' + minutes;
     },

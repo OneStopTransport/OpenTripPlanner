@@ -370,10 +370,12 @@ Rotas = {
         for(i in map._layers) {
             //Aqui é melhor testar com constante ao invés do typeof
             if(map._layers[i]._path != undefined) {
-                try {
+                try
+                {
                     map.removeLayer(map._layers[i]);
                 }
-                catch(e) {
+                catch(e)
+                {
                     console.log("Verifique isso pois deu problema " + e + map._layers[i]);
                 }
             }
@@ -393,12 +395,11 @@ Rotas = {
             info += 'Autocarro ' + obj.route + ' <br>';
             info += 'Entrar na paragem: ' + obj.from.stopCode + ' <br>';
             info += 'Descer na paragem: ' + obj.to.stopCode + '<br>Serviço prestado por: ' + obj.agencyName;
-            info += '<br>Partida às: ' + this.formata_hora(obj.to.departure) + ', Chegada ao destino às: ' + this.formata_hora(obj.to.arrival);
+            info += '<br>Partida às: ' + this.formata_hora(obj.startTime) + ', Chegada ao destino às: ' + this.formata_hora(obj.endTime);
         }
         else
-        {
-            info += '@TODO Informações do caminho por outros métodos';
-        }
+            info += '@TODO Informações do caminho por outros métodos (a pé, bike, carro, etc...)';
+
         return info;
     },
     //Criar pontos (bolinhas) para cada tipo de troca de rota

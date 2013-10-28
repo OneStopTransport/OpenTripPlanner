@@ -118,8 +118,22 @@ $(function(){
         // alert('Resized');
     });
 
-    //OpenStreetMaps
-    L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+    var osmLayer = new L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
         attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-    }).addTo(map);
+    });
+    var cloudmadeLayer = new L.tileLayer('http://{s}.tile.cloudmade.com/13e2ed112d194f36afc6c568fa65811d/997/256/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+    });
+
+    //O padrão é OSM
+    map.addLayer(osmLayer);
+    map.addControl(new L.Control.Layers({
+        'OSM': osmLayer,
+        'CloudMade': cloudmadeLayer
+    }));
+
+    // //OpenStreetMaps
+    // L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+    //     attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+    // }).addTo(map);
 });

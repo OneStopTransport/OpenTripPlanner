@@ -11,7 +11,7 @@ $(function(){
         /*file:// fica bloqueado o uso do geoLocation, sempre vai cair aqui rodando local>
             >quer dizer, sem webserver: file://c:....
             Coordenadas de Coimbra */
-        var fromPlace = [40.20052365195992,-8.418746853712946];
+        var fromPlace = [40.1922,-8.4139];
     }
 
     function marcador_inicio(e)

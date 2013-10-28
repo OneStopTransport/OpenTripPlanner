@@ -1,6 +1,8 @@
 Rotas = {
     formulario: '#trip_plan_form',
     tipo_api: 'otp',
+    distanciaPe: 0,
+    distanciaTransporte: 0,
     //Validações
     validar: function(){
 
@@ -156,11 +158,12 @@ Rotas = {
         var toLat, toLon;
         var cores = [];
         var instrucoes_gerais = [];
-        var walkTotal = 0;
         // console.log(objeto_json);
         $.each(objeto_json, function(index, value){
             if ( typeof(value.from.lat) != 'undefined' || typeof(value.from.lon) != 'undefined' )
             {
+                Rotas.distanciaPe = 0;
+                Rotas.distanciaTransporte = 0;
                 i = 0;
                 toLat = value.to.lat;
                 toLon = value.to.lon;
@@ -238,12 +241,13 @@ Rotas = {
                             }
 
                             //Verificar se a conta está correta. Parece que não
-                            if ( leg.mode == 'BUS' )
-                            {
-                                walkTotal += leg.distance;
-                                console.log('O walkTotal é: ' + walkTotal.toFixed(2));
-                            }
+                            if ( leg.mode == "BUS" )
+                                Rotas.distanciaTransporte += leg.distance;
+                            else if ( leg.mode == "WALK" )
+                                Rotas.distanciaPe += leg.distance;
 
+                            // console.log('Distancia transportes: ' + Rotas.distanciaTransporte);
+                            // console.log('Distancia a pe: ' + Rotas.distanciaPe);
                             //Este contador serve para as sub-instruções
                             ++j;
                         });
@@ -261,7 +265,7 @@ Rotas = {
         this.escrever_direcoes(instrucoes);
 
         //Informações globais
-        Rotas.informacoes(instrucoes_gerais, walkTotal);
+        Rotas.informacoes(instrucoes_gerais);
 
         /*O fitBounds mais o getBounds servem para centralizar a rota
          dentro do mapa. Porém as vezes se o width estiver
@@ -273,7 +277,7 @@ Rotas = {
         // console.log(points);
     },
     //Informações globais
-    informacoes: function(info, walkTotal) {
+    informacoes: function(info) {
         // console.log( instrucoes_gerais );
         $.each(info, function(index, value){
             var data_hora   = Rotas.formata_data(value.data_hora);
@@ -283,7 +287,7 @@ Rotas = {
             var startTime   = Rotas.formata_hora(value.startTime);
             var endTime     = Rotas.formata_hora(value.endTime);
             var du_trans    = duration - walkTime;
-            var di_trans    = walkTotal - value.walkDistance;
+            var walkTotal   = Rotas.distanciaPe + Rotas.distanciaTransporte;
             $('div.resultados div.info_trip').removeClass('escondido');
 
             var div_trip = 'div.resultados div.info_trip ';
@@ -291,8 +295,8 @@ Rotas = {
             $(div_trip + 'dt.hora').next('dd').html(hora);
             
             $(div_trip + 'dt.distancia_total').next('dd').children('.texto').html(walkTotal.toFixed(2) + ' m');
-            $(div_trip + 'dt.distancia_pe').next('dd').html(value.walkDistance.toFixed(2) + ' m');
-            $(div_trip + 'dt.distancia_transportes').next('dd').html(di_trans.toFixed(2) + ' m');
+            $(div_trip + 'dt.distancia_pe').next('dd').html(Rotas.distanciaPe.toFixed(2) + ' m');
+            $(div_trip + 'dt.distancia_transportes').next('dd').html(Rotas.distanciaTransporte.toFixed(2) + ' m');
             
             $(div_trip + 'dt.duracao_total').next('dd').children('.texto').html(duration + ' min');
             $(div_trip + 'dt.duracao_pe').next('dd').html(walkTime + ' min');
@@ -435,7 +439,7 @@ Rotas = {
         hours = data_obj.getHours();
         minutes = data_obj.getMinutes();
 
-        console.log( data_obj );
+        // console.log( data_obj );
 
         return data + ' ' + hours + ':' + minutes;
     },

@@ -72,6 +72,7 @@ locale = {
         miss_origin:    'É necessário definir um ponto de partida',
         miss_destiny:   'É necessário definir um ponto de chegada.',
         hide_info:      'Esconder info',
-        show_info:      'Mostrar info'
+        show_info:      'Mostrar info',
+        right_mouse:    'Utilize o botão direito do rato para traçar rotas'
     }
 }

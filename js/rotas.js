@@ -210,7 +210,6 @@ Rotas = {
                                 .addTo(map);
 
                             //@TODO Verificar onde estão as paragens de autocarro.
-
                             //Pontos para cada troca de rota
                             Rotas.criar_pontos(leg, latlngs);
 

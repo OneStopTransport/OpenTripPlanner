@@ -51,7 +51,7 @@ $(function(){
     //Opções avançadas
     $('div.opcoes_avancadas a.mostrar').on('click', function(e){
         link = $(this);
-        $('div.escondido').toggle('slow', function(){
+        $('div.mais_opcoes').toggle('slow', function(){
             if ( $(this).css('display') == 'none')
                 $(link).html(locale.messages.more_options);
             else

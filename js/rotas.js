@@ -209,7 +209,7 @@ Rotas = {
                                 smoothFactor:   1,
                                 color:          Rotas.cores(leg.mode)
                             })
-                            .bindPopup(Rotas.info_popup(leg))
+                            .bindPopup(Rotas.info_popup(leg), { 'minWidth': 400 })
                             .addTo(map);
 
                             //@TODO: Verificar onde estão as paragens de autocarro.
@@ -389,18 +389,20 @@ Rotas = {
     },
     //@param object     obj     Objeto a ser tratado
     info_popup: function(obj) {
-        var info = '';
+        var info = '<section class="info_popup row">';
         if ( obj.mode == 'BUS' )
         {
-            info += 'Autocarro ' + obj.route + ' <br>';
-            info += 'Entrar na paragem: ' + obj.from.stopCode + ' <br>';
-            info += 'Descer na paragem: ' + obj.to.stopCode + '<br>Serviço prestado por: ' + obj.agencyName;
-            info += '<br>Partida às: ' + this.formata_hora(obj.startTime) + ', Chegada ao destino às: ' + this.formata_hora(obj.endTime);
+            info += '<div class="col-md-4 first">Autocarro</div><div class="col-md-8 first">' + obj.route + '</div>';
+            info += '<div class="col-md-4">Entrar na paragem:</div><div class="col-md-8">' + obj.from.stopCode + '</div>';
+            info += '<div class="col-md-4">Descer na paragem:</div><div class="col-md-8">' + obj.to.stopCode + '</div>';
+            info += '<div class="col-md-4">Partida às:</div><div class="col-md-8">' + this.formata_hora(obj.startTime) + '</div>';
+            info += '<div class="col-md-4">Chegada às:</div><div class="col-md-8">' + this.formata_hora(obj.endTime) + '</div>';
+            info += '<div class="col-md-4">Serviço prestado por:</div><div class="col-md-8">' + obj.agencyName + '</div>';
         }
         else
             info += '@TODO Informações do caminho por outros métodos (a pé, bike, carro, etc...)';
 
-        return info;
+        return info + '</section>';
     },
     //Criar pontos (bolinhas) para cada tipo de troca de rota
     criar_pontos: function(leg, latlngs) {

@@ -48,8 +48,7 @@ div.info_trip {
             &.sub { text-align: right; }
         }
         dd {
-            &.sub {
-            }
+            &.sub { /**/ }
             &.link {
                 cursor: pointer;
                 span.baixo:after { content: '↓'; padding-right: 5px; }
@@ -63,6 +62,13 @@ div.info_trip {
     span.info { display: block; }
     /* Se este a NÃO for um btn btn-[qualquer], um margin: 10 0; fica bom */
     a.esconder_info { margin: 10px 0; }
+}
+section.info_popup {
+    font-size: 0.875em;
+    div {
+        border-top: 1px solid #F1EEE8; padding-top: 5px; padding-bottom: 5px;
+        &.first { border-top: 0; }
+    }
 }
 div#direcoes {
     ul.direcoes {

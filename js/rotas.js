@@ -216,10 +216,17 @@ Rotas = {
                             //Pontos para cada troca de rota
                             Rotas.criar_pontos(leg, latlngs);
 
+                            var rua = '<span class="modos modo_' + leg.mode + '"></span>' + ' ' + leg.to.name
+                            if ( leg.mode == 'BUS' )
+                            {
+                                rua = '<span class="modos modo_' + leg.mode + '"></span>' + ' ' +
+                                    leg.from.stopCode + ' (Nº ' + leg.route + ')';
+                            }
+
                             //Instruções. O step é array para gerar sub-steps - próximo bloco.
                             var ins = {
                                 distancia:  leg.distance.toFixed(2),
-                                rua:        '<span class="modos modo_' + leg.mode + '"></span>' + ' ' + leg.to.name,
+                                rua:        rua,
                                 direcao:    '',
                                 norte_sul:  '',
                                 steps:      []
@@ -240,9 +247,26 @@ Rotas = {
                                 });
                             }
 
-                            //@TODO: Verificar se a conta está correta. Parece que não
+                            //Informações dos transportes (lateral esquerda)
                             if ( leg.mode == "BUS" )
+                            {
+                                var div_ruas = '<div class="div_ruas">'
+                                    + 'Paragem: (embarque) ' + leg.from.stopCode + ' às' + Rotas.formata_hora(leg.startTime, 2) + '<br>~'
+                                    + Math.floor(leg.duration / 60000) + ' min.<br>'
+                                    + 'Paragem: (desembarque) ' + leg.to.stopCode + ' às ' + Rotas.formata_hora(leg.endTime, 2) + '<br>'
+                                    + leg.agencyName
+                                    + '</div>';
+                                var info_paragens = {
+                                    distancia:  leg.distance.toFixed(2),
+                                    rua:        div_ruas,
+                                    direcao:    null,
+                                    norte_sul:  null
+                                }
+                                instrucoes[j].steps.push(info_paragens);
+                                //Distância de transportes
                                 Rotas.distanciaTransporte += leg.distance;
+                            }
+                            //Distância a lapatex
                             else if ( leg.mode == "WALK" )
                                 Rotas.distanciaPe += leg.distance;
 
@@ -352,6 +376,7 @@ Rotas = {
             retorno += '<span class="norte_sul ' + obj.norte_sul + '"></span> <span class="direcao ' + obj.direcao + '"></span>';
 
         retorno += '<span class="texto"> ' + obj.rua + ' em ' + obj.distancia + ' metros</span><div class="clearfix"></div>';
+        // console.log(obj);
 
         return retorno;
     },

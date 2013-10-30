@@ -1,9 +1,17 @@
+/**
+* Toda a gestão das rotas deverá passar por aqui
+* @class Rotas
+*/
 Rotas = {
     formulario: '#trip_plan_form',
     tipo_api: 'otp',
     distanciaPe: 0,
     distanciaTransporte: 0,
-    //Validações
+    /**
+    * Validações do formulário
+    * @method validar
+    * @returns {Boolean}
+    */
     validar: function(){
 
         //Validação do formulário
@@ -50,6 +58,11 @@ Rotas = {
 
         return true;
     },
+    /**
+    * Invoca a API e passa os dados necessários
+    * @method invocar_api
+    * @return {Object} ajax
+    */
     invocar_api: function(){
         //Coordenadas
         fromPlace = m1.getLatLng().lat + ',' + m1.getLatLng().lng;
@@ -158,6 +171,7 @@ Rotas = {
         var toLat, toLon;
         var cores = [];
         var instrucoes_gerais = [];
+        var itinerarios = [];
         // console.log(objeto_json);
         $.each(objeto_json, function(index, value){
             if ( typeof(value.from.lat) != 'undefined' || typeof(value.from.lon) != 'undefined' )
@@ -174,131 +188,150 @@ Rotas = {
                     //@TODO: Programar as várias opções de itinerários.
                     if ( i == 0 )
                     {
-                        var ins_ger = {
-                            data_hora:      value.date,
-                            walkTime:       legs.walkTime,
-                            walkDistance:   legs.walkDistance,
-                            startTime:      legs.startTime,
-                            endTime:        legs.endTime,
-                            duration:       legs.duration
-                        };
-                        instrucoes_gerais.push(ins_ger);
-
-                        //Subcontador
-                        j = 0;
-                        $.each(legs.legs, function(index, leg){
-                            //js/Polyline.encoded.js
-                            var fromEncoded = L.Polyline.fromEncoded(leg.legGeometry.points);
-
-                            //O retorno do fromEncoded é sempre um mega-objeto
-                            var obj_to_push = fromEncoded.getLatLngs();
-
-                            //Só é utilizada neste for.
-                            var points1 = [];
-                            for ( var i = 0; i < obj_to_push.length; i++ )
-                            {
-                                var latlngs = new L.latLng(obj_to_push[i].lat, obj_to_push[i].lng);
-                                // points[j] = latlngs;
-                                // points.push(latlngs);
-                                points1.push(latlngs);
-                            }
-                            //Necessário para distinguir os tipos de rota
-                            polyline = new L.Polyline(points1, {
-                                weight:         5,
-                                opacity:        0.8,
-                                smoothFactor:   1,
-                                color:          Rotas.cores(leg.mode)
-                            })
-                            .bindPopup(Rotas.info_popup(leg), { 'minWidth': 400 })
-                            .addTo(map);
-
-                            //@TODO: Verificar onde estão as paragens de autocarro.
-                            //Pontos para cada troca de rota
-                            Rotas.criar_pontos(leg, latlngs);
-
-                            var rua = '<span class="modos modo_' + leg.mode + '"></span>' + ' ' + leg.to.name
-                            if ( leg.mode == 'BUS' )
-                            {
-                                rua = '<span class="modos modo_' + leg.mode + '"></span>' + ' ' +
-                                    leg.from.stopCode + ' (Nº ' + leg.route + ')';
-                            }
-
-                            //Instruções. O step é array para gerar sub-steps - próximo bloco.
-                            var ins = {
-                                distancia:  leg.distance.toFixed(2),
-                                rua:        rua,
-                                direcao:    '',
-                                norte_sul:  '',
-                                steps:      []
-                            };
-                            instrucoes.push(ins);
-
-                            //@TODO: Há mais instruções fora dos steps.
-                            if ( leg.steps )
-                            {
-                                $.each(leg.steps, function(index, step){
-                                    var passos = {
-                                        distancia:  step.distance.toFixed(2),
-                                        rua:        step.streetName,
-                                        direcao:    step.relativeDirection,
-                                        norte_sul:  step.absoluteDirection
-                                    }
-                                    instrucoes[j].steps.push(passos);
-                                });
-                            }
-
-                            //Informações dos transportes (lateral esquerda)
-                            if ( leg.mode == "BUS" )
-                            {
-                                var div_ruas = '<div class="div_ruas">'
-                                    + 'Paragem: (embarque) ' + leg.from.stopCode + ' às' + Rotas.formata_hora(leg.startTime, 2) + '<br>~'
-                                    + Math.floor(leg.duration / 60000) + ' min.<br>'
-                                    + 'Paragem: (desembarque) ' + leg.to.stopCode + ' às ' + Rotas.formata_hora(leg.endTime, 2) + '<br>'
-                                    + leg.agencyName
-                                    + '</div>';
-                                var info_paragens = {
-                                    distancia:  leg.distance.toFixed(2),
-                                    rua:        div_ruas,
-                                    direcao:    null,
-                                    norte_sul:  null
-                                }
-                                instrucoes[j].steps.push(info_paragens);
-                                //Distância de transportes
-                                Rotas.distanciaTransporte += leg.distance;
-                            }
-                            //Distância a lapatex
-                            else if ( leg.mode == "WALK" )
-                                Rotas.distanciaPe += leg.distance;
-
-                            // console.log('Distancia transportes: ' + Rotas.distanciaTransporte);
-                            // console.log('Distancia a pe: ' + Rotas.distanciaPe);
-                            //Este contador serve para as sub-instruções
-                            ++j;
-                        });
+                        var it = Rotas.desenhar_rota(value, legs, instrucoes_gerais, instrucoes, true);
+                        itinerarios.push(it);
+                        //Escrever as direções
+                        Rotas.escrever_direcoes(instrucoes);
+                        //Informações globais
+                        Rotas.informacoes(instrucoes_gerais);
+                    }
+                    //Os outros itinerários
+                    else
+                    {
+                        var retorno = Rotas.desenhar_rota(value, legs, instrucoes_gerais, instrucoes, false);
+                        itinerarios.push(retorno);
+                        console.log(retorno);
                     }
                     ++i;
                 });
             }
         });
-        //Não está sendo usada INICIO
-        // var latlngs = new L.latLng(toLat, toLon);
-        // points.push(latlngs);
-        //Não está sendo usada FIM
-
-        //Escrever as direções
-        this.escrever_direcoes(instrucoes);
-
-        //Informações globais
-        Rotas.informacoes(instrucoes_gerais);
-
-        /*O fitBounds mais o getBounds servem para centralizar a rota
-         dentro do mapa. Porém as vezes se o width estiver
-         mal, a centralização fica péssima. true story.*/
-        // map.fitBounds(polyline.getBounds());
 
         //Just in case
-        polyline.bringToFront();
+        // polyline.bringToFront();
         // console.log(points);
+    },
+    /**
+    * Desenha as rotas (linhas) para cada trajeto
+    *
+    * @method desenhar_rota
+    * @param {Object} value
+    * @param {Object} legs
+    * @param {Array} instrucoes_gerais
+    * @param {Array} instrucoes
+    * @param {Boolean} escrever_rota Se for true, desenha a rota no mapa
+    * @return {Void}
+    */
+    desenhar_rota: function(value, legs, instrucoes_gerais, instrucoes, escrever_rota) {
+        var retorno = [];
+        var ins_ger = {
+            data_hora:      value.date,
+            walkTime:       legs.walkTime,
+            walkDistance:   legs.walkDistance,
+            startTime:      legs.startTime,
+            endTime:        legs.endTime,
+            duration:       legs.duration
+        };
+        instrucoes_gerais.push(ins_ger);
+
+        //Subcontador
+        j = 0;
+        $.each(legs.legs, function(index, leg){
+            //js/Polyline.encoded.js
+            var fromEncoded = L.Polyline.fromEncoded(leg.legGeometry.points);
+
+            //O retorno do fromEncoded é sempre um mega-objeto
+            var obj_to_push = fromEncoded.getLatLngs();
+
+            //Só é utilizada neste for.
+            var points1 = [];
+            for ( var i = 0; i < obj_to_push.length; i++ )
+            {
+                var latlngs = new L.latLng(obj_to_push[i].lat, obj_to_push[i].lng);
+                // points[j] = latlngs;
+                // points.push(latlngs);
+                points1.push(latlngs);
+            }
+            //Necessário para distinguir os tipos de rota
+            polyline = new L.Polyline(points1, {
+                weight:         5,
+                opacity:        0.8,
+                smoothFactor:   1,
+                color:          Rotas.cores(leg.mode)
+            })
+            .bindPopup(Rotas.info_popup(leg), { 'minWidth': 400 });
+            //.addTo(map);
+            if ( escrever_rota == true )
+            {
+                polyline.addTo(map);
+                //@TODO: Verificar onde estão as paragens de autocarro.
+                //Pontos para cada troca de rota
+                Rotas.criar_pontos(leg, latlngs);
+            }
+            else
+                retorno.push(polyline);
+
+            //
+            var rua = '<span class="modos modo_' + leg.mode + '"></span>' + ' ' + leg.to.name
+            if ( leg.mode == 'BUS' )
+            {
+                rua = '<span class="modos modo_' + leg.mode + '"></span>' + ' ' +
+                    leg.from.stopCode + ' (Nº ' + leg.route + ')';
+            }
+
+            //Instruções. O step é array para gerar sub-steps - próximo bloco.
+            var ins = {
+                distancia:  leg.distance.toFixed(2),
+                rua:        rua,
+                direcao:    '',
+                norte_sul:  '',
+                steps:      []
+            };
+            instrucoes.push(ins);
+
+            //@TODO: Há mais instruções fora dos steps.
+            if ( leg.steps )
+            {
+                $.each(leg.steps, function(index, step){
+                    var passos = {
+                        distancia:  step.distance.toFixed(2),
+                        rua:        step.streetName,
+                        direcao:    step.relativeDirection,
+                        norte_sul:  step.absoluteDirection
+                    }
+                    instrucoes[j].steps.push(passos);
+                });
+            }
+
+            //Informações dos transportes (lateral esquerda)
+            if ( leg.mode == "BUS" )
+            {
+                var div_ruas = '<div class="div_ruas">'
+                    + 'Paragem: (embarque) ' + leg.from.stopCode + ' às ' + Rotas.formata_hora(leg.startTime, 2) + '<br>~'
+                    + Math.floor(leg.duration / 60000) + ' min.<br>'
+                    + 'Paragem: (desembarque) ' + leg.to.stopCode + ' às ' + Rotas.formata_hora(leg.endTime, 2) + '<br>'
+                    + leg.agencyName
+                    + '</div>';
+                var info_paragens = {
+                    distancia:  leg.distance.toFixed(2),
+                    rua:        div_ruas,
+                    direcao:    null,
+                    norte_sul:  null
+                }
+                instrucoes[j].steps.push(info_paragens);
+                //Distância de transportes
+                Rotas.distanciaTransporte += leg.distance;
+            }
+            //Distância a lapatex
+            else if ( leg.mode == "WALK" )
+                Rotas.distanciaPe += leg.distance;
+
+            //Este contador serve para as sub-instruções
+            ++j;
+        });
+        
+        // if ( escrever_rota == false )
+            return retorno;
     },
     //Informações globais
     informacoes: function(info) {

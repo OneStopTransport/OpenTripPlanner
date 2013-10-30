@@ -1,0 +1,129 @@
+{
+    "project": {},
+    "files": {
+        "bootstrap.js": {
+            "name": "bootstrap.js",
+            "modules": {},
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        },
+        "bootstrap.min.js": {
+            "name": "bootstrap.min.js",
+            "modules": {},
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        },
+        "rotas.js": {
+            "name": "rotas.js",
+            "modules": {},
+            "classes": {
+                "Rotas": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        }
+    },
+    "modules": {},
+    "classes": {
+        "Rotas": {
+            "name": "Rotas",
+            "shortname": "Rotas",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "rotas.js",
+            "line": 1,
+            "description": "Toda a gestão das rotas deverá passar por aqui"
+        }
+    },
+    "classitems": [
+        {
+            "file": "bootstrap.js",
+            "line": 1,
+            "description": "bootstrap.js v3.0.0 by @fat and @mdo\nCopyright 2013 Twitter Inc.\nhttp://www.apache.org/licenses/LICENSE-2.0",
+            "class": "Rotas"
+        },
+        {
+            "file": "bootstrap.min.js",
+            "line": 1,
+            "description": "bootstrap.js v3.0.0 by @fat and @mdo\nCopyright 2013 Twitter Inc.\nhttp://www.apache.org/licenses/LICENSE-2.0",
+            "class": "Rotas"
+        },
+        {
+            "file": "rotas.js",
+            "line": 10,
+            "description": "Validações do formulário",
+            "itemtype": "method",
+            "name": "validar",
+            "return": {
+                "description": "",
+                "type": "Boolean"
+            },
+            "class": "Rotas"
+        },
+        {
+            "file": "rotas.js",
+            "line": 61,
+            "description": "Invoca a API e passa os dados necessários",
+            "itemtype": "method",
+            "name": "invocar_api",
+            "return": {
+                "description": "ajax",
+                "type": "Object"
+            },
+            "class": "Rotas"
+        },
+        {
+            "file": "rotas.js",
+            "line": 317,
+            "description": "Desenha as rotas (linhas) para cada trajeto",
+            "itemtype": "method",
+            "name": "desenhar_rota",
+            "params": [
+                {
+                    "name": "value",
+                    "description": "",
+                    "type": "Object"
+                },
+                {
+                    "name": "legs",
+                    "description": "",
+                    "type": "Object"
+                },
+                {
+                    "name": "instrucoes_gerais",
+                    "description": "",
+                    "type": "Array"
+                },
+                {
+                    "name": "instrucoes",
+                    "description": "",
+                    "type": "Array"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Void"
+            },
+            "class": "Rotas"
+        }
+    ],
+    "warnings": [
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " rotas.js:10"
+        },
+        {
+            "message": "Missing item type\nbootstrap.js v3.0.0 by @fat and @mdo\nCopyright 2013 Twitter Inc.\nhttp://www.apache.org/licenses/LICENSE-2.0",
+            "line": " bootstrap.js:1"
+        },
+        {
+            "message": "Missing item type\nbootstrap.js v3.0.0 by @fat and @mdo\nCopyright 2013 Twitter Inc.\nhttp://www.apache.org/licenses/LICENSE-2.0",
+            "line": " bootstrap.min.js:1"
+        }
+    ]
+}

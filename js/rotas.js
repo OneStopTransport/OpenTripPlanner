@@ -7,6 +7,7 @@ Rotas = {
     tipo_api: 'otp',
     distanciaPe: 0,
     distanciaTransporte: 0,
+    itinerarios: [],
     /**
     * Validações do formulário
     * @method validar
@@ -94,7 +95,11 @@ Rotas = {
         return ajax;
         
     },
-    //Invoca a API e traça a rota
+    /**
+    * Invoca a API e traça a rota
+    *
+    * @return {Void}
+    */
     tracar: function(){
        
         Rotas.clearMap();
@@ -129,7 +134,12 @@ Rotas = {
                 .html('Ocorreu um erro: ' + textStatus);*/
         });
     },
-    //Formatação da Cloudmade
+    /**
+    * Formatar resposta da Cloudmade
+    * É apenas um teste e deverá ser removido
+    * @param {Object} objeto_json Resposta JSON da API
+    * @return {Void}
+    */
     formatar_cloudmade: function(objeto_json){
         var point, route, points = [];
         var instrucoes = [];
@@ -164,7 +174,11 @@ Rotas = {
         polyline.bringToFront();
         console.log(points);
     },
-    //Formatação da OTP
+    /**
+    * Formata a resposta da OTP
+    * @param {Object} objeto_json Resposta JSON da API
+    * @return {Void}
+    */
     formatar_otp: function(objeto_json){
         var route, points = [];
         var instrucoes = [];
@@ -184,14 +198,16 @@ Rotas = {
                 var latlngs = new L.latLng(value.from.lat, value.from.lon);
                 points.push(latlngs);
                 $.each(value.itineraries, function(index, legs){
-                    //Pega o primeiro itinerário
                     //@TODO: Programar as várias opções de itinerários.
+                    //Pega o primeiro itinerário
                     if ( i == 0 )
                     {
-                        var it = Rotas.desenhar_rota(value, legs, instrucoes_gerais, instrucoes, true);
-                        itinerarios.push(it);
+                        var primeiro_itinerario = Rotas.desenhar_rota(value, legs, instrucoes_gerais, instrucoes, true);
+                        Rotas.itinerarios.push(primeiro_itinerario);
+
                         //Escrever as direções
                         Rotas.escrever_direcoes(instrucoes);
+
                         //Informações globais
                         Rotas.informacoes(instrucoes_gerais);
                     }
@@ -199,17 +215,28 @@ Rotas = {
                     else
                     {
                         var retorno = Rotas.desenhar_rota(value, legs, instrucoes_gerais, instrucoes, false);
-                        itinerarios.push(retorno);
-                        console.log(retorno);
+                        Rotas.itinerarios.push(retorno);
+                        // console.log(retorno);
                     }
                     ++i;
                 });
             }
         });
 
+        //É um vetor, 
+        $.each(Rotas.itinerarios, function(index, poly){
+            // poly.addTo(map);
+        });
+        /*
+            map.addLayer(polyline);//For show
+            map.removeLayer(polyline);// For hide
+        */
+
+        console.log(Rotas.itinerarios);
+
         //Just in case
-        // polyline.bringToFront();
-        // console.log(points);
+        if ( typeof(primeiro_itinerario) != 'undefined' )
+            primeiro_itinerario.bringToFront();
     },
     /**
     * Desenha as rotas (linhas) para cada trajeto
@@ -220,7 +247,7 @@ Rotas = {
     * @param {Array} instrucoes_gerais
     * @param {Array} instrucoes
     * @param {Boolean} escrever_rota Se for true, desenha a rota no mapa
-    * @return {Void}
+    * @return {Polyline}
     */
     desenhar_rota: function(value, legs, instrucoes_gerais, instrucoes, escrever_rota) {
         var retorno = [];
@@ -271,7 +298,7 @@ Rotas = {
             else
                 retorno.push(polyline);
 
-            //
+            //A rua quando for bus tem mais info (no. da carreira)
             var rua = '<span class="modos modo_' + leg.mode + '"></span>' + ' ' + leg.to.name
             if ( leg.mode == 'BUS' )
             {
@@ -330,10 +357,14 @@ Rotas = {
             ++j;
         });
         
-        // if ( escrever_rota == false )
-            return retorno;
+        return polyline;
     },
-    //Informações globais
+    /**
+    * Escreve no html as informações globais
+    * do itinerário escolhido
+    * @param {Array} info Vetor com as informações
+    * @return {Void}
+    */
     informacoes: function(info) {
         // console.log( instrucoes_gerais );
         $.each(info, function(index, value){
@@ -364,7 +395,12 @@ Rotas = {
         });
         $('div.info_trip').show();
     },
-    //Vai a div direcoes e escreve as direções como ul>li
+    /**
+    * Escreve as direções de cada parte da
+    * rota como ul>li
+    * @param {Array} direcoes Vetor com as direções
+    * @return {Void}
+    */
     escrever_direcoes: function(direcoes){
         //data-api é que faz a mágica (HTML + CSS)
         var html = '<ul class="direcoes" data-api="resultados_' + this.tipo_api + '">';
@@ -397,17 +433,16 @@ Rotas = {
         html += '</ul><div class="clearfix"></div><br><br>';
         $('div#direcoes').html(html);
     },
+    /**
+    * Coloca as informações com o HTML correto
+    * O <li> é fechado depois do método ser invocado
+    * @param {Objeto} obj
+    * @return {String} retorno
+    */
     formata_html: function(obj, i)
     {
-        var contador = '';
-
         retorno = '<li>';
-        //As rotas principais têm um contador
-        if ( 'undefined' != typeof(i) )
-            contador = i + '. ';
-        else
-            retorno += '<span class="norte_sul ' + obj.norte_sul + '"></span> <span class="direcao ' + obj.direcao + '"></span>';
-
+        retorno += '<span class="norte_sul ' + obj.norte_sul + '"></span> <span class="direcao ' + obj.direcao + '"></span>';
         retorno += '<span class="texto"> ' + obj.rua + ' em ' + obj.distancia + ' metros</span><div class="clearfix"></div>';
         // console.log(obj);
 

@@ -65,8 +65,12 @@ div.info_trip {
     a.esconder_info { margin: 10px 0; }
 }
 div.itinerarios {
-    ul {
+    ul.ul_itinerarios {
         list-style: none; margin: 0; padding: 0;
+        li {
+            padding: 10px 0; background: #F1EEE8; border-top: 1px solid #CCC; padding-left: 10px;
+            &:first-child { border-top: 0; }
+        }
     }
 }
 section.info_popup {
@@ -79,13 +83,17 @@ section.info_popup {
 div#direcoes {
     ul.direcoes {
         list-style: none; margin: 0; padding: 0;
+        div.clearfix { height: 0; }
         li {
             line-height: 20px; padding: 10px 0; cursor: pointer; font-size: 0.875em; border-top: 1px solid #CCC;
             &:nth-child(even) { background: #F1EEE8; }
             &:first-child { border-top: 0; }
             ul {
                 list-style: none; margin: 0; padding-top: 0; padding-bottom: 0px; margin-left: -30px;
-                &.escondido { display: none; }
+                &.escondido {
+                    display: none;
+                    div.clearfix { height: auto; }
+                }
                 li {
                     border: 0; padding: 0;
                     &:nth-child(even) { background: none; }

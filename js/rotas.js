@@ -3,18 +3,17 @@
 * @class Rotas
 */
 Rotas = {
-    formulario: '#trip_plan_form',
-    tipo_api: 'otp',
-    distanciaPe: 0,
-    distanciaTransporte: 0,
-    itinerarios: [],
+    formulario:             '#trip_plan_form',
+    tipo_api:               'otp',
+    distanciaPe:            0,
+    distanciaTransporte:    0,
+    itinerarios:            [],
     /**
     * Validações do formulário
     * @method validar
     * @returns {Boolean}
     */
-    validar: function(){
-
+    validar: function() {
         //Validação do formulário
         form = 'form' + this.formulario;
         error = 0;
@@ -64,7 +63,7 @@ Rotas = {
     * @method invocar_api
     * @return {Object} ajax
     */
-    invocar_api: function(){
+    invocar_api: function() {
         //Coordenadas
         fromPlace = m1.getLatLng().lat + ',' + m1.getLatLng().lng;
         toPlace = m2.getLatLng().lat + ',' + m2.getLatLng().lng;
@@ -93,14 +92,12 @@ Rotas = {
         console.log(url);
 
         return ajax;
-        
     },
     /**
     * Invoca a API e traça a rota
-    *
     * @return {Void}
     */
-    tracar: function(){
+    tracar: function() {
        
         Rotas.clearMap();
 
@@ -179,7 +176,7 @@ Rotas = {
     * @param {Object} objeto_json Resposta JSON da API
     * @return {Void}
     */
-    formatar_otp: function(objeto_json){
+    formatar_otp: function(objeto_json) {
         var route, points = [];
         var instrucoes = [];
         var toLat, toLon;
@@ -192,18 +189,24 @@ Rotas = {
             {
                 Rotas.distanciaPe = 0;
                 Rotas.distanciaTransporte = 0;
+                Rotas.itinerarios = [];
                 i = 0;
                 toLat = value.to.lat;
                 toLon = value.to.lon;
                 var latlngs = new L.latLng(value.from.lat, value.from.lon);
                 points.push(latlngs);
                 $.each(value.itineraries, function(index, legs){
-                    //@TODO: Programar as várias opções de itinerários.
-                    //Pega o primeiro itinerário
+                    //O primeiro itinerário é automaticamente impresso
                     if ( i == 0 )
                     {
                         var primeiro_itinerario = Rotas.desenhar_rota(value, legs, instrucoes_gerais, instrucoes, true);
-                        Rotas.itinerarios.push(primeiro_itinerario);
+                        var array_it = {
+                            polyline:   primeiro_itinerario,
+                            startTime:  legs.startTime,
+                            duration:   legs.duration,
+                            endTime:    legs.endTime,
+                        };
+                        Rotas.itinerarios.push(array_it);
 
                         //Escrever as direções
                         Rotas.escrever_direcoes(instrucoes);
@@ -215,24 +218,26 @@ Rotas = {
                     else
                     {
                         var retorno = Rotas.desenhar_rota(value, legs, instrucoes_gerais, instrucoes, false);
-                        Rotas.itinerarios.push(retorno);
+                        var array_it = {
+                            polyline: retorno,
+                            startTime:  legs.startTime,
+                            duration:   legs.duration,
+                            endTime:    legs.endTime,
+                        };
+                        Rotas.itinerarios.push(array_it);
                         // console.log(retorno);
                     }
                     ++i;
                 });
             }
         });
+        // console.log('Contador ' + i);
 
-        //É um vetor, 
-        $.each(Rotas.itinerarios, function(index, poly){
-            // poly.addTo(map);
-        });
+        Rotas.mostra_itinerarios();
         /*
-            map.addLayer(polyline);//For show
-            map.removeLayer(polyline);// For hide
+            map.addLayer(polyline);     // For show
+            map.removeLayer(polyline);  // For hide
         */
-
-        console.log(Rotas.itinerarios);
 
         //Just in case
         if ( typeof(primeiro_itinerario) != 'undefined' )
@@ -401,7 +406,7 @@ Rotas = {
     * @param {Array} direcoes Vetor com as direções
     * @return {Void}
     */
-    escrever_direcoes: function(direcoes){
+    escrever_direcoes: function(direcoes) {
         //data-api é que faz a mágica (HTML + CSS)
         var html = '<ul class="direcoes" data-api="resultados_' + this.tipo_api + '">';
         // console.log(direcoes);
@@ -439,14 +444,39 @@ Rotas = {
     * @param {Objeto} obj
     * @return {String} retorno
     */
-    formata_html: function(obj, i)
-    {
+    formata_html: function(obj, i) {
         retorno = '<li>';
         retorno += '<span class="norte_sul ' + obj.norte_sul + '"></span> <span class="direcao ' + obj.direcao + '"></span>';
         retorno += '<span class="texto"> ' + obj.rua + ' em ' + obj.distancia + ' metros</span><div class="clearfix"></div>';
         // console.log(obj);
 
         return retorno;
+    },
+    /**
+    */
+    mostra_itinerarios: function() {
+        var html = '<ul>';
+        var contador = 1;
+        $.each(Rotas.itinerarios, function(index, it){
+            var inicio, fim, duracao;
+            inicio  = Rotas.formata_hora(it.startTime);
+            fim     = Rotas.formata_hora(it.endTime);
+            duracao = Math.floor(it.duration / 60000);
+
+            html += '<li><a href="#" data-itinerario="' + index + '">' + contador + '. '
+                + inicio
+                + ' - '
+                + fim
+                + '</a></li>';
+
+            ++contador;
+        });
+        html += '</ul>';
+        $('div.itinerarios')
+            .empty()
+            .html(html);
+
+        // console.log(Rotas.itinerarios);
     },
     //Cor de autocarro, cor de automóvel, cor de moonwalk -> else
     cores: function(modo) {
@@ -548,3 +578,11 @@ Rotas = {
         return z;
     }
 };
+
+$('body').on('mouseover', 'div.itinerarios a', function(e){
+    id_itinerario = $(this).data('itinerario');
+    alert( Rotas.itinerarios[id_itinerario].duration );
+});
+$('body').on('click', 'div.itinerarios a', function(e){
+    return false;
+});

@@ -16,7 +16,11 @@ $(function(){
         .removeClass('col-md-push-4');
 
     //Date & Time Pickers
-    $('#date').datepicker();
+    $('#date')
+        .datepicker()
+        .on('changeDate', function(){
+            $('#date').datepicker('hide');
+        });
     $('input#time').timepicker();
 
     //Mostra os passos de cada instrução

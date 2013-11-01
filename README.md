@@ -1,20 +1,16 @@
 OpenTripPlanner
 ===============
 
-O que é
--------
-O OpenTripPlanner é uma plataforma que permite visualizar as três melhores opções entre dois pontos por vários meios de transporte.
+## Sobre
 
-Download
-----------
-Esta é uma aplicação que não necessita download nem instalação. Basta entrar no site da [OST](http://www.ost.pt) e selecionar a aplicação OpenTripPlanner.
+O `OpenTripPlanner` (OTP) é uma plataforma que permite efectuar o cálculo de itinerários com base nos horários dos serviços públicos de transporte. Possui uma aplicação que disponibiliza o serviço para o cálculo da melhor rota entre dois pontos e uma aplicação *web* que serve como demonstração dessa funcionalidade.
 
-Contribuição
-------------
-Faça um fork desta conta, adicione a sua contribuição e depois clique em Pull Merge. Após análise poderemos colocar a sua contribuição no nosso repositório.
+Actualmente a [*webapp* do OTP](https://www.ost.pt/app/opentripplanner) encontra-se desactualizada, não podendo, por exemplo, ser utilizada em dispositivos móveis, tendo sido essa a principal razão que deu origem a este projecto.
 
+Esta aplicação encontra-se em desenvolvimento activo, podendo vir a sofrer alterações significativas no futuro.
 
-Projeto em Beta
-===============
+## Instalação
 
-Estamos em beta e logo que o sistema fique estável, iremos disponibilizar a aplicação.
+Para usar esta aplicação, poderá alojá-la num servidor *web* à sua escolha ou, em alternativa, descarregar este projecto e abrir o ficheiro `index.html` no *browser* (com `Javascript` activo), que este deverá importar os recursos necessários para funcionar.
+
+Em caso de dúvidas, encorajamos a utilização do nosso [**fórum de suporte**](https://support.ost.pt).

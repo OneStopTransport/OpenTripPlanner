@@ -3,7 +3,14 @@ YUI.add("yuidoc-meta", function(Y) {
     "classes": [
         "Rotas"
     ],
-    "modules": [],
-    "allModules": []
+    "modules": [
+        "Rotas"
+    ],
+    "allModules": [
+        {
+            "displayName": "Rotas",
+            "name": "Rotas"
+        }
+    ]
 } };
 });

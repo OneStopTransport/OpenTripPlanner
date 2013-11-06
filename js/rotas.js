@@ -1,14 +1,59 @@
 /**
+* @module Rotas
+*/
+/**
 * Toda a gestão das rotas deverá passar por aqui
 * @class Rotas
+* @constructor
 */
 Rotas = {
+    /**
+    * ID do formulário com as opções de pesquisa
+    * @property formulario
+    * @type {String}
+    * @default "#trip_plan_form"
+    * @example `<form class="form-horizontal" role="form" id="trip_plan_form">`
+    */
     formulario:             '#trip_plan_form',
+    /**
+    * Qual a API que será consumida
+    * @property tipo_api
+    * @type {String}
+    * @default "otp"
+    */
     tipo_api:               'otp',
+    /**
+    * Distância a pé
+    * @property distanciaPe
+    * @type {Int}
+    * @default "0"
+    */
     distanciaPe:            0,
+    /**
+    * Distância por transportes
+    * @property distanciaTransporte
+    * @type {Int}
+    * @default "0"
+    */
     distanciaTransporte:    0,
+    /**
+    * Vetor com os itinerários. De ZERO à DOIS (três no total)
+    * @property itinerarios
+    * @type {Array}
+    */
     itinerarios:            [],
+    /**
+    * Resposta JSON da API
+    * @property objeto_json
+    * @type {JSON}
+    */
     objeto_json:            '',
+    /**
+    * Qual o itinerário a mostrar.
+    * @property itinerario_mostrar
+    * @type {Int}
+    * @default "0"
+    */
     itinerario_mostrar:     0,
     /**
     * Validações do formulário
@@ -97,6 +142,7 @@ Rotas = {
     },
     /**
     * Invoca a API e traça a rota
+    * @method tracar
     * @return {Void}
     */
     tracar: function() {
@@ -138,6 +184,7 @@ Rotas = {
     /**
     * Formatar resposta da Cloudmade
     * É apenas um teste e deverá ser removido
+    * @method formatar_cloudmade
     * @return {Void}
     */
     formatar_cloudmade: function() {
@@ -173,10 +220,11 @@ Rotas = {
         //Centraliza a rota dentro do mapa.
         // map.fitBounds(polyline.getBounds());
         polyline.bringToFront();
-        console.log(points);
+        // console.log(points);
     },
     /**
     * Formata a resposta da OTP
+    * @method formatar_otp
     * @return {Void}
     */
     formatar_otp: function() {
@@ -296,6 +344,9 @@ Rotas = {
             .bindPopup(Rotas.info_popup(leg), { 'minWidth': 400 })
             .addTo(map);
             polylines.push(polyline);
+
+            //map.fitBounds(points1);
+            //Se for para escrever a rota (itinerario selecionado OK)
             if ( escrever_rota == true )
             {
                 // polyline.addTo(map);
@@ -375,6 +426,7 @@ Rotas = {
     /**
     * Escreve no html as informações globais
     * do itinerário escolhido
+    * @method informacoes
     * @param {Array} info Vetor com as informações
     * @return {Void}
     */
@@ -409,6 +461,7 @@ Rotas = {
     /**
     * Escreve as direções de cada parte da
     * rota como ul>li
+    * @method escrever_direcoes
     * @param {Array} direcoes Vetor com as direções
     * @return {Void}
     */
@@ -419,7 +472,7 @@ Rotas = {
         // console.log(direcoes);
         // console.log('======= Direções ========');
         div_it = 'div#coll_it' + it + ' div.panel-body div.direcoes ';
-        console.log(div_it);
+        // console.log(div_it);
         //Exibir a div de instruções
         $(div_it).animate({
             display: 'block'
@@ -450,7 +503,8 @@ Rotas = {
     },
     /**
     * Coloca as informações com o HTML correto
-    * O <li> é fechado depois do método ser invocado
+    * O `<li>` é fechado depois do método ser invocado
+    * @method formata_html
     * @param {Objeto} obj
     * @return {String} retorno
     */
@@ -467,7 +521,8 @@ Rotas = {
         return retorno;
     },
     /**
-    * Cria um html (<ul>) com os 3 itinerários
+    * Cria um html (`<ul>`) com os 3 itinerários
+    * @method mostra_itinerarios
     * @return {Void}
     */
     mostra_itinerarios: function() {
@@ -519,10 +574,11 @@ Rotas = {
             $('div.it' + j).hide();
         }
 
-        console.log(Rotas.itinerarios);
+        // console.log(Rotas.itinerarios);
     },
     /**
     * Define as cores para cada tipo de rota
+    * @method cores
     * @param {String} modo
     * @return {String} cor em hexadecimal
     */
@@ -536,6 +592,7 @@ Rotas = {
     },
     /**
     * Limpa todos os percursos.
+    * @method clearMap
     * @return {Void}
     */
     clearMap: function() {
@@ -564,6 +621,7 @@ Rotas = {
     /**
     * Cria um pop-up na rota com
     * as informações da mesma
+    * @method info_popup
     * @param {Object} obj
     * @return {String}
     */
@@ -585,6 +643,7 @@ Rotas = {
     },
     /**
     * Criar pontos (bolinhas) para cada tipo de troca de rota
+    * @method criar_pontos
     * @param {Object} leg
     * @param {Object} latlngs
     * @param {Int} it
@@ -618,6 +677,7 @@ Rotas = {
     },
     /**
     * Transforma um timestamp em horas:minutos
+    * @method formata_hora
     * @param {Timestamp} hora
     * @return {String} hours:minutes
     */
@@ -630,6 +690,7 @@ Rotas = {
     },
     /**
     * Transforma um timestamp em data mais hora:minutos
+    * @method formata_data
     * @param {Timestamp} data
     * @return {String}
     */
@@ -650,6 +711,7 @@ Rotas = {
     },
     /**
     * Coloca um zero a mais na data (a esquerda)
+    * @method zero_data
     * @param {Int} num
     * @param {Int} count
     * @return {Int} z
@@ -664,6 +726,7 @@ Rotas = {
     },
     /**
     * Corre todos os itinerarios e os esconde
+    * @method oculta_itinerarios
     * @return {Void}
     */
     oculta_itinerarios: function() {
@@ -680,6 +743,7 @@ Rotas = {
     },
     /**
     * Mostra apenas o primeiro itinerário
+    * @method mostra_primeiro_itinerario
     * @Return {Void}
     */
     mostra_primeiro_itinerario: function() {
@@ -694,6 +758,7 @@ Rotas = {
     },
     /**
     * Mostra o itinerário it
+    * @method mostra_itinerario
     * @param {Int} it Itinerário a ser mostrado
     * @return {Void}
     */

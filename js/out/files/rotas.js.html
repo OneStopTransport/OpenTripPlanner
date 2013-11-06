@@ -47,6 +47,8 @@
 
             <ul id="api-modules" class="apis modules">
             
+                <li><a href="../modules/Rotas.html">Rotas</a></li>
+            
             </ul>
         </div>
     </div>
@@ -87,21 +89,68 @@
 <div class="file">
     <pre class="code prettyprint linenums">
 /**
+* @module Rotas
+*/
+/**
 * Toda a gestão das rotas deverá passar por aqui
 * @class Rotas
+* @constructor
 */
 Rotas = {
-    formulario: &#x27;#trip_plan_form&#x27;,
-    tipo_api: &#x27;otp&#x27;,
-    distanciaPe: 0,
-    distanciaTransporte: 0,
+    /**
+    * ID do formulário com as opções de pesquisa
+    * @property formulario
+    * @type {String}
+    * @default &quot;#trip_plan_form&quot;
+    * @example &#x60;&lt;form class=&quot;form-horizontal&quot; role=&quot;form&quot; id=&quot;trip_plan_form&quot;&gt;&#x60;
+    */
+    formulario:             &#x27;#trip_plan_form&#x27;,
+    /**
+    * Qual a API que será consumida
+    * @property tipo_api
+    * @type {String}
+    * @default &quot;otp&quot;
+    */
+    tipo_api:               &#x27;otp&#x27;,
+    /**
+    * Distância a pé
+    * @property distanciaPe
+    * @type {Int}
+    * @default &quot;0&quot;
+    */
+    distanciaPe:            0,
+    /**
+    * Distância por transportes
+    * @property distanciaTransporte
+    * @type {Int}
+    * @default &quot;0&quot;
+    */
+    distanciaTransporte:    0,
+    /**
+    * Vetor com os itinerários. De ZERO à DOIS (três no total)
+    * @property itinerarios
+    * @type {Array}
+    */
+    itinerarios:            [],
+    /**
+    * Resposta JSON da API
+    * @property objeto_json
+    * @type {JSON}
+    */
+    objeto_json:            &#x27;&#x27;,
+    /**
+    * Qual o itinerário a mostrar.
+    * @property itinerario_mostrar
+    * @type {Int}
+    * @default &quot;0&quot;
+    */
+    itinerario_mostrar:     0,
     /**
     * Validações do formulário
     * @method validar
     * @returns {Boolean}
     */
-    validar: function(){
-
+    validar: function() {
         //Validação do formulário
         form = &#x27;form&#x27; + this.formulario;
         error = 0;
@@ -151,7 +200,7 @@ Rotas = {
     * @method invocar_api
     * @return {Object} ajax
     */
-    invocar_api: function(){
+    invocar_api: function() {
         //Coordenadas
         fromPlace = m1.getLatLng().lat + &#x27;,&#x27; + m1.getLatLng().lng;
         toPlace = m2.getLatLng().lat + &#x27;,&#x27; + m2.getLatLng().lng;
@@ -164,11 +213,11 @@ Rotas = {
         if ( Rotas.tipo_api == &#x27;otp&#x27; )
         {
             //API da OST
-            url = &#x27;https://api.ost.pt/trips/plan/?&#x27; + 
+            url = Config.api_url + &#x27;trips/plan/?&#x27; + 
                 &#x27;fromPlace=&#x27; + fromPlace +
                 &#x27;&amp;toPlace=&#x27; + toPlace +
                 &#x27;&amp;&#x27; + form +
-                &#x27;&amp;key=WiWuixVPGHRjvGXRONqwtkhuUQAOalhAxDfemFiJ;&#x27;;
+                &#x27;&amp;key=&#x27; + Config.api_key;
         }
         else
         {     
@@ -180,12 +229,16 @@ Rotas = {
         console.log(url);
 
         return ajax;
-        
     },
-    //Invoca a API e traça a rota
-    tracar: function(){
+    /**
+    * Invoca a API e traça a rota
+    * @method tracar
+    * @return {Void}
+    */
+    tracar: function() {
        
         Rotas.clearMap();
+        Rotas.itinerario_mostrar = 0;
 
         api = this.invocar_api();
         THIS = this;
@@ -198,6 +251,7 @@ Rotas = {
             // $(&#x27;div#trip_resultados&#x27;).empty();
             resultado = retorno;
             resultado = resultado.Objects;
+            Rotas.objeto_json = resultado;
 
             //Depende do serviço, a resposta é diferente.
             if ( THIS.tipo_api == &#x27;otp&#x27; )
@@ -217,8 +271,14 @@ Rotas = {
                 .html(&#x27;Ocorreu um erro: &#x27; + textStatus);*/
         });
     },
-    //Formatação da Cloudmade
-    formatar_cloudmade: function(objeto_json){
+    /**
+    * Formatar resposta da Cloudmade
+    * É apenas um teste e deverá ser removido
+    * @method formatar_cloudmade
+    * @return {Void}
+    */
+    formatar_cloudmade: function() {
+        objeto_json = Rotas.objeto_json;
         var point, route, points = [];
         var instrucoes = [];
         for (var i=0; i&lt;objeto_json.route_geometry.length; i++)
@@ -252,155 +312,78 @@ Rotas = {
         polyline.bringToFront();
         console.log(points);
     },
-    //Formatação da OTP
-    formatar_otp: function(objeto_json){
-        var route, points = [];
-        var instrucoes = [];
+    /**
+    * Formata a resposta da OTP
+    * @method formatar_otp
+    * @return {Void}
+    */
+    formatar_otp: function() {
         var toLat, toLon;
-        var cores = [];
-        var instrucoes_gerais = [];
-        // console.log(objeto_json);
+        var route, points       = [];
+        var instrucoes          = [];
+        var cores               = [];
+        var instrucoes_gerais   = [];
+        var itinerarios         = [];
+        objeto_json             = Rotas.objeto_json;
         $.each(objeto_json, function(index, value){
             if ( typeof(value.from.lat) != &#x27;undefined&#x27; || typeof(value.from.lon) != &#x27;undefined&#x27; )
             {
-                Rotas.distanciaPe = 0;
-                Rotas.distanciaTransporte = 0;
+                Rotas.distanciaPe           = 0;
+                Rotas.distanciaTransporte   = 0;
+                Rotas.itinerarios           = [];
                 i = 0;
                 toLat = value.to.lat;
                 toLon = value.to.lon;
                 var latlngs = new L.latLng(value.from.lat, value.from.lon);
                 points.push(latlngs);
                 $.each(value.itineraries, function(index, legs){
-                    //Pega o primeiro itinerário
-                    //@TODO: Programar as várias opções de itinerários.
-                    if ( i == 0 )
+
+                    //No primeiro momento, Rotas.itinerario_mostrar = 0;
+                    if ( i == Rotas.itinerario_mostrar )
                     {
-                        var ins_ger = {
-                            data_hora:      value.date,
-                            walkTime:       legs.walkTime,
-                            walkDistance:   legs.walkDistance,
-                            startTime:      legs.startTime,
-                            endTime:        legs.endTime,
-                            duration:       legs.duration
+                        Rotas.clearMap();
+                        var primeiro_itinerario = Rotas.desenhar_rota(value, legs, instrucoes_gerais, instrucoes, i, true);
+                        var array_it = {
+                            polyline:   primeiro_itinerario,
+                            startTime:  legs.startTime,
+                            duration:   legs.duration,
+                            endTime:    legs.endTime,
+                            transfers:  legs.transfers,
                         };
-                        instrucoes_gerais.push(ins_ger);
+                        Rotas.itinerarios.push(array_it);
+                        // console.log(array_it);
 
-                        //Subcontador
-                        j = 0;
-                        $.each(legs.legs, function(index, leg){
-                            //js/Polyline.encoded.js
-                            var fromEncoded = L.Polyline.fromEncoded(leg.legGeometry.points);
+                        //Escrever as direções
+                        Rotas.escrever_direcoes(instrucoes, i + 1);
 
-                            //O retorno do fromEncoded é sempre um mega-objeto
-                            var obj_to_push = fromEncoded.getLatLngs();
-
-                            //Só é utilizada neste for.
-                            var points1 = [];
-                            for ( var i = 0; i &lt; obj_to_push.length; i++ )
-                            {
-                                var latlngs = new L.latLng(obj_to_push[i].lat, obj_to_push[i].lng);
-                                // points[j] = latlngs;
-                                // points.push(latlngs);
-                                points1.push(latlngs);
-                            }
-                            //Necessário para distinguir os tipos de rota
-                            polyline = new L.Polyline(points1, {
-                                weight:         5,
-                                opacity:        0.8,
-                                smoothFactor:   1,
-                                color:          Rotas.cores(leg.mode)
-                            })
-                            .bindPopup(Rotas.info_popup(leg), { &#x27;minWidth&#x27;: 400 })
-                            .addTo(map);
-
-                            //@TODO: Verificar onde estão as paragens de autocarro.
-                            //Pontos para cada troca de rota
-                            Rotas.criar_pontos(leg, latlngs);
-
-                            var rua = &#x27;&lt;span class=&quot;modos modo_&#x27; + leg.mode + &#x27;&quot;&gt;&lt;/span&gt;&#x27; + &#x27; &#x27; + leg.to.name
-                            if ( leg.mode == &#x27;BUS&#x27; )
-                            {
-                                rua = &#x27;&lt;span class=&quot;modos modo_&#x27; + leg.mode + &#x27;&quot;&gt;&lt;/span&gt;&#x27; + &#x27; &#x27; +
-                                    leg.from.stopCode + &#x27; (Nº &#x27; + leg.route + &#x27;)&#x27;;
-                            }
-
-                            //Instruções. O step é array para gerar sub-steps - próximo bloco.
-                            var ins = {
-                                distancia:  leg.distance.toFixed(2),
-                                rua:        rua,
-                                direcao:    &#x27;&#x27;,
-                                norte_sul:  &#x27;&#x27;,
-                                steps:      []
-                            };
-                            instrucoes.push(ins);
-
-                            //@TODO: Há mais instruções fora dos steps.
-                            if ( leg.steps )
-                            {
-                                $.each(leg.steps, function(index, step){
-                                    var passos = {
-                                        distancia:  step.distance.toFixed(2),
-                                        rua:        step.streetName,
-                                        direcao:    step.relativeDirection,
-                                        norte_sul:  step.absoluteDirection
-                                    }
-                                    instrucoes[j].steps.push(passos);
-                                });
-                            }
-
-                            //Informações dos transportes (lateral esquerda)
-                            if ( leg.mode == &quot;BUS&quot; )
-                            {
-                                var div_ruas = &#x27;&lt;div class=&quot;div_ruas&quot;&gt;&#x27;
-                                    + &#x27;Paragem: (embarque) &#x27; + leg.from.stopCode + &#x27; às&#x27; + Rotas.formata_hora(leg.startTime, 2) + &#x27;&lt;br&gt;~&#x27;
-                                    + Math.floor(leg.duration / 60000) + &#x27; min.&lt;br&gt;&#x27;
-                                    + &#x27;Paragem: (desembarque) &#x27; + leg.to.stopCode + &#x27; às &#x27; + Rotas.formata_hora(leg.endTime, 2) + &#x27;&lt;br&gt;&#x27;
-                                    + leg.agencyName
-                                    + &#x27;&lt;/div&gt;&#x27;;
-                                var info_paragens = {
-                                    distancia:  leg.distance.toFixed(2),
-                                    rua:        div_ruas,
-                                    direcao:    null,
-                                    norte_sul:  null
-                                }
-                                instrucoes[j].steps.push(info_paragens);
-                                //Distância de transportes
-                                Rotas.distanciaTransporte += leg.distance;
-                            }
-                            //Distância a lapatex
-                            else if ( leg.mode == &quot;WALK&quot; )
-                                Rotas.distanciaPe += leg.distance;
-
-                            // console.log(&#x27;Distancia transportes: &#x27; + Rotas.distanciaTransporte);
-                            // console.log(&#x27;Distancia a pe: &#x27; + Rotas.distanciaPe);
-                            //Este contador serve para as sub-instruções
-                            ++j;
-                        });
+                        //Informações globais
+                        Rotas.informacoes(instrucoes_gerais, i);                        
                     }
                     //Os outros itinerários
                     else
                     {
-                        //
+                        var retorno = Rotas.desenhar_rota(value, legs, instrucoes_gerais, instrucoes, i, false);
+                        var array_it = {
+                            polyline:   retorno,
+                            startTime:  legs.startTime,
+                            duration:   legs.duration,
+                            endTime:    legs.endTime,
+                            transfers:  legs.transfers
+                        };
+                        Rotas.itinerarios.push(array_it);
+                        // console.log(retorno);
                     }
                     ++i;
                 });
             }
         });
+        // console.log(&#x27;Contador &#x27; + i);
 
-        //Escrever as direções
-        this.escrever_direcoes(instrucoes);
-
-        //Informações globais
-        Rotas.informacoes(instrucoes_gerais);
-
-        /*O fitBounds mais o getBounds servem para centralizar a rota
-         dentro do mapa. Porém as vezes se o width estiver
-         mal, a centralização fica péssima. true story.*/
-        // map.fitBounds(polyline.getBounds());
-
+        Rotas.mostra_itinerarios();
+        
         //Just in case
-        polyline.bringToFront();
-        // console.log(points);
+        if ( typeof(primeiro_itinerario) != &#x27;undefined&#x27; )
+            primeiro_itinerario.bringToFront();
     },
     /**
     * Desenha as rotas (linhas) para cada trajeto
@@ -410,9 +393,10 @@ Rotas = {
     * @param {Object} legs
     * @param {Array} instrucoes_gerais
     * @param {Array} instrucoes
-    * @return {Void}
+    * @param {Boolean} escrever_rota Se for true, desenha a rota no mapa
+    * @return {Polyline}
     */
-    desenhar_rota: function(value, legs, instrucoes_gerais, instrucoes) {
+    desenhar_rota: function(value, legs, instrucoes_gerais, instrucoes, it, escrever_rota) {
         var ins_ger = {
             data_hora:      value.date,
             walkTime:       legs.walkTime,
@@ -425,6 +409,7 @@ Rotas = {
 
         //Subcontador
         j = 0;
+        var polylines = [];
         $.each(legs.legs, function(index, leg){
             //js/Polyline.encoded.js
             var fromEncoded = L.Polyline.fromEncoded(leg.legGeometry.points);
@@ -437,8 +422,6 @@ Rotas = {
             for ( var i = 0; i &lt; obj_to_push.length; i++ )
             {
                 var latlngs = new L.latLng(obj_to_push[i].lat, obj_to_push[i].lng);
-                // points[j] = latlngs;
-                // points.push(latlngs);
                 points1.push(latlngs);
             }
             //Necessário para distinguir os tipos de rota
@@ -450,74 +433,92 @@ Rotas = {
             })
             .bindPopup(Rotas.info_popup(leg), { &#x27;minWidth&#x27;: 400 })
             .addTo(map);
-
-            //@TODO: Verificar onde estão as paragens de autocarro.
-            //Pontos para cada troca de rota
-            Rotas.criar_pontos(leg, latlngs);
-
-            var rua = &#x27;&lt;span class=&quot;modos modo_&#x27; + leg.mode + &#x27;&quot;&gt;&lt;/span&gt;&#x27; + &#x27; &#x27; + leg.to.name
-            if ( leg.mode == &#x27;BUS&#x27; )
+            polylines.push(polyline);
+            if ( escrever_rota == true )
             {
-                rua = &#x27;&lt;span class=&quot;modos modo_&#x27; + leg.mode + &#x27;&quot;&gt;&lt;/span&gt;&#x27; + &#x27; &#x27; +
-                    leg.from.stopCode + &#x27; (Nº &#x27; + leg.route + &#x27;)&#x27;;
-            }
+                // polyline.addTo(map);
+                //@TODO: Verificar onde estão as paragens de autocarro.
+                //Pontos para cada troca de rota
+                Rotas.criar_pontos(leg, latlngs, it, true);
 
-            //Instruções. O step é array para gerar sub-steps - próximo bloco.
-            var ins = {
-                distancia:  leg.distance.toFixed(2),
-                rua:        rua,
-                direcao:    &#x27;&#x27;,
-                norte_sul:  &#x27;&#x27;,
-                steps:      []
-            };
-            instrucoes.push(ins);
-
-            //@TODO: Há mais instruções fora dos steps.
-            if ( leg.steps )
-            {
-                $.each(leg.steps, function(index, step){
-                    var passos = {
-                        distancia:  step.distance.toFixed(2),
-                        rua:        step.streetName,
-                        direcao:    step.relativeDirection,
-                        norte_sul:  step.absoluteDirection
-                    }
-                    instrucoes[j].steps.push(passos);
-                });
-            }
-
-            //Informações dos transportes (lateral esquerda)
-            if ( leg.mode == &quot;BUS&quot; )
-            {
-                var div_ruas = &#x27;&lt;div class=&quot;div_ruas&quot;&gt;&#x27;
-                    + &#x27;Paragem: (embarque) &#x27; + leg.from.stopCode + &#x27; às&#x27; + Rotas.formata_hora(leg.startTime, 2) + &#x27;&lt;br&gt;~&#x27;
-                    + Math.floor(leg.duration / 60000) + &#x27; min.&lt;br&gt;&#x27;
-                    + &#x27;Paragem: (desembarque) &#x27; + leg.to.stopCode + &#x27; às &#x27; + Rotas.formata_hora(leg.endTime, 2) + &#x27;&lt;br&gt;&#x27;
-                    + leg.agencyName
-                    + &#x27;&lt;/div&gt;&#x27;;
-                var info_paragens = {
-                    distancia:  leg.distance.toFixed(2),
-                    rua:        div_ruas,
-                    direcao:    null,
-                    norte_sul:  null
+                //A rua quando for bus tem mais info (no. da carreira)
+                var rua = &#x27;&lt;span class=&quot;modos modo_&#x27; + leg.mode + &#x27;&quot;&gt;&lt;/span&gt;&#x27; + &#x27; &#x27; + leg.to.name;
+                if ( leg.mode == &#x27;BUS&#x27; )
+                {
+                    rua = &#x27;&lt;span class=&quot;modos modo_&#x27; + leg.mode + &#x27;&quot;&gt;&lt;/span&gt;&#x27; + &#x27; &#x27; +
+                        leg.from.stopCode + &#x27; (Nº &#x27; + leg.route + &#x27;)&#x27;;
                 }
-                instrucoes[j].steps.push(info_paragens);
-                //Distância de transportes
-                Rotas.distanciaTransporte += leg.distance;
-            }
-            //Distância a lapatex
-            else if ( leg.mode == &quot;WALK&quot; )
-                Rotas.distanciaPe += leg.distance;
 
-            // console.log(&#x27;Distancia transportes: &#x27; + Rotas.distanciaTransporte);
-            // console.log(&#x27;Distancia a pe: &#x27; + Rotas.distanciaPe);
-            //Este contador serve para as sub-instruções
-            ++j;
+                //Instruções. O step é array para gerar sub-steps - próximo bloco.
+                var ins = {
+                    distancia:  leg.distance.toFixed(2),
+                    rua:        rua,
+                    modo:       leg.mode,
+                    direcao:    &#x27;&#x27;,
+                    norte_sul:  &#x27;&#x27;,
+                    steps:      []
+                };
+                instrucoes.push(ins);
+
+                //@TODO: Há mais instruções fora dos steps.
+                if ( leg.steps )
+                {
+                    $.each(leg.steps, function(index, step){
+                        var passos = {
+                            distancia:  step.distance.toFixed(2),
+                            rua:        step.streetName,
+                            modo:       leg.mode,
+                            direcao:    step.relativeDirection,
+                            norte_sul:  step.absoluteDirection
+                        };
+                        instrucoes[j].steps.push(passos);
+                    });
+                }
+
+                //Informações dos transportes (lateral esquerda)
+                if ( leg.mode == &quot;BUS&quot; )
+                {
+                    var div_ruas = &#x27;&lt;div class=&quot;div_ruas&quot;&gt;&#x27;
+                        + &#x27;Paragem: (embarque) &#x27; + leg.from.stopCode + &#x27; às &#x27; + Rotas.formata_hora(leg.startTime, 2) + &#x27;&lt;br&gt;~&#x27;
+                        + Math.floor(leg.duration / 60000) + &#x27; min.&lt;br&gt;&#x27;
+                        + &#x27;Paragem: (desembarque) &#x27; + leg.to.stopCode + &#x27; às &#x27; + Rotas.formata_hora(leg.endTime, 2) + &#x27;&lt;br&gt;&#x27;
+                        + leg.agencyName
+                        + &#x27;&lt;/div&gt;&#x27;;
+                    var info_paragens = {
+                        distancia:  leg.distance.toFixed(2),
+                        rua:        div_ruas,
+                        direcao:    null,
+                        norte_sul:  null
+                    };
+                    instrucoes[j].steps.push(info_paragens);
+                    //Distância de transportes
+                    Rotas.distanciaTransporte += leg.distance;
+                }
+                //Distância a lapatex
+                else if ( leg.mode == &quot;WALK&quot; )
+                    Rotas.distanciaPe += leg.distance;
+
+                //Este contador serve para as sub-instruções
+                ++j;
+            }
+            else
+            {
+                map.removeLayer(polyline);
+                Rotas.criar_pontos(leg, latlngs, it, false);
+            }
         });
+        
+        return polylines;
     },
-    //Informações globais
-    informacoes: function(info) {
-        // console.log( instrucoes_gerais );
+    /**
+    * Escreve no html as informações globais
+    * do itinerário escolhido
+    * @method informacoes
+    * @param {Array} info Vetor com as informações
+    * @return {Void}
+    */
+    informacoes: function(info, it) {
+        ++it;
         $.each(info, function(index, value){
             var data_hora   = Rotas.formata_data(value.data_hora);
             var hora        = Rotas.formata_hora(value.data_hora);
@@ -527,11 +528,12 @@ Rotas = {
             var endTime     = Rotas.formata_hora(value.endTime);
             var du_trans    = duration - walkTime;
             var walkTotal   = Rotas.distanciaPe + Rotas.distanciaTransporte;
-            $(&#x27;div.resultados div.info_trip&#x27;).removeClass(&#x27;escondido&#x27;);
+            div_it = &#x27;div#coll_it&#x27; + it + &#x27; div.panel-body &#x27;;
+            $(div_it + &#x27;div.info_trip&#x27;).removeClass(&#x27;escondido&#x27;);
 
-            var div_trip = &#x27;div.resultados div.info_trip &#x27;;
+            var div_trip = div_it + &#x27;div.info_trip &#x27;;
+            // console.log(div_trip);
             $(div_trip + &#x27;dt.data_hora&#x27;).next(&#x27;dd&#x27;).html(data_hora);
-            $(div_trip + &#x27;dt.hora&#x27;).next(&#x27;dd&#x27;).html(hora);
 
             $(div_trip + &#x27;dt.distancia_total&#x27;).next(&#x27;dd&#x27;).children(&#x27;.texto&#x27;).html(walkTotal.toFixed(2) + &#x27; m&#x27;);
             $(div_trip + &#x27;dt.distancia_pe&#x27;).next(&#x27;dd&#x27;).html(Rotas.distanciaPe.toFixed(2) + &#x27; m&#x27;);
@@ -540,19 +542,26 @@ Rotas = {
             $(div_trip + &#x27;dt.duracao_total&#x27;).next(&#x27;dd&#x27;).children(&#x27;.texto&#x27;).html(duration + &#x27; min&#x27;);
             $(div_trip + &#x27;dt.duracao_pe&#x27;).next(&#x27;dd&#x27;).html(walkTime + &#x27; min&#x27;);
             $(div_trip + &#x27;dt.duracao_transportes&#x27;).next(&#x27;dd&#x27;).html(du_trans + &#x27; min&#x27;);
-
-            $(div_trip + &#x27;dt.inicio_viagem&#x27;).next(&#x27;dd&#x27;).html(startTime);
-            $(div_trip + &#x27;dt.fim_viagem&#x27;).next(&#x27;dd&#x27;).html(endTime);
         });
         $(&#x27;div.info_trip&#x27;).show();
     },
-    //Vai a div direcoes e escreve as direções como ul&gt;li
-    escrever_direcoes: function(direcoes){
+    /**
+    * Escreve as direções de cada parte da
+    * rota como ul&gt;li
+    * @method escrever_direcoes
+    * @param {Array} direcoes Vetor com as direções
+    * @return {Void}
+    */
+    escrever_direcoes: function(direcoes, it) {
         //data-api é que faz a mágica (HTML + CSS)
         var html = &#x27;&lt;ul class=&quot;direcoes&quot; data-api=&quot;resultados_&#x27; + this.tipo_api + &#x27;&quot;&gt;&#x27;;
+        // console.log(&#x27;======= Direções ========&#x27;);
         // console.log(direcoes);
+        // console.log(&#x27;======= Direções ========&#x27;);
+        div_it = &#x27;div#coll_it&#x27; + it + &#x27; div.panel-body div.direcoes &#x27;;
+        console.log(div_it);
         //Exibir a div de instruções
-        $(&#x27;div#direcoes&#x27;).animate({
+        $(div_it).animate({
             display: &#x27;block&#x27;
         }, 600).empty();
         //Gravo as direções
@@ -577,25 +586,89 @@ Rotas = {
 
         //O clearfix existe por causa do float
         html += &#x27;&lt;/ul&gt;&lt;div class=&quot;clearfix&quot;&gt;&lt;/div&gt;&lt;br&gt;&lt;br&gt;&#x27;;
-        $(&#x27;div#direcoes&#x27;).html(html);
+        $(div_it).html(html);
     },
-    formata_html: function(obj, i)
-    {
-        var contador = &#x27;&#x27;;
-
+    /**
+    * Coloca as informações com o HTML correto
+    * O &#x60;&lt;li&gt;&#x60; é fechado depois do método ser invocado
+    * @method formata_html
+    * @param {Objeto} obj
+    * @return {String} retorno
+    */
+    formata_html: function(obj, i) {
         retorno = &#x27;&lt;li&gt;&#x27;;
-        //As rotas principais têm um contador
-        if ( &#x27;undefined&#x27; != typeof(i) )
-            contador = i + &#x27;. &#x27;;
-        else
-            retorno += &#x27;&lt;span class=&quot;norte_sul &#x27; + obj.norte_sul + &#x27;&quot;&gt;&lt;/span&gt; &lt;span class=&quot;direcao &#x27; + obj.direcao + &#x27;&quot;&gt;&lt;/span&gt;&#x27;;
+        retorno += &#x27;&lt;span class=&quot;norte_sul &#x27; + obj.norte_sul + &#x27;&quot;&gt;&lt;/span&gt; &lt;span class=&quot;direcao &#x27; + obj.direcao + &#x27;&quot;&gt;&lt;/span&gt;&#x27;;
+        retorno += &#x27;&lt;span class=&quot;texto&quot;&gt; &#x27; + obj.rua;
+        if ( obj.modo == &quot;WALK&quot; )
+            retorno += &#x27; em &#x27; + obj.distancia + &#x27; metros&#x27;;
 
-        retorno += &#x27;&lt;span class=&quot;texto&quot;&gt; &#x27; + obj.rua + &#x27; em &#x27; + obj.distancia + &#x27; metros&lt;/span&gt;&lt;div class=&quot;clearfix&quot;&gt;&lt;/div&gt;&#x27;;
+        retorno += &#x27;&lt;/span&gt;&lt;div class=&quot;clearfix&quot;&gt;&lt;/div&gt;&#x27;;
         // console.log(obj);
 
         return retorno;
     },
-    //Cor de autocarro, cor de automóvel, cor de moonwalk -&gt; else
+    /**
+    * Cria um html (&#x60;&lt;ul&gt;&#x60;) com os 3 itinerários
+    * @method mostra_itinerarios
+    * @return {Void}
+    */
+    mostra_itinerarios: function() {
+        // var html = &#x27;&lt;ul class=&quot;ul_itinerarios&quot;&gt;&#x27;;
+        // var html = &#x27;&#x27;;
+
+        for ( j = 1; j &lt;= 3; ++j )
+        {
+            $(&#x27;div.it&#x27; + j).show();
+        }
+        var contador = 1;
+        $.each(Rotas.itinerarios, function(index, it){
+            var inicio, fim, duracao;
+            var html = &#x27;&#x27;;
+            inicio  = Rotas.formata_hora(it.startTime);
+            fim     = Rotas.formata_hora(it.endTime);
+            duracao = Math.floor(it.duration / 60000);
+
+            div_it = &#x27;div.it&#x27; + contador + &#x27; &#x27;;
+            i = contador - 1;
+
+            $(div_it + &#x27;a[href=&quot;#coll_it&#x27; + contador + &#x27;&quot;]&#x27;)
+                .html(contador + &#x27;. &#x27; + inicio + &#x27; - &#x27; + fim + &#x27; (&#x27; + duracao + &#x27; min)&#x27;);
+            $(div_it + &#x27;a[href=&quot;#coll_it&#x27; + contador + &#x27;&quot;]&#x27;).attr(&#x27;data-itinerario&#x27;, i);
+            // $(div_it + &#x27;div.panel-body&#x27;)
+            //     .html(it.transfers + &#x27;&lt;br&gt;&#x27;);
+
+            // html = index + &#x27;. &#x27; + inicio + &#x27; - &#x27; + fim + &#x27; (&#x27; + duracao + &#x27; min)&#x27;;
+            // $(&#x27;a[href=&quot;it&#x27; + contador + &#x27;&quot;]&#x27;).html(html);
+            // html += &#x27;&lt;li data-itinerario=&quot;&#x27; + index + &#x27;&quot;&gt;&#x27;
+            //     + &#x27;&lt;a href=&quot;#&quot; data-itinerario=&quot;&#x27; + index + &#x27;&quot;&gt;&#x27; + contador + &#x27;. &#x27;
+            //     + inicio + &#x27; - &#x27; + fim
+            //     + &#x27;&lt;span class=&quot;pull-right duracao&quot;&gt;&#x27; + duracao + &#x27; mins&lt;/span&gt;&#x27;
+            //     + &#x27;&lt;br&gt;&#x27;
+            //     + &#x27;Transferências: &#x27; + it.transfers
+            //     + &#x27;&lt;/a&gt;&lt;/li&gt;&#x27;;
+
+            ++contador;
+        });
+        // html += &#x27;&lt;/ul&gt;&#x27;;
+        $(&#x27;div.itinerarios&#x27;).removeClass(&#x27;escondido&#x27;);
+        // $(&#x27;div.itinerarios ul&#x27;)
+        //     .empty()
+        //     .html(html);
+
+        //Quem vai ser removido
+        for ( j = contador; j &lt;= 3; ++j )
+        {
+            $(&#x27;div.it&#x27; + j).hide();
+        }
+
+        console.log(Rotas.itinerarios);
+    },
+    /**
+    * Define as cores para cada tipo de rota
+    * @method cores
+    * @param {String} modo
+    * @return {String} cor em hexadecimal
+    */
     cores: function(modo) {
         if ( modo == &#x27;WALK&#x27; )
             return &#x27;#111&#x27;;
@@ -604,7 +677,11 @@ Rotas = {
         else
             return &#x27;#3E85C3&#x27;;
     },
-    //Limpa todos os percursos.
+    /**
+    * Limpa todos os percursos.
+    * @method clearMap
+    * @return {Void}
+    */
     clearMap: function() {
         //É meio hack, mas o plugin não tem nada parecido.
         for(i in map._layers) {
@@ -625,9 +702,16 @@ Rotas = {
         {
             for ( var i = 0; i &lt; pontos.length; ++i )
                 map.removeLayer(pontos[i]);
+            pontos = [];
         }
     },
-    //@param object     obj     Objeto a ser tratado
+    /**
+    * Cria um pop-up na rota com
+    * as informações da mesma
+    * @method info_popup
+    * @param {Object} obj
+    * @return {String}
+    */
     info_popup: function(obj) {
         var info = &#x27;&lt;section class=&quot;info_popup row&quot;&gt;&#x27;;
         if ( obj.mode == &#x27;BUS&#x27; )
@@ -644,8 +728,16 @@ Rotas = {
 
         return info + &#x27;&lt;/section&gt;&#x27;;
     },
-    //Criar pontos (bolinhas) para cada tipo de troca de rota
-    criar_pontos: function(leg, latlngs) {
+    /**
+    * Criar pontos (bolinhas) para cada tipo de troca de rota
+    * @method criar_pontos
+    * @param {Object} leg
+    * @param {Object} latlngs
+    * @param {Int} it
+    * @param {Boolean} escrever
+    * @return {Void}
+    */
+    criar_pontos: function(leg, latlngs, it, escrever) {
         //Bolinhas para troca de tipo de rota
         if ( leg.mode == &#x27;BUS&#x27; )
             icone_info = leg.to.stopCode;
@@ -659,18 +751,36 @@ Rotas = {
             draggable:  false,
             icon:       icone
         })
-        .bindPopup(icone_info)
-        .addTo(map);
+        .bindPopup(icone_info);
+        if ( escrever == true )
+        {
+            marker.addTo(map);
+            pontos.push(marker);
+        }
+
         //este array (var pontos) serve para apagar aquando da atualização dos marcadores
-        pontos.push(marker);
+        // pontos.push(marker);
+        // console.log( pontos );
     },
+    /**
+    * Transforma um timestamp em horas:minutos
+    * @method formata_hora
+    * @param {Timestamp} hora
+    * @return {String} hours:minutes
+    */
     formata_hora: function(hora) {
-        date = new Date(hora);
-        hours = Rotas.zero_data(date.getHours());
+        date    = new Date(hora);
+        hours   = Rotas.zero_data(date.getHours());
         minutes = Rotas.zero_data(date.getMinutes(), 2);
 
         return hours + &#x27;:&#x27; + minutes;
     },
+    /**
+    * Transforma um timestamp em data mais hora:minutos
+    * @method formata_data
+    * @param {Timestamp} data
+    * @return {String}
+    */
     formata_data: function(data) {
         var data_obj = new Date(data);
 
@@ -686,6 +796,13 @@ Rotas = {
 
         return data + &#x27; &#x27; + hours + &#x27;:&#x27; + minutes;
     },
+    /**
+    * Coloca um zero a mais na data (a esquerda)
+    * @method zero_data
+    * @param {Int} num
+    * @param {Int} count
+    * @return {Int} z
+    */
     zero_data: function(num, count) {
         var z = num + &#x27;&#x27;;
         while (z.length &lt; count) {
@@ -693,8 +810,79 @@ Rotas = {
         }
 
         return z;
+    },
+    /**
+    * Corre todos os itinerarios e os esconde
+    * @method oculta_itinerarios
+    * @return {Void}
+    */
+    oculta_itinerarios: function() {
+        $.each(Rotas.itinerarios, function(index, value){
+            $.each(value.polyline, function(index2, pol){
+                map.removeLayer(pol);
+            });
+        });
+
+        // console.log(pontos);
+        $.each(pontos, function(index, ponto){
+            map.removeLayer(ponto);
+        });
+    },
+    /**
+    * Mostra apenas o primeiro itinerário
+    * @method mostra_primeiro_itinerario
+    * @Return {Void}
+    */
+    mostra_primeiro_itinerario: function() {
+        $.each(Rotas.itinerarios[Rotas.itinerario_mostrar], function(index, value){
+            $.each(value, function(index2, pol){
+                map.addLayer(pol);
+            });
+        });
+        $.each(pontos, function(index, ponto){
+            map.addLayer(ponto);
+        });
+    },
+    /**
+    * Mostra o itinerário it
+    * @method mostra_itinerario
+    * @param {Int} it Itinerário a ser mostrado
+    * @return {Void}
+    */
+    mostra_itinerario: function(it) {
+        $.each(Rotas.itinerarios[it], function(index, value){
+            $.each(value, function(index2, pol){
+                map.addLayer(pol);
+            });
+        });
+        //Só mostro quando for o primeiro it
+        if ( it == Rotas.itinerario_mostrar )
+        {
+            $.each(pontos, function(index, ponto){
+                map.addLayer(ponto);
+            });
+        }
     }
 };
+
+$(&#x27;body&#x27;).on(&#x27;mouseover&#x27;, &#x27;div.itinerarios h4.panel-title a&#x27;, function(e){
+    id_itinerario = $(this).data(&#x27;itinerario&#x27;);
+
+    Rotas.oculta_itinerarios();
+    Rotas.mostra_itinerario(id_itinerario);
+});
+$(&#x27;body&#x27;).on(&#x27;mouseout&#x27;, &#x27;div.itinerarios h4.panel-title a&#x27;, function(e){
+    id_itinerario = $(this).data(&#x27;itinerario&#x27;);
+
+    Rotas.oculta_itinerarios();
+    Rotas.mostra_primeiro_itinerario();
+});
+$(&#x27;body&#x27;).on(&#x27;click&#x27;, &#x27; div.itinerarios h4.panel-title a&#x27;, function(e){
+    id_itinerario = $(this).data(&#x27;itinerario&#x27;);
+
+    Rotas.itinerario_mostrar = id_itinerario;
+    Rotas.formatar_otp();
+});
     </pre>
 </div>
 

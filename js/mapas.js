@@ -95,21 +95,21 @@ $(function(){
         contextmenu:        true,
         contextmenuWidth:   140,
         contextmenuItems: [{
-            text:       '<i class="glyphicon glyphicon-flag"></i> Começar daqui',
+            text:       '<i class="glyphicon glyphicon-flag"></i> ' + locale.context_menu.start_here,
             callback:   marcador_inicio
         }, {
-            text:       '<i class="glyphicon glyphicon-flag"></i> Terminar aqui',
+            text:       '<i class="glyphicon glyphicon-flag"></i> ' + locale.context_menu.end_here,
             callback:   marcador_fim
         }, {
             separator: true
         }, {
-            text:       '<i class="glyphicon glyphicon-screenshot"></i> Centralizar mapa',
+            text:       '<i class="glyphicon glyphicon-screenshot"></i> ' + locale.context_menu.center_map,
             callback:   centralizar
         }, {
-            text:       '<i class="glyphicon glyphicon-zoom-in"></i> Mais zoom',
+            text:       '<i class="glyphicon glyphicon-zoom-in"></i> ' + locale.context_menu.more_zoom,
             callback:   zoomIn
         }, {
-            text:       '<i class="glyphicon glyphicon-zoom-out"></i> Menos zoom',
+            text:       '<i class="glyphicon glyphicon-zoom-out"></i> ' + locale.context_menu.less_zoom,
             callback:   zoomOut
         }]
     });

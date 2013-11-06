@@ -16,7 +16,6 @@ body {
     padding-top: 70px;
     div.container-full { width: 97%; margin: 0 auto; }
     div.mapa { min-height: 150px; }
-    div.tab-content { padding-top: 20px; }
 }
 /* Menu com o botão direito INICIO */
 .leaflet-contextmenu {
@@ -65,11 +64,18 @@ div.info_trip {
     a.esconder_info { margin: 10px 0; }
 }
 div.itinerarios {
+    margin-bottom: 20px;
     ul.ul_itinerarios {
         list-style: none; margin: 0; padding: 0;
         li {
-            padding: 10px 0; background: #F1EEE8; border-top: 1px solid #CCC; padding-left: 10px;
+            padding: 10px 0; background: #F1EEE8; border-top: 1px solid #CCC; padding-left: 10px; font-size: 0.875em; cursor: pointer;
             &:first-child { border-top: 0; }
+            a {
+                color: #333;
+                &:hover { color: #333; text-decoration: none; }
+            }
+            &:hover, &.selecionado { background: #E4E4E4; }
+            span.duracao { padding-right: 5px; }
         }
     }
 }
@@ -80,7 +86,7 @@ section.info_popup {
         &.first { border-top: 0; }
     }
 }
-div#direcoes {
+div.direcoes {
     ul.direcoes {
         list-style: none; margin: 0; padding: 0;
         div.clearfix { height: 0; }
@@ -89,7 +95,7 @@ div#direcoes {
             &:nth-child(even) { background: #F1EEE8; }
             &:first-child { border-top: 0; }
             ul {
-                list-style: none; margin: 0; padding-top: 0; padding-bottom: 0px; margin-left: -30px;
+                list-style: none; margin: 0; padding-top: 0; padding-bottom: 0; margin-left: -30px;
                 &.escondido {
                     display: none;
                     div.clearfix { height: auto; }
@@ -119,7 +125,7 @@ div#direcoes {
             span.modo_WALK { background: url('../images/ui/trip/mode/walk.png') no-repeat left top; }
             span.modo_BICYCLE { background: url('../images/ui/trip/mode/bicycle.png') no-repeat left top; }
             span.direcao {
-                width: 30px; height: 30px; display: inline-block; float: left;
+                height: 30px; display: inline-block; float: left;
                 &.CIRCLE_CLOCKWISE { background: url('../images/directions/circle_clockwise.png') no-repeat left top; }
                 &.CIRCLE_COUNTERCLOCKWISE { background: url('../images/directions/circle_counterclockwise.png') no-repeat left top; }
                 &.CLEAR { background: url('../images/directions/clear.png') no-repeat left top; }
@@ -139,6 +145,7 @@ div#direcoes {
                 &.UTURN_LEFT { background: url('../images/directions/uturn_left.png') no-repeat left top; }
                 &.UTURN_RIGHT { background: url('../images/directions/uturn_right.png') no-repeat left top; }
             }
+            ul.escondido li span { width: 30px; }
         }
         /* Para a API da Cloudmade */
         &[data-api="resultados_cloudmade"] {

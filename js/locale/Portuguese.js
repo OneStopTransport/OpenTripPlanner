@@ -1,6 +1,4 @@
-var locale;
-
-locale = {};
+var locale = {};
 
 locale = {
     titles: {
@@ -74,5 +72,12 @@ locale = {
         hide_info:      'Esconder info',
         show_info:      'Mostrar info',
         right_mouse:    'Utilize o botão direito do rato para traçar rotas'
+    },
+    context_menu: {
+        start_here:     'Começar daqui',
+        end_here:       'Terminar aqui',
+        center_map:     'Centralizar mapa',
+        more_zoom:      'Mais zoom',
+        less_zoom:      'Menos zoom'
     }
 }

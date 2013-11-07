@@ -121,19 +121,23 @@ $(function(){
     var osmLayer = new L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
         attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
     });
-    var cloudmadeLayer = new L.tileLayer('http://{s}.tile.cloudmade.com/13e2ed112d194f36afc6c568fa65811d/997/256/{z}/{x}/{y}.png', {
+    var osmCycleLayer = new L.tileLayer('http://{s}.tile.opencyclemap.org/cycle/{z}/{x}/{y}.png', {
         attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+    });
+    var cloudmadeLayer = new L.tileLayer('http://{s}.tile.cloudmade.com/13e2ed112d194f36afc6c568fa65811d/997/256/{z}/{x}/{y}.png', {
+        attribution: 'Imagery &copy; <a href="http://cloudmade.com">CloudMade</a> &copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+    });
+    var mapquestLayer = new L.tileLayer('http://{s}.mqcdn.com/tiles/1.0.0/osm/{z}/{x}/{y}.png', {
+        attribution: 'Data, imagery and map information provided by <a href="http://open.mapquest.co.uk" target="_blank">MapQuest</a>, <a href="http://www.openstreetmap.org/" target="_blank">OpenStreetMap</a> and contributors.',
+        subdomains: ['otile1','otile2','otile3','otile4']
     });
 
     //O padrão é OSM
     map.addLayer(osmLayer);
     map.addControl(new L.Control.Layers({
         'OSM': osmLayer,
-        'CloudMade': cloudmadeLayer
+        'OSM Cycle': osmCycleLayer,
+        'CloudMade': cloudmadeLayer,
+        'MapQuest': mapquestLayer
     }));
-
-    // //OpenStreetMaps
-    // L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
-    //     attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-    // }).addTo(map);
 });

@@ -382,7 +382,9 @@ Rotas = {
                             rua:        step.streetName,
                             modo:       leg.mode,
                             direcao:    step.relativeDirection,
-                            norte_sul:  step.absoluteDirection
+                            norte_sul:  step.absoluteDirection,
+                            lat:        step.lat,
+                            lon:        step.lon
                         };
                         instrucoes[j].steps.push(passos);
                     });
@@ -401,7 +403,9 @@ Rotas = {
                         distancia:  leg.distance.toFixed(2),
                         rua:        div_ruas,
                         direcao:    null,
-                        norte_sul:  null
+                        norte_sul:  null,
+                        lat:        null,
+                        lon:        null
                     };
                     instrucoes[j].steps.push(info_paragens);
                     //Distância de transportes
@@ -468,11 +472,11 @@ Rotas = {
     escrever_direcoes: function(direcoes, it) {
         //data-api é que faz a mágica (HTML + CSS)
         var html = '<ul class="direcoes" data-api="resultados_' + this.tipo_api + '">';
-        // console.log('======= Direções ========');
-        // console.log(direcoes);
-        // console.log('======= Direções ========');
+        
         div_it = 'div#coll_it' + it + ' div.panel-body div.direcoes ';
-        // console.log(div_it);
+        
+        // console.log(direcoes);
+        
         //Exibir a div de instruções
         $(div_it).animate({
             display: 'block'
@@ -511,9 +515,21 @@ Rotas = {
     formata_html: function(obj, i) {
         retorno = '<li>';
         retorno += '<span class="norte_sul ' + obj.norte_sul + '"></span> <span class="direcao ' + obj.direcao + '"></span>';
-        retorno += '<span class="texto"> ' + obj.rua;
+        retorno += '<span class="texto">';
+
+        if ( 'undefined' != typeof(obj.lat)
+                && 'undefined' != typeof(obj.lon)
+                && obj.lat !== null )
+            retorno += '<a href="#" class="mostra_informacao" data-lat="' + obj.lat + '" data-lon="' + obj.lon + '">';
+        retorno += ' ' + obj.rua;
+
         if ( obj.modo == "WALK" )
             retorno += ' em ' + obj.distancia + ' metros';
+
+        if ( 'undefined' != typeof(obj.lat)
+                && 'undefined' != typeof(obj.lon)
+                && obj.lat !== null )
+            retorno += '</a>';
 
         retorno += '</span><div class="clearfix"></div>';
         // console.log(obj);
@@ -526,13 +542,9 @@ Rotas = {
     * @return {Void}
     */
     mostra_itinerarios: function() {
-        // var html = '<ul class="ul_itinerarios">';
-        // var html = '';
-
         for ( j = 1; j <= 3; ++j )
-        {
             $('div.it' + j).show();
-        }
+
         var contador = 1;
         $.each(Rotas.itinerarios, function(index, it){
             var inicio, fim, duracao;
@@ -547,32 +559,15 @@ Rotas = {
             $(div_it + 'a[href="#coll_it' + contador + '"]')
                 .html(contador + '. ' + inicio + ' - ' + fim + ' (' + duracao + ' min)');
             $(div_it + 'a[href="#coll_it' + contador + '"]').attr('data-itinerario', i);
-            // $(div_it + 'div.panel-body')
-            //     .html(it.transfers + '<br>');
-
-            // html = index + '. ' + inicio + ' - ' + fim + ' (' + duracao + ' min)';
-            // $('a[href="it' + contador + '"]').html(html);
-            // html += '<li data-itinerario="' + index + '">'
-            //     + '<a href="#" data-itinerario="' + index + '">' + contador + '. '
-            //     + inicio + ' - ' + fim
-            //     + '<span class="pull-right duracao">' + duracao + ' mins</span>'
-            //     + '<br>'
-            //     + 'Transferências: ' + it.transfers
-            //     + '</a></li>';
 
             ++contador;
         });
-        // html += '</ul>';
+
         $('div.itinerarios').removeClass('escondido');
-        // $('div.itinerarios ul')
-        //     .empty()
-        //     .html(html);
 
         //Quem vai ser removido
         for ( j = contador; j <= 3; ++j )
-        {
             $('div.it' + j).hide();
-        }
 
         // console.log(Rotas.itinerarios);
     },
@@ -795,4 +790,25 @@ $('body').on('click', ' div.itinerarios h4.panel-title a', function(e){
 
     Rotas.itinerario_mostrar = id_itinerario;
     Rotas.formatar_otp();
+});
+
+//Clique nas informações do percurso (não existe no DOM)
+$('body').on('click', 'a.mostra_informacao', function(e) {
+    lat = $(this).data('lat');
+    lon = $(this).data('lon');
+    if ( ('undefined' != typeof(lat) && lat !== null)
+            && ('undefined' != typeof(lon) && lon !== null) )
+    {
+        // console.log( ($(this).data('lat') === null) );
+        latlng = new L.LatLng(lat, lon);
+        map.panTo(latlng);
+        pai = $(this).closest('span').html();
+        console.log(pai);
+
+        var popup = L.popup()
+            .setLatLng(latlng)
+            .setContent( $(this).html() )
+            .openOn(map);
+    }
+    e.preventDefault();
 });

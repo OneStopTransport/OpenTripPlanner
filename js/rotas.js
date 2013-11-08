@@ -799,15 +799,14 @@ $('body').on('click', 'a.mostra_informacao', function(e) {
     if ( ('undefined' != typeof(lat) && lat !== null)
             && ('undefined' != typeof(lon) && lon !== null) )
     {
-        // console.log( ($(this).data('lat') === null) );
         latlng = new L.LatLng(lat, lon);
         map.panTo(latlng);
-        pai = $(this).closest('span').html();
-        console.log(pai);
+        span_css = $(this).parents('span').prev().attr('class');
+        conteudo = '<span class="' + span_css + '"></span><span class="texto">' + $(this).html() + '</span>';
 
         var popup = L.popup()
             .setLatLng(latlng)
-            .setContent( $(this).html() )
+            .setContent( conteudo )
             .openOn(map);
     }
     e.preventDefault();

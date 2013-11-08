@@ -1,14 +1,59 @@
 /**
+* @module Rotas
+*/
+/**
 * Toda a gestão das rotas deverá passar por aqui
 * @class Rotas
+* @constructor
 */
 Rotas = {
+    /**
+    * ID do formulário com as opções de pesquisa
+    * @property formulario
+    * @type {String}
+    * @default "#trip_plan_form"
+    * @example `<form class="form-horizontal" role="form" id="trip_plan_form">`
+    */
     formulario:             '#trip_plan_form',
+    /**
+    * Qual a API que será consumida
+    * @property tipo_api
+    * @type {String}
+    * @default "otp"
+    */
     tipo_api:               'otp',
+    /**
+    * Distância a pé
+    * @property distanciaPe
+    * @type {Int}
+    * @default "0"
+    */
     distanciaPe:            0,
+    /**
+    * Distância por transportes
+    * @property distanciaTransporte
+    * @type {Int}
+    * @default "0"
+    */
     distanciaTransporte:    0,
+    /**
+    * Vetor com os itinerários. De ZERO à DOIS (três no total)
+    * @property itinerarios
+    * @type {Array}
+    */
     itinerarios:            [],
+    /**
+    * Resposta JSON da API
+    * @property objeto_json
+    * @type {JSON}
+    */
     objeto_json:            '',
+    /**
+    * Qual o itinerário a mostrar.
+    * @property itinerario_mostrar
+    * @type {Int}
+    * @default "0"
+    */
     itinerario_mostrar:     0,
     /**
     * Validações do formulário
@@ -97,6 +142,7 @@ Rotas = {
     },
     /**
     * Invoca a API e traça a rota
+    * @method tracar
     * @return {Void}
     */
     tracar: function() {
@@ -138,6 +184,7 @@ Rotas = {
     /**
     * Formatar resposta da Cloudmade
     * É apenas um teste e deverá ser removido
+    * @method formatar_cloudmade
     * @return {Void}
     */
     formatar_cloudmade: function() {
@@ -173,10 +220,11 @@ Rotas = {
         //Centraliza a rota dentro do mapa.
         // map.fitBounds(polyline.getBounds());
         polyline.bringToFront();
-        console.log(points);
+        // console.log(points);
     },
     /**
     * Formata a resposta da OTP
+    * @method formatar_otp
     * @return {Void}
     */
     formatar_otp: function() {
@@ -296,6 +344,9 @@ Rotas = {
             .bindPopup(Rotas.info_popup(leg), { 'minWidth': 400 })
             .addTo(map);
             polylines.push(polyline);
+
+            //map.fitBounds(points1);
+            //Se for para escrever a rota (itinerario selecionado OK)
             if ( escrever_rota == true )
             {
                 // polyline.addTo(map);
@@ -331,7 +382,9 @@ Rotas = {
                             rua:        step.streetName,
                             modo:       leg.mode,
                             direcao:    step.relativeDirection,
-                            norte_sul:  step.absoluteDirection
+                            norte_sul:  step.absoluteDirection,
+                            lat:        step.lat,
+                            lon:        step.lon
                         };
                         instrucoes[j].steps.push(passos);
                     });
@@ -350,7 +403,9 @@ Rotas = {
                         distancia:  leg.distance.toFixed(2),
                         rua:        div_ruas,
                         direcao:    null,
-                        norte_sul:  null
+                        norte_sul:  null,
+                        lat:        null,
+                        lon:        null
                     };
                     instrucoes[j].steps.push(info_paragens);
                     //Distância de transportes
@@ -375,6 +430,7 @@ Rotas = {
     /**
     * Escreve no html as informações globais
     * do itinerário escolhido
+    * @method informacoes
     * @param {Array} info Vetor com as informações
     * @return {Void}
     */
@@ -409,17 +465,18 @@ Rotas = {
     /**
     * Escreve as direções de cada parte da
     * rota como ul>li
+    * @method escrever_direcoes
     * @param {Array} direcoes Vetor com as direções
     * @return {Void}
     */
     escrever_direcoes: function(direcoes, it) {
         //data-api é que faz a mágica (HTML + CSS)
         var html = '<ul class="direcoes" data-api="resultados_' + this.tipo_api + '">';
-        // console.log('======= Direções ========');
-        // console.log(direcoes);
-        // console.log('======= Direções ========');
+        
         div_it = 'div#coll_it' + it + ' div.panel-body div.direcoes ';
-        console.log(div_it);
+        
+        // console.log(direcoes);
+        
         //Exibir a div de instruções
         $(div_it).animate({
             display: 'block'
@@ -450,16 +507,29 @@ Rotas = {
     },
     /**
     * Coloca as informações com o HTML correto
-    * O <li> é fechado depois do método ser invocado
+    * O `<li>` é fechado depois do método ser invocado
+    * @method formata_html
     * @param {Objeto} obj
     * @return {String} retorno
     */
     formata_html: function(obj, i) {
         retorno = '<li>';
         retorno += '<span class="norte_sul ' + obj.norte_sul + '"></span> <span class="direcao ' + obj.direcao + '"></span>';
-        retorno += '<span class="texto"> ' + obj.rua;
+        retorno += '<span class="texto">';
+
+        if ( 'undefined' != typeof(obj.lat)
+                && 'undefined' != typeof(obj.lon)
+                && obj.lat !== null )
+            retorno += '<a href="#" class="mostra_informacao" data-lat="' + obj.lat + '" data-lon="' + obj.lon + '">';
+        retorno += ' ' + obj.rua;
+
         if ( obj.modo == "WALK" )
             retorno += ' em ' + obj.distancia + ' metros';
+
+        if ( 'undefined' != typeof(obj.lat)
+                && 'undefined' != typeof(obj.lon)
+                && obj.lat !== null )
+            retorno += '</a>';
 
         retorno += '</span><div class="clearfix"></div>';
         // console.log(obj);
@@ -467,17 +537,14 @@ Rotas = {
         return retorno;
     },
     /**
-    * Cria um html (<ul>) com os 3 itinerários
+    * Cria um html (`<ul>`) com os 3 itinerários
+    * @method mostra_itinerarios
     * @return {Void}
     */
     mostra_itinerarios: function() {
-        // var html = '<ul class="ul_itinerarios">';
-        // var html = '';
-
         for ( j = 1; j <= 3; ++j )
-        {
             $('div.it' + j).show();
-        }
+
         var contador = 1;
         $.each(Rotas.itinerarios, function(index, it){
             var inicio, fim, duracao;
@@ -492,37 +559,21 @@ Rotas = {
             $(div_it + 'a[href="#coll_it' + contador + '"]')
                 .html(contador + '. ' + inicio + ' - ' + fim + ' (' + duracao + ' min)');
             $(div_it + 'a[href="#coll_it' + contador + '"]').attr('data-itinerario', i);
-            // $(div_it + 'div.panel-body')
-            //     .html(it.transfers + '<br>');
-
-            // html = index + '. ' + inicio + ' - ' + fim + ' (' + duracao + ' min)';
-            // $('a[href="it' + contador + '"]').html(html);
-            // html += '<li data-itinerario="' + index + '">'
-            //     + '<a href="#" data-itinerario="' + index + '">' + contador + '. '
-            //     + inicio + ' - ' + fim
-            //     + '<span class="pull-right duracao">' + duracao + ' mins</span>'
-            //     + '<br>'
-            //     + 'Transferências: ' + it.transfers
-            //     + '</a></li>';
 
             ++contador;
         });
-        // html += '</ul>';
+
         $('div.itinerarios').removeClass('escondido');
-        // $('div.itinerarios ul')
-        //     .empty()
-        //     .html(html);
 
         //Quem vai ser removido
         for ( j = contador; j <= 3; ++j )
-        {
             $('div.it' + j).hide();
-        }
 
-        console.log(Rotas.itinerarios);
+        // console.log(Rotas.itinerarios);
     },
     /**
     * Define as cores para cada tipo de rota
+    * @method cores
     * @param {String} modo
     * @return {String} cor em hexadecimal
     */
@@ -536,6 +587,7 @@ Rotas = {
     },
     /**
     * Limpa todos os percursos.
+    * @method clearMap
     * @return {Void}
     */
     clearMap: function() {
@@ -564,6 +616,7 @@ Rotas = {
     /**
     * Cria um pop-up na rota com
     * as informações da mesma
+    * @method info_popup
     * @param {Object} obj
     * @return {String}
     */
@@ -585,6 +638,7 @@ Rotas = {
     },
     /**
     * Criar pontos (bolinhas) para cada tipo de troca de rota
+    * @method criar_pontos
     * @param {Object} leg
     * @param {Object} latlngs
     * @param {Int} it
@@ -618,6 +672,7 @@ Rotas = {
     },
     /**
     * Transforma um timestamp em horas:minutos
+    * @method formata_hora
     * @param {Timestamp} hora
     * @return {String} hours:minutes
     */
@@ -630,6 +685,7 @@ Rotas = {
     },
     /**
     * Transforma um timestamp em data mais hora:minutos
+    * @method formata_data
     * @param {Timestamp} data
     * @return {String}
     */
@@ -650,6 +706,7 @@ Rotas = {
     },
     /**
     * Coloca um zero a mais na data (a esquerda)
+    * @method zero_data
     * @param {Int} num
     * @param {Int} count
     * @return {Int} z
@@ -664,6 +721,7 @@ Rotas = {
     },
     /**
     * Corre todos os itinerarios e os esconde
+    * @method oculta_itinerarios
     * @return {Void}
     */
     oculta_itinerarios: function() {
@@ -680,6 +738,7 @@ Rotas = {
     },
     /**
     * Mostra apenas o primeiro itinerário
+    * @method mostra_primeiro_itinerario
     * @Return {Void}
     */
     mostra_primeiro_itinerario: function() {
@@ -694,6 +753,7 @@ Rotas = {
     },
     /**
     * Mostra o itinerário it
+    * @method mostra_itinerario
     * @param {Int} it Itinerário a ser mostrado
     * @return {Void}
     */
@@ -730,4 +790,24 @@ $('body').on('click', ' div.itinerarios h4.panel-title a', function(e){
 
     Rotas.itinerario_mostrar = id_itinerario;
     Rotas.formatar_otp();
+});
+
+//Clique nas informações do percurso (não existe no DOM)
+$('body').on('click', 'a.mostra_informacao', function(e) {
+    lat = $(this).data('lat');
+    lon = $(this).data('lon');
+    if ( ('undefined' != typeof(lat) && lat !== null)
+            && ('undefined' != typeof(lon) && lon !== null) )
+    {
+        latlng = new L.LatLng(lat, lon);
+        map.panTo(latlng);
+        span_css = $(this).parents('span').prev().attr('class');
+        conteudo = '<span class="' + span_css + '"></span><span class="texto">' + $(this).html() + '</span>';
+
+        var popup = L.popup()
+            .setLatLng(latlng)
+            .setContent( conteudo )
+            .openOn(map);
+    }
+    e.preventDefault();
 });

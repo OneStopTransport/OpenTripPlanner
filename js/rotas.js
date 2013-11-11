@@ -360,6 +360,11 @@ Rotas = {
                 {
                     rua = '<span class="modos modo_' + leg.mode + '"></span>' + ' ' +
                         leg.from.stopCode + ' (Nº ' + leg.route + ')';
+                    var stopId = {
+                        to: leg.to.stopId.id,
+                        from: leg.from.stopId.id
+                    }
+                    Rotas.trips(leg.tripId, stopId);
                 }
 
                 //Instruções. O step é array para gerar sub-steps - próximo bloco.
@@ -652,7 +657,7 @@ Rotas = {
         else
             icone_info = leg.to.name;
         icone = L.icon({
-            iconUrl: 'images/map/trip/xferdisk.png'
+            iconUrl: 'images/xferdisk.png'
         });
         //Crio a bolinha
         marker = L.marker( latlngs, {
@@ -770,6 +775,53 @@ Rotas = {
                 map.addLayer(ponto);
             });
         }
+    },
+    trips: function(tripId, stopId) {
+        var url = Config.api_url + 'trips/' + tripId + '/?key=' + Config.api_key;
+        $.ajax({url: url, dataType: 'JSONP'})
+            .done(function(retorno){
+                var html = '<ul class="trip_viewer">';
+                var contador = 1;
+                var maximo = 0;
+                var minimo = 0;
+                console.log('====== ' + tripId + ' =======');
+                console.log(retorno.stoptime_set);
+                console.log('====== ' + tripId + ' =======');
+                $.each(retorno.stoptime_set, function(index, value){
+                    html += '<li ';
+                    var sequencia = value.stop_sequence;
+
+                    if ( value.stop.id == stopId.from )
+                    {
+                        minimo = sequencia;
+                        html += 'class="inicio"';
+                    }
+                    else if ( value.stop.id == stopId.to )
+                    {
+                        maximo = sequencia;
+                        html += 'class="fim"';
+                    }
+                    if ( minimo > 0 && sequencia >= minimo && maximo == 0 )
+                    {
+                        html += 'class="meu_caminho"';
+                    }
+
+                    html += '><span class="paragem"></span><span class="nome">' + contador + '. '
+                        + value.stop.stop_name + '</span>';
+
+                    html += '<div class="clearfix"></div></li>';
+                    ++contador;
+                });
+                html += '</ul>';
+
+                $('h4.modal-title').html('Eeeee macarena');
+                $('div.mensagem').html(html);
+                $("#myModal").modal();
+            })
+            .fail(function(retorno){
+                //
+            }
+        );
     }
 };
 

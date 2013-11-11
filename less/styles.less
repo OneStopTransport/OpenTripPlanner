@@ -32,9 +32,6 @@ body {
 .leaflet-contextmenu-icon { margin: 2px 8px 0 0; width: 16px; height: 16px; float: left; border: 0; }
 .leaflet-contextmenu-separator { border-bottom: 1px solid #ccc; margin: 5px 0 }
 /* Menu com o botão direito FIM */
-div#sidebar, div#mapa { /*position: absolute; top: 60px;*/ }
-div#sidebar { /*left: 0; width: 30%; display: none;*/ }
-div#mapa { /*left: 31%; width: 68%;*/ }
 div.instrucoes { width: 100px; height: 100px; background: #F30; display: none; }
 /* Informações globais */
 div.info_trip {
@@ -122,9 +119,9 @@ div.direcoes {
                 &.SOUTHWWEST { background: #999; }
             }
             span.modos { display: inline-block; width: 20px; height: 20px; margin-right: 10px; float: left; }
-            span.modo_BUS { background: url('../images/ui/trip/mode/bus.png') no-repeat left top; }
-            span.modo_WALK { background: url('../images/ui/trip/mode/walk.png') no-repeat left top; }
-            span.modo_BICYCLE { background: url('../images/ui/trip/mode/bicycle.png') no-repeat left top; }
+            span.modo_BUS { background: url('../images/mode/bus.png') no-repeat left top; }
+            span.modo_WALK { background: url('../images/mode/walk.png') no-repeat left top; }
+            span.modo_BICYCLE { background: url('../images/mode/bicycle.png') no-repeat left top; }
             span.direcao {
                 height: 30px; display: inline-block; float: left;
                 &.CIRCLE_CLOCKWISE { background: url('../images/directions/circle_clockwise.png') no-repeat left top; }
@@ -208,6 +205,29 @@ div.leaflet-popup-content {
         &.TURN_RIGHT { background: url('../images/directions/turn_right.png') no-repeat left top; }
         &.UTURN_LEFT { background: url('../images/directions/uturn_left.png') no-repeat left top; }
         &.UTURN_RIGHT { background: url('../images/directions/uturn_right.png') no-repeat left top; }
+    }
+}
+ul.trip_viewer {
+    list-style: none; margin: 0; padding: 0;
+    li {
+        span {
+            &.paragem { display: inline-block; width: 32px; height: 32px; background: url('../images/trip-stop.png') no-repeat right top; float: left; }
+            &.nome { float: left; padding-left: 10px; padding-top: 6px; height: 32px; width: 93%; }
+        }
+        &:first-child {
+            span.paragem { background: url('../images/trip-stop-first.png') no-repeat right top; }
+        }
+        &:last-child {
+            span.paragem { background: url('../images/trip-stop-last.png') no-repeat right top; }
+        }
+        &.inicio, &.fim {
+            span {
+                background-color: #CCC;
+                &.paragem:before { content: url('../images/arrow.png'); padding: 8px 0 0 8px; display: inline-block; }
+            }
+        }
+        &.fim span.paragem:before { content: url('../images/arrow-left.png'); }
+        &.meu_caminho span { background-color: #CCC; }
     }
 }
 div.clearfix { .clearfix(); }

@@ -208,17 +208,17 @@ div.leaflet-popup-content {
     }
 }
 ul.trip_viewer {
-    list-style: none; margin: 0; padding: 0;
+    list-style: none; margin: 0; padding: 0; font-size: 0.875em;
     li {
         span {
             &.paragem { display: inline-block; width: 32px; height: 32px; background: url('../images/trip-stop.png') no-repeat right top; float: left; }
             &.nome { float: left; padding-left: 10px; padding-top: 6px; height: 32px; width: 93%; }
         }
         &:first-child {
-            span.paragem { background: url('../images/trip-stop-first.png') no-repeat right top; }
+            span.paragem { background-image: url('../images/trip-stop-first.png'); }
         }
         &:last-child {
-            span.paragem { background: url('../images/trip-stop-last.png') no-repeat right top; }
+            span.paragem { background-image: url('../images/trip-stop-last.png'); }
         }
         &.inicio, &.fim {
             span {

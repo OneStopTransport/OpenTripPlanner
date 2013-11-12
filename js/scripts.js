@@ -111,6 +111,13 @@ $(function(){
         proximo = $(this).children(".escondido");
         if ( proximo.html() == '' )
             $(this).css('cursor', 'auto');
+
+        //Escondo todas
+        $('ul.escondido').each(function(index, value){
+            $(this).hide();
+        });
+
+        //Mostro a clicada
         proximo.toggle();
     });
     $('body').on('click', 'ul.direcoes li ul li', function() {

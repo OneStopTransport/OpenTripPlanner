@@ -1,19 +1,24 @@
 $(function(){
-    $('a[href="#trip_resultados"]').hide();
     //Altura e Largura dinamica
     $(window).resize(function(){ resize_window(); });
     resize_window = function(){
         altura  = $(window).height();
-        largura = $(window).width();
-        $('div.mapa').height( altura - 70 );
+        largura = $('div.direita').width();
+
+        // console.log( $('div.mapa').width() );
+        $('div.mapa')
+            .width(largura)
+            .height( altura - 70 );
+        // console.log( $('div.mapa').width() );
     };
-    resize_window();
 
     //Início
     $('div#sidebar').hide();
     $('div.direita')
         .addClass('col-md-12')
         .removeClass('col-md-push-4');
+
+    resize_window();
 
     //Date & Time Pickers
     $('#date')
@@ -37,7 +42,6 @@ $(function(){
             $('div.direita')
                 .removeClass('col-md-12')
                 .addClass('col-md-push-4');
-
         }
         else
         {
@@ -48,6 +52,7 @@ $(function(){
                 .addClass('col-md-12')
                 .removeClass('col-md-push-4');
         }
+        resize_window();
 
         e.preventDefault();
     });

@@ -88,7 +88,12 @@ Rotas = {
         if ( typeof(m1) == 'undefined' )
         {
             $('h4.modal-title').html('Error');
-            $('div.mensagem').html('<i class="glyphicon glyphicon-exclamation-sign"></i> ' + locale.messages.miss_origin);
+            $('div.mensagem')
+                .addClass('alert-danger')
+                .removeClass('alert-success')
+                .removeClass('alert-info')
+                .removeClass('alert-warning')
+                .html('<i class="glyphicon glyphicon-exclamation-sign"></i> ' + locale.messages.miss_origin);
             $("#myModal").modal();
 
             return false;
@@ -97,7 +102,12 @@ Rotas = {
         if ( typeof(m2) == 'undefined' )
         {
             $('h4.modal-title').html('Error');
-            $('div.mensagem').html('<i class="glyphicon glyphicon-exclamation-sign"></i> ' + locale.messages.miss_destiny);
+            $('div.mensagem')
+                .addClass('alert-danger')
+                .removeClass('alert-success')
+                .removeClass('alert-info')
+                .removeClass('alert-warning')
+                .html('<i class="glyphicon glyphicon-exclamation-sign"></i> ' + locale.messages.miss_destiny);
             $("#myModal").modal();
 
             return false;
@@ -320,6 +330,7 @@ Rotas = {
         //Subcontador
         j = 0;
         var polylines = [];
+        var centro = [];
         $.each(legs.legs, function(index, leg){
             //js/Polyline.encoded.js
             var fromEncoded = L.Polyline.fromEncoded(leg.legGeometry.points);
@@ -333,6 +344,7 @@ Rotas = {
             {
                 var latlngs = new L.latLng(obj_to_push[i].lat, obj_to_push[i].lng);
                 points1.push(latlngs);
+                centro.push(latlngs);
             }
             //Necessário para distinguir os tipos de rota
             polyline = new L.Polyline(points1, {
@@ -345,7 +357,6 @@ Rotas = {
             .addTo(map);
             polylines.push(polyline);
 
-            //map.fitBounds(points1);
             //Se for para escrever a rota (itinerario selecionado OK)
             if ( escrever_rota == true )
             {
@@ -398,6 +409,8 @@ Rotas = {
                         + Math.floor(leg.duration / 60000) + ' min.<br>'
                         + 'Paragem: (desembarque) ' + leg.to.stopCode + ' às ' + Rotas.formata_hora(leg.endTime, 2) + '<br>'
                         + leg.agencyName
+                        + '<br>'
+                        + '<a href="#" class="trip_viewer" data-tripId="' + leg.tripId + '" data-stop-to="' + leg.to.stopId.id + '" data-stop-from="' + leg.from.stopId.id + '">[ver paragens]</a>'
                         + '</div>';
                     var info_paragens = {
                         distancia:  leg.distance.toFixed(2),
@@ -424,6 +437,11 @@ Rotas = {
                 Rotas.criar_pontos(leg, latlngs, it, false);
             }
         });
+
+        if ( escrever_rota == true )
+        {
+            map.fitBounds( centro );
+        }
         
         return polylines;
     },
@@ -652,7 +670,7 @@ Rotas = {
         else
             icone_info = leg.to.name;
         icone = L.icon({
-            iconUrl: 'images/map/trip/xferdisk.png'
+            iconUrl: 'images/xferdisk.png'
         });
         //Crio a bolinha
         marker = L.marker( latlngs, {
@@ -770,6 +788,69 @@ Rotas = {
                 map.addLayer(ponto);
             });
         }
+    },
+    /**
+    * Mostra todas as paragens e seleciona as do meu interesse
+    * @method trips
+    * @param {Int} tripId Id da Trip, necessário para a API
+    * @param {Object} stopId Objeto que mostra quais são as minhas paragens
+    * @return {Void}
+    */
+    trips: function(tripId, stopIdto, stopIdfrom) {
+        var url = Config.api_url + 'trips/' + tripId + '/?key=' + Config.api_key;
+        $.ajax({url: url, dataType: 'JSONP'})
+            .done(function(retorno){
+                var html = '<ul class="trip_viewer">';
+                var contador = 1;
+                var maximo = 0;
+                var minimo = 0;
+                // console.log('====== ' + tripId + ' =======');
+                // console.log(retorno.stoptime_set);
+                // console.log('====== ' + tripId + ' =======');
+                $.each(retorno.stoptime_set, function(index, value){
+                    html += '<li ';
+                    var sequencia = value.stop_sequence;
+
+                    //Início das minhas paragens
+                    if ( value.stop.id == stopIdfrom )
+                    {
+                        minimo = sequencia;
+                        html += 'class="inicio"';
+                    }
+                    //Fim das minhas paragens
+                    else if ( value.stop.id == stopIdto )
+                    {
+                        maximo = sequencia;
+                        html += 'class="fim"';
+                    }
+                    //Paragens que estão no meu caminho
+                    if ( minimo > 0 && sequencia >= minimo && maximo == 0 )
+                    {
+                        html += 'class="meu_caminho"';
+                    }
+
+                    html += '><span class="paragem"></span><span class="nome">' + contador + '. '
+                        + value.stop.stop_name + '</span>';
+
+                    //Os spans acima têm float ^-^
+                    html += '<div class="clearfix"></div></li>';
+                    ++contador;
+                });
+                html += '</ul>';
+
+                $('h4.modal-title').html('Eeeee macarena');
+                $('div.mensagem')
+                    // .addClass('alert-info')
+                    .removeClass('alert-success')
+                    .removeClass('alert-danger')
+                    .removeClass('alert-warning')
+                    .html(html);
+                $("#myModal").modal();
+            })
+            .fail(function(retorno){
+                //
+            }
+        );
     }
 };
 
@@ -809,5 +890,17 @@ $('body').on('click', 'a.mostra_informacao', function(e) {
             .setContent( conteudo )
             .openOn(map);
     }
+
+    e.preventDefault();
+});
+
+//Mostra as paragens da rota selecionada
+$('body').on('click', 'a.trip_viewer', function(e) {
+    tripId = $(this).data('tripid');
+    stopIdto = $(this).data('stop-to');
+    stopIdfrom = $(this).data('stop-from');
+
+    Rotas.trips(tripId, stopIdto, stopIdfrom);
+
     e.preventDefault();
 });

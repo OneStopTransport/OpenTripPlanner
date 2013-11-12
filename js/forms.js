@@ -7,8 +7,6 @@ $(function() {
 
         Rotas.tracar();
 
-        $('div#sidebar').show();
-
         altura  = $(window).height();
         largura = $(window).width();
 
@@ -20,10 +18,11 @@ $(function() {
             $('div.direita')
                 .removeClass('col-md-12')
                 .addClass('col-md-push-4');
+
+            resize_window();
         }
+        setTimeout( map.invalidateSize.bind(map) );
 
         e.preventDefault();
     });
-
-
 });

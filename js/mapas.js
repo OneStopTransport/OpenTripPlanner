@@ -20,7 +20,7 @@ $(function(){
             map.removeLayer(m1);
 
         icone_inicio = L.icon({
-            iconUrl: 'images/map/trip/start.png',
+            iconUrl: 'images/start.png',
             iconAnchor: [10, 35]
         });
         m1 = L.marker(e.latlng, {
@@ -49,7 +49,7 @@ $(function(){
             map.removeLayer(m2);
 
         icone = L.icon({
-            iconUrl: 'images/map/trip/end.png',
+            iconUrl: 'images/end.png',
             iconAnchor: [10, 35]
         });
         m2 = L.marker(e.latlng, {

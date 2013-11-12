@@ -107,7 +107,7 @@ $(function(){
     });
 
     //Objetos que não estão no DOM original
-    $('body').on('click', 'ul.direcoes li', function() {
+    $('body').on('click', 'ul.direcoes li.primeiro_nivel', function() {
         proximo = $(this).children(".escondido");
         if ( proximo.html() == '' )
             $(this).css('cursor', 'auto');

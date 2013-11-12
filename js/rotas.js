@@ -531,7 +531,15 @@ Rotas = {
     * @return {String} retorno
     */
     formata_html: function(obj, i) {
-        retorno = '<li>';
+        retorno = '<li';
+        if ( 'undefined' == typeof(obj.lat)
+                && 'undefined' == typeof(obj.lon)
+                && obj.lat == null )
+        {
+            retorno += ' class="primeiro_nivel"';
+        }
+        retorno += '>';
+
         retorno += '<span class="norte_sul ' + obj.norte_sul + '"></span> <span class="direcao ' + obj.direcao + '"></span>';
         retorno += '<span class="texto">';
 
@@ -539,6 +547,7 @@ Rotas = {
                 && 'undefined' != typeof(obj.lon)
                 && obj.lat !== null )
             retorno += '<a href="#" class="mostra_informacao" data-lat="' + obj.lat + '" data-lon="' + obj.lon + '">';
+
         retorno += ' ' + obj.rua;
 
         if ( obj.modo == "WALK" )

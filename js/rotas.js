@@ -838,9 +838,9 @@ Rotas = {
                 });
                 html += '</ul>';
 
-                $('h4.modal-title').html('Eeeee macarena');
+                var titulo = retorno.route.route_short_name + ' ' + retorno.trip_short_name;
+                $('h4.modal-title').html(titulo);
                 $('div.mensagem')
-                    // .addClass('alert-info')
                     .removeClass('alert-success')
                     .removeClass('alert-danger')
                     .removeClass('alert-warning')

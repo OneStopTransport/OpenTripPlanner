@@ -405,12 +405,12 @@ Rotas = {
                 if ( leg.mode == "BUS" )
                 {
                     var div_ruas = '<div class="div_ruas">'
-                        + 'Paragem: (embarque) ' + leg.from.stopCode + ' às ' + Rotas.formata_hora(leg.startTime, 2) + '<br>~'
+                        + locale.info.stop_depart + leg.from.stopCode + locale.info.at + Rotas.formata_hora(leg.startTime, 2) + '<br>~'
                         + Math.floor(leg.duration / 60000) + ' min.<br>'
-                        + 'Paragem: (desembarque) ' + leg.to.stopCode + ' às ' + Rotas.formata_hora(leg.endTime, 2) + '<br>'
+                        + locale.info.stop_arrive + leg.to.stopCode + locale.info.at + Rotas.formata_hora(leg.endTime, 2) + '<br>'
                         + leg.agencyName
                         + '<br>'
-                        + '<a href="#" class="trip_viewer" data-tripId="' + leg.tripId + '" data-stop-to="' + leg.to.stopId.id + '" data-stop-from="' + leg.from.stopId.id + '">[ver paragens]</a>'
+                        + '<a href="#" class="trip_viewer" data-tripId="' + leg.tripId + '" data-stop-to="' + leg.to.stopId.id + '" data-stop-from="' + leg.from.stopId.id + '">[' + locale.info.see_stops + ']</a>'
                         + '</div>';
                     var info_paragens = {
                         distancia:  leg.distance.toFixed(2),
@@ -651,12 +651,12 @@ Rotas = {
         var info = '<section class="info_popup row">';
         if ( obj.mode == 'BUS' )
         {
-            info += '<div class="col-md-4 first">Autocarro</div><div class="col-md-8 first">' + obj.route + '</div>';
-            info += '<div class="col-md-4">Entrar na paragem:</div><div class="col-md-8">' + obj.from.stopCode + '</div>';
-            info += '<div class="col-md-4">Descer na paragem:</div><div class="col-md-8">' + obj.to.stopCode + '</div>';
-            info += '<div class="col-md-4">Partida às:</div><div class="col-md-8">' + this.formata_hora(obj.startTime) + '</div>';
-            info += '<div class="col-md-4">Chegada às:</div><div class="col-md-8">' + this.formata_hora(obj.endTime) + '</div>';
-            info += '<div class="col-md-4">Serviço prestado por:</div><div class="col-md-8">' + obj.agencyName + '</div>';
+            info += '<div class="col-md-4 first">' + locale.info.bus + '</div><div class="col-md-8 first">' + obj.route + '</div>';
+            info += '<div class="col-md-4">' + locale.info.get_in_stop + '</div><div class="col-md-8">' + obj.from.stopCode + '</div>';
+            info += '<div class="col-md-4">' + locale.info.get_out_stop + '</div><div class="col-md-8">' + obj.to.stopCode + '</div>';
+            info += '<div class="col-md-4">' + locale.info.depart_at + '</div><div class="col-md-8">' + this.formata_hora(obj.startTime) + '</div>';
+            info += '<div class="col-md-4">' + locale.info.arrive_at + '</div><div class="col-md-8">' + this.formata_hora(obj.endTime) + '</div>';
+            info += '<div class="col-md-4">' + locale.info.service_by + '</div><div class="col-md-8">' + obj.agencyName + '</div>';
         }
         else
             info += '@TODO Informações do caminho por outros métodos (a pé, bike, carro, etc...)';

@@ -23,6 +23,9 @@ $(function() {
         }
         setTimeout( map.invalidateSize.bind(map) );
 
+        if ( $('div#coll_it1').css('display') == 'none' )
+            $('a[href="#coll_it1"]').trigger('click');
+
         e.preventDefault();
     });
 });

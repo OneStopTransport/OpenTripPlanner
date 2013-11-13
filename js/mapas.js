@@ -114,8 +114,14 @@ $(function(){
         }]
     });
 
-    map.on('resize', function(){
-        // alert('Resized');
+    //O mapa responde por clique, verificando se tenho m1 e m2
+    map.on('click', function(e){
+        // console.log( typeof(m1) );
+        // console.log( typeof(m2) );
+        if ( typeof(m1) != 'undefined' && typeof(m2) == 'undefined' )
+            marcador_fim(e);
+        if ( typeof(m1) == 'undefined' )
+            marcador_inicio(e);
     });
 
     var osmLayer = new L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {

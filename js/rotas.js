@@ -464,6 +464,8 @@ Rotas = {
             var du_trans    = duration - walkTime;
             var walkTotal   = Rotas.distanciaPe + Rotas.distanciaTransporte;
             div_it = 'div#coll_it' + it + ' div.panel-body ';
+            link = 'div#coll_it' + it + ' a.esconder_info';
+            link = $(link);
             $(div_it + 'div.info_trip').removeClass('escondido');
 
             var div_trip = div_it + 'div.info_trip ';
@@ -478,6 +480,7 @@ Rotas = {
             $(div_trip + 'dt.duracao_pe').next('dd').html(walkTime + ' min');
             $(div_trip + 'dt.duracao_transportes').next('dd').html(du_trans + ' min');
         });
+        esconder_info(link, true);
         $('div.info_trip').show();
     },
     /**

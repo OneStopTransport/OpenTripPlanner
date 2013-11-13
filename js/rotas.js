@@ -300,7 +300,7 @@ Rotas = {
         // console.log('Contador ' + i);
 
         Rotas.mostra_itinerarios();
-        
+
         //Just in case
         if ( typeof(primeiro_itinerario) != 'undefined' )
             primeiro_itinerario.bringToFront();

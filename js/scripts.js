@@ -93,21 +93,29 @@ $(function(){
         }
     });
 
-    //
-    $('a.esconder_info').on('click', function(e){
-        $('div.info_trip dl').toggle();
+    esconder_info = function(link, esconder) {
+        if ( 'undefined' !== typeof(esconder) )
+        {
+            $('div.info_trip dl').hide();
+        }
+        else
+            $('div.info_trip dl').toggle();
 
         dl_show = $('div.info_trip dl').css('display');
         if ( dl_show == 'block' )
-            $(this).html('<i class="glyphicon glyphicon-eye-close"></i>');
+            link.html('<i class="glyphicon glyphicon-eye-close"></i>');
         else
-            $(this).html('<i class="glyphicon glyphicon-eye-open"></i>');
+            link.html('<i class="glyphicon glyphicon-eye-open"></i>');
+    };
+    //
+    $('a.esconder_info').on('click', function(e){
+        esconder_info($(this));
 
         e.preventDefault();
     });
 
     //Objetos que não estão no DOM original
-    $('body').on('click', 'ul.direcoes li', function() {
+    $('body').on('click', 'ul.direcoes li.primeiro_nivel', function() {
         proximo = $(this).children(".escondido");
         if ( proximo.html() == '' )
             $(this).css('cursor', 'auto');

@@ -79,5 +79,17 @@ locale = {
         center_map:     'Centralizar mapa',
         more_zoom:      'Mais zoom',
         less_zoom:      'Menos zoom'
+    },
+    info: {
+        stop_depart:    'Paragem: (embarque) ',
+        stop_arrive:    'Paragem: (desembarque) ',
+        see_stops:      'ver paragens',
+        at:             ' às ',
+        bus:            'Autocarro',
+        get_in_stop:    'Entrar na paragem:',
+        get_out_stop:   'Descer na paragem:',
+        depart_at:      'Partida às:',
+        arrive_at:      'Chegada às:',
+        service_by:     'Serviço prestado por:'
     }
 }

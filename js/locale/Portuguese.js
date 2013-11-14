@@ -1,6 +1,4 @@
-var locale = {};
-
-locale = {
+var locale = {
     titles: {
         panelTitle: 'Simulador de Viagens',
         tabTitle:   'Planear uma viagem',
@@ -20,7 +18,6 @@ locale = {
         planTrip:           'Simular percurso',
         trip_details:       'Detalhes da viagem',
         date_time:          'Data e Hora',
-        time:               'Hora',
         validity:           'Validade',
         total_distance:     'Distância total',
         by_foot:            'A pé', 
@@ -92,4 +89,4 @@ locale = {
         arrive_at:      'Chegada às:',
         service_by:     'Serviço prestado por:'
     }
-}
+};

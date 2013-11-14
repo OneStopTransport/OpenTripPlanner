@@ -1,9 +1,8 @@
 $(function(){
     //Altura e Largura dinamica
-    $(window).resize(function(){ resize_window(); });
     resize_window = function(){
-        altura  = $(window).height();
-        largura = $('div.direita').width();
+        var altura  = $(window).height();
+        var largura = $('div.direita').width();
 
         // console.log( $('div.mapa').width() );
         $('div.mapa')
@@ -11,6 +10,7 @@ $(function(){
             .height( altura - 70 );
         // console.log( $('div.mapa').width() );
     };
+    $(window).resize(function(){ resize_window(); });
 
     //Início
     $('div#sidebar').hide();
@@ -30,11 +30,11 @@ $(function(){
 
     //Mostra os passos de cada instrução
     $('a.direcoes').on('click', function(e){
-        fechado = $(this).hasClass('fechado');
+        var fechado = $(this).hasClass('fechado');
         //Pai do <a>, neste caso <li>
-        link    = $(this).parent();
+        var link    = $(this).parent();
 
-        if ( true == fechado )
+        if ( true === fechado )
         {
             $(link).addClass('active');
             $(this).removeClass('fechado');
@@ -59,23 +59,27 @@ $(function(){
 
     //Opções avançadas
     $('div.opcoes_avancadas a.mostrar').on('click', function(e){
-        link = $(this);
+        var link = $(this);
         $('div.mais_opcoes').toggle('slow', function(){
             if ( $(this).css('display') == 'none')
+            {
                 $(link).html(locale.messages.more_options);
+            }
             else
+            {
                 $(link).html(locale.messages.less_options);
+            }
         });
 
         e.preventDefault();
     });
 
-    $('dd.link').on('click', function(e){
-        data_mostrar = $(this).data('mostrar');
+    $('dd.link').on('click', function(){
+        var data_mostrar = $(this).data('mostrar');
         // THIS = $(this);
         var dtds = 'dt[data-mostrado="' + data_mostrar + '"], dd[data-mostrado="' + data_mostrar + '"]';
         $(dtds).toggle();
-        visivel = $(dtds).css('display');
+        var visivel = $(dtds).css('display');
 
         if ( visivel == 'block' )
         {
@@ -99,13 +103,19 @@ $(function(){
             $('div.info_trip dl').hide();
         }
         else
+        {
             $('div.info_trip dl').toggle();
+        }
 
-        dl_show = $('div.info_trip dl').css('display');
+        var dl_show = $('div.info_trip dl').css('display');
         if ( dl_show == 'block' )
+        {
             link.html('<i class="glyphicon glyphicon-eye-close"></i>');
+        }
         else
+        {
             link.html('<i class="glyphicon glyphicon-eye-open"></i>');
+        }
     };
     //
     $('a.esconder_info').on('click', function(e){
@@ -116,12 +126,14 @@ $(function(){
 
     //Objetos que não estão no DOM original
     $('body').on('click', 'ul.direcoes li.primeiro_nivel', function() {
-        proximo = $(this).children(".escondido");
-        if ( proximo.html() == '' )
+        var proximo = $(this).children('.escondido');
+        if ( proximo.html() === '' )
+        {
             $(this).css('cursor', 'auto');
+        }
 
         //Escondo todas
-        $('ul.escondido').each(function(index, value){
+        $('ul.escondido').each(function(){
             $(this).hide();
         });
 

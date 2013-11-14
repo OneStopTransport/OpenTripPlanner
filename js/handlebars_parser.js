@@ -1,9 +1,9 @@
 handlebars_parser = {
     run: function(userData)
     {
-        data = userData.userData;
-        $('body *').each(function(key, value){
-            tag = $(this);
+        var data = userData.userData;
+        $('body *').each(function(){
+            var tag = $(this);
             if ( typeof($(tag).attr('data-handlebars')) != 'undefined' )
             {
                 var source = $(tag).html();
@@ -14,4 +14,4 @@ handlebars_parser = {
             }
         });
     }
-}
+};

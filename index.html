@@ -111,7 +111,7 @@
                                                     <dd data-mostrado="distancias" class="sub col-md-8">&nbsp;</dd>
 
                                                 <dt class="duracao_total col-md-4" data-handlebars>{{labels.total_duration}}</dt>
-                                                <dd class="link col-md-8"data-mostrar="duracoes">
+                                                <dd class="link col-md-8" data-mostrar="duracoes">
                                                     <span class="setinhas baixo">&nbsp;</span>
                                                     <span class="texto">&nbsp;</span>
                                                     <span class="setinhas baixo">&nbsp;</span>
@@ -165,7 +165,7 @@
                                                     <dd data-mostrado="distancias" class="sub col-md-8">&nbsp;</dd>
 
                                                 <dt class="duracao_total col-md-4" data-handlebars>{{labels.total_duration}}</dt>
-                                                <dd class="link col-md-8"data-mostrar="duracoes">
+                                                <dd class="link col-md-8" data-mostrar="duracoes">
                                                     <span class="setinhas baixo">&nbsp;</span>
                                                     <span class="texto">&nbsp;</span>
                                                     <span class="setinhas baixo">&nbsp;</span>
@@ -219,7 +219,7 @@
                                                     <dd data-mostrado="distancias" class="sub col-md-8">&nbsp;</dd>
 
                                                 <dt class="duracao_total col-md-4" data-handlebars>{{labels.total_duration}}</dt>
-                                                <dd class="link col-md-8"data-mostrar="duracoes">
+                                                <dd class="link col-md-8" data-mostrar="duracoes">
                                                     <span class="setinhas baixo">&nbsp;</span>
                                                     <span class="texto">&nbsp;</span>
                                                     <span class="setinhas baixo">&nbsp;</span>
@@ -406,5 +406,14 @@
     <script type="text/javascript" src="./js/rotas.js"></script>
     <script type="text/javascript" src="./js/mapas.js"></script>
     <script type="text/javascript" src="./js/forms.js"></script>
+
+    <script type="text/javascript" src="./js/stickUp.js"></script>
+    <script type="text/javascript">
+    jQuery(function($) {
+      $(function(){
+        $('.mapa').stickUp();
+      });
+    });
+    </script>
 </body>
 </html>

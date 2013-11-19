@@ -231,4 +231,31 @@ ul.trip_viewer {
         &.meu_caminho span { background-color: #CCC; }
     }
 }
+
+div.legendas {
+    margin-top: 10px;
+    span {
+        display: inline-block; width: 100px; float: left;
+        &.bikeFriendly { color: #BBE070; }
+        &.flat { color: #8CC4FF; }
+        &.quick { color: #F27979; }
+    }
+}
+.noUi-base { height: 18px; }
+.noUi-handle { left: -13px; width: 24px; height: 24px; border-radius: 30px; }
+/* Quick */
+.noUi-origin + .noUi-origin {
+    background: #F27979 !important;
+    &:after { content: 'Quick'; color: #FFF; }
+}
+/* Flat */
+.noUi-connect {
+    background: #8CC4FF;
+    &:after { content: 'Flat'; color: #FFF; padding-left: 50px; }
+}
+/* Bike Friendly - É o único que funciona */
+.noUi-background {
+    background: #BBE070;
+    &:after { content: 'Bike Friendly'; color: #FFF; }
+}
 div.clearfix { .clearfix(); }

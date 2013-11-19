@@ -24,7 +24,10 @@ var locale = {
         by_transport:       'Transportes',
         total_duration:     'Duração total',
         startTime:          'Início',
-        endTime:            'Fim'
+        endTime:            'Fim',
+        bikeFriendly:       'Amigável',
+        flat:               'Plano',
+        quick:              'Mais curto'
     },
     vectors: {
         modes: [

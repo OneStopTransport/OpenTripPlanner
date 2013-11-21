@@ -299,21 +299,17 @@
                                     </select>
                                 </div>
                             </div>
-                            <div class="row" style="margin-left: 30px;">
-                                <input name="triangleSafetyFactor" id="triangleSafetyFactor" type="hidden" value="0">
-                                <input name="triangleSlopeFactor" id="triangleSlopeFactor" type="hidden" value="0">
-                                <input name="triangleTimeFactor" id="triangleTimeFactor" type="hidden" value="0">
-                                <input name="weight" id="weight">
-                                <input id="esquerda" type="hidden" placeholder="Valor da esquerda">
-                                <input id="direita" type="hidden" placeholder="Valor da direita">
+                            <div class="form-group bike_options escondido">
+                                <label class="control-label col-lg-4" data-handlebars>{{labels.bike_options}}</label>
+                                <div class="col-lg-8">
+                                    <input type="checkbox" id="check_triangleSafetyFactor"> <label for="check_triangleSafetyFactor" data-handlebars>{{labels.bikeFriendly}}</label><br>
+                                    <input type="checkbox" id="check_triangleSlopeFactor"> <label for="check_triangleSlopeFactor" data-handlebars>{{labels.flat}}</label><br>
+                                    <input type="checkbox" id="check_triangleTimeFactor"> <label for="check_triangleTimeFactor" data-handlebars>{{labels.quick}}</label>
 
-                                <div class="legendas">
-                                <span class="bikeFriendly" data-handlebars>{{labels.bikeFriendly}}</span>
-                                <span class="flat" data-handlebars>{{labels.flat}}</span>
-                                <span class="quick" data-handlebars>{{labels.quick}}</span>
-                                <div class="clearfix"></div>
+                                    <input type="hidden" value="0" name="triangleSafetyFactor" id="triangleSafetyFactor">
+                                    <input type="hidden" value="0" name="triangleSlopeFactor" id="triangleSlopeFactor">
+                                    <input type="hidden" value="0" name="triangleTimeFactor" id="triangleTimeFactor">
                                 </div>
-                                <div id="sample" style="width: 300px; margin-bottom: 20px;"></div>
                             </div>
 
                             <div class="form-group maxWalkDistance">
@@ -437,50 +433,33 @@
     <script type="text/javascript" src="./js/jquery.nouislider.js"></script>
     <script type="text/javascript">
     $(function(){
-        var total = 100;
-        writeEsquerda = function(value) {
-            esquerda    = value;
-            direita     = $('input#direita').val();
-            meio        = direita - esquerda;
-            direita     = total - direita;
-
-            escrever_bike(esquerda, meio, direita);
-        };
-        writeDireita = function(value) {
-            direita     = value;
-            esquerda    = $('input#esquerda').val();
-            meio        = direita - esquerda;
-            direita     = total - direita;
-
-            escrever_bike(esquerda, meio, direita);
-        };
-
-        escrever_bike = function(esquerda, meio, direita) {
-            esquerda    /= 100;
-            meio        /= 100;
-            direita     /= 100;
-
-            $('input#triangleSafetyFactor').val(esquerda);
-            $('input#triangleSlopeFactor').val(meio);
-            $('input#triangleTimeFactor').val(direita);
-
-            $('input#weight').val(esquerda + ',' + meio + ',' + direita);
-
-            // console.log('E: ' + esquerda + ' || M: ' + meio + ' || D: ' + direita);
-        };
-
-        $('div#sample').noUiSlider({
-            range:    [0,100],
-            start:    [33,66],
-            connect:  true,
-            step:     1,
-            mark:     'olá mark', 
-            serialization: {
-                to: [
-                    [ $('input#esquerda'), writeEsquerda ],
-                    [ $('input#direita'), writeDireita ]
-                ]
-            }
+        $('input#check_triangleTimeFactor, input#check_triangleSafetyFactor, input#check_triangleSlopeFactor')
+            .on('click', function(){
+                var _this = $(this);
+                var bike_options = [
+                    'triangleTimeFactor',
+                    'triangleSafetyFactor',
+                    'triangleSlopeFactor'
+                ];
+                var checked_total = 0;
+                var checked_array = [];
+                $.each(bike_options, function(index, value){
+                    if ( $('input#check_' + value).is(':checked') )
+                    {
+                        ++checked_total;
+                        checked_array.push(value);
+                    }
+                    $('input#' + value).val('0.0000000000');
+                });
+                // console.log(checked_array);
+                pesos = '0.0';
+                if ( checked_total > 0 )
+                {
+                    pesos = (1 / checked_total).toFixed(10);
+                }
+                $.each(checked_array, function(index, value){
+                    $('input#' + value).val(pesos);
+                })
         });
     });
     </script>

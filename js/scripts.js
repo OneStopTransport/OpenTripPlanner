@@ -143,4 +143,21 @@ $(function(){
     $('body').on('click', 'ul.direcoes li ul li', function() {
         return false;
     });
+
+    $('form select#optimize').on('change', function(){
+        if ( $(this).val() == 'TRIANGLE' )
+        {
+            $('div.bike_options').removeClass('escondido');
+            $('input#triangleSafetyFactor,input#triangleTimeFactor,input#triangleSlopeFactor')
+                .attr('disabled', 'disabled');
+        }
+        else
+        {
+            $('div.bike_options').addClass('escondido');
+            $('input#triangleSafetyFactor,input#triangleTimeFactor,input#triangleSlopeFactor')
+                .removeAttr('disabled');
+        }
+    });
+    $('input#triangleSafetyFactor,input#triangleTimeFactor,input#triangleSlopeFactor')
+        .attr('disabled', 'disabled');
 });

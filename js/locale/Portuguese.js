@@ -25,6 +25,7 @@ var locale = {
         total_duration:     'Duração total',
         startTime:          'Início',
         endTime:            'Fim',
+        bike_options:       'Opções de bicicleta',
         bikeFriendly:       'Amigável',
         flat:               'Plano',
         quick:              'Mais curto'

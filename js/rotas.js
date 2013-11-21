@@ -248,7 +248,8 @@ Rotas = {
         var itinerarios         = [];
         var objeto_json         = Rotas.objeto_json;
         $.each(objeto_json, function(index, value){
-            if ( typeof(value.from.lat) != 'undefined' || typeof(value.from.lon) != 'undefined' )
+            // console.log( value );
+            if ( value && (typeof(value.from.lat) != 'undefined' || typeof(value.from.lon) != 'undefined') )
             {
                 Rotas.distanciaPe           = 0;
                 Rotas.distanciaTransporte   = 0;
@@ -298,6 +299,13 @@ Rotas = {
                     }
                     ++i;
                 });
+            }
+            else
+            {
+                alert('Não foram encontradas rotas para estes pontos.');
+                Rotas.clearMap();
+                // map.removeLayer(m1);
+                // map.removeLayer(m2);
             }
         });
         // console.log('Contador ' + i);

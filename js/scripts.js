@@ -6,17 +6,18 @@ $(function(){
 
         // console.log( $('div.mapa').width() );
         $('div.mapa')
-            .width(largura)
-            .height( altura - 70 );
+            // .width(largura)
+            //.height( altura - 70 );
+            .height(altura);
         // console.log( $('div.mapa').width() );
     };
     $(window).resize(function(){ resize_window(); });
 
     //Início
-    $('div#sidebar').hide();
-    $('div.direita')
-        .addClass('col-md-12')
-        .removeClass('col-md-push-4');
+    // $('div#sidebar').hide();
+    // $('div.direita')
+    //     .addClass('col-md-12')
+    //     .removeClass('col-md-push-4');
 
     resize_window();
 

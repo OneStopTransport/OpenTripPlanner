@@ -28,65 +28,240 @@
 <body>
 
     <div class="container-full">
-        <div class="row">
-            <!-- Topo INICIO -->
-            <div class="topo">
-                <article>
-                    Aqui temos mais informações
-                </article>
-                <footer>
-                    <a href="#" class="esconde_topo"><i class="glyphicon glyphicon-chevron-up"></i></a>
-                </footer>
-            </div>
-            <div class="mostra_me_topo">
-                <a href="#" class="mostra_topo"><i class="glyphicon glyphicon-chevron-down"></i></a>
-            </div>
-            <!-- Topo FIM -->
+        <!-- Topo INICIO -->
+        <div class="esquerda">
+            <article>
+                <!-- Direções após a chamada à API -->
+                <div class="resultados">
+                    <!-- Itinerários INICIO -->
+                    <div class="itinerarios escondido">
+                    <h4>Itinerários</h4>
 
-            <div class="mostra_me_rodape">
-                <a href="#" class="mostra_rodape"><i class="glyphicon glyphicon-chevron-up"></i></a>
-            </div>
-            <div class="rodape">
-                <header class="visible-lg">
-                    <a href="#" class="esconde_rodape"><i class="glyphicon glyphicon-chevron-down"></i></a>
-                </header>
-                <article>
-                    <!-- Formulário INICIO -->
-                    <form class="form-horizontal" role="form" id="trip_plan_form">
-                        <div class="col-lg-6">
-                            <div class="form-group">
-                                <label for="arriveBy" class="control-label col-lg-4" data-handlebars>{{labels.when}}</label>
-                                <div class="col-lg-8" data-handlebars>
-                                    <select name="arriveBy" id="arriveBy" class="form-control">
-                                        <option value="false" data-handlebars>{{labels.depart}}</option>
-                                        <option value="true" data-handlebars>{{labels.arrive}}</option>
-                                    </select>
-                                </div>
+                    <!-- Itinerários -->
+                    <div class="panel-group" id="accordion">
+                        <div class="panel panel-default it1">
+                            <div class="panel-heading">
+                                <h4 class="panel-title">
+                                    <a data-toggle="collapse" data-parent="#accordion" href="#coll_it1">#1</a>
+                                </h4>
                             </div>
-                            <div class="form-group">
-                                <label for="time" class="control-label col-lg-4" data-handlebars>{{labels.time}}</label>
-                                <div class="col-lg-8 bootstrap-timepicker">
-                                    <input type="text" value="" id="time" name="time" class="form-control">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="date" class="control-label col-lg-4" data-handlebars>{{labels.date}}</label>
-                                <div class="col-lg-8">
-                                    <input type="text" value="2013-10-10" id="date" name="date" class="form-control" data-date-format="yyyy-mm-dd">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="mode" class="control-label col-lg-4" data-handlebars>{{labels.mode}}</label>
-                                <div class="col-lg-8" data-handlebars>
-                                    <select name="mode" id="mode" class="form-control">
-                                        {{#each vectors.modes}}
-                                            <option value="{{this.[0]}}">{{this.[1]}}</option>
-                                        {{/each}}
-                                    </select>
+                            <div id="coll_it1" class="panel-collapse collapse in">
+                                <div class="panel-body">
+                                    <!-- Info da trip INICIO -->
+                                    <div class="info_trip escondido">
+                                        <h4 class="titulo_detalhes pull-left" data-handlebars>{{labels.trip_details}}</h4>
+                                        <a href="#" class="esconder_info pull-right" data-handlebars><i class="glyphicon glyphicon-eye-close icon_esconder_info"></i></a>
+                                        <div class="clear"></div><br><br>
+                                        <dl class="row">
+                                            <dt class="col-md-4 primeiro data_hora" data-handlebars>{{labels.date_time}}</dt>
+                                            <dd class="col-md-8 primeiro">&nbsp;</dd>
+
+                                            <dt class="validade col-md-4" data-handlebars>**{{labels.validity}}</dt>
+                                            <dd class="col-md-8">dd/mm/yyyy @ hh:ii:ss</dd>
+
+                                            <dt class="distancia_total col-md-4" data-handlebars>{{labels.total_distance}}</dt>
+                                            <dd class="link col-md-8" data-mostrar="distancias">
+                                                <span class="setinhas baixo">&nbsp;</span>
+                                                <span class="texto">&nbsp;</span>
+                                                <span class="setinhas baixo">&nbsp;</span>
+                                            </dd>
+                                                <dt data-mostrado="distancias" class="sub distancia_pe col-md-4" data-handlebars>{{labels.by_foot}}</dt>
+                                                <dd data-mostrado="distancias" class="sub col-md-8">&nbsp;</dd>
+
+                                                <dt data-mostrado="distancias" class="sub distancia_transportes col-md-4" data-handlebars>{{labels.by_transport}}</dt>
+                                                <dd data-mostrado="distancias" class="sub col-md-8">&nbsp;</dd>
+
+                                            <dt class="duracao_total col-md-4" data-handlebars>{{labels.total_duration}}</dt>
+                                            <dd class="link col-md-8" data-mostrar="duracoes">
+                                                <span class="setinhas baixo">&nbsp;</span>
+                                                <span class="texto">&nbsp;</span>
+                                                <span class="setinhas baixo">&nbsp;</span>
+                                            </dd>
+                                                <dt data-mostrado="duracoes" class="sub duracao_pe col-md-4" data-handlebars>{{labels.by_foot}}</dt>
+                                                <dd data-mostrado="duracoes" class="sub col-md-8">&nbsp;</dd>
+
+                                                <dt data-mostrado="duracoes" class="sub duracao_transportes col-md-4" data-handlebars>{{labels.by_transport}}</dt>
+                                                <dd data-mostrado="duracoes" class="sub col-md-8">&nbsp;</dd>
+
+                                            <div class="clear"></div>
+                                        </dl>
+                                        <div class="clear"></div>
+                                    </div>
+                                    <!-- Info da trip FIM -->
+                                    <div class="direcoes">&nbsp;</div>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-lg-6">
+
+                        <div class="panel panel-default it2">
+                            <div class="panel-heading">
+                            <h4 class="panel-title">
+                                <a data-toggle="collapse" data-parent="#accordion" href="#coll_it2">#2</a>
+                            </h4>
+                            </div>
+                            <div id="coll_it2" class="panel-collapse collapse">
+                            <div class="panel-body">
+                                <!-- Info da trip INICIO -->
+                                <div class="info_trip escondido">
+                                    <h4 class="titulo_detalhes pull-left" data-handlebars>{{labels.trip_details}}</h4>
+                                    <a href="#" class="esconder_info pull-right" data-handlebars><i class="glyphicon glyphicon-eye-close icon_esconder_info"></i></a>
+                                    <div class="clear"></div><br><br>
+                                    <dl class="row">
+                                        <dt class="col-md-4 primeiro data_hora" data-handlebars>{{labels.date_time}}</dt>
+                                        <dd class="col-md-8 primeiro">&nbsp;</dd>
+
+                                        <dt class="validade col-md-4" data-handlebars>**{{labels.validity}}</dt>
+                                        <dd class="col-md-8">dd/mm/yyyy @ hh:ii:ss</dd>
+
+                                        <dt class="distancia_total col-md-4" data-handlebars>{{labels.total_distance}}</dt>
+                                        <dd class="link col-md-8" data-mostrar="distancias">
+                                            <span class="setinhas baixo">&nbsp;</span>
+                                            <span class="texto">&nbsp;</span>
+                                            <span class="setinhas baixo">&nbsp;</span>
+                                        </dd>
+                                            <dt data-mostrado="distancias" class="sub distancia_pe col-md-4" data-handlebars>{{labels.by_foot}}</dt>
+                                            <dd data-mostrado="distancias" class="sub col-md-8">&nbsp;</dd>
+
+                                            <dt data-mostrado="distancias" class="sub distancia_transportes col-md-4" data-handlebars>{{labels.by_transport}}</dt>
+                                            <dd data-mostrado="distancias" class="sub col-md-8">&nbsp;</dd>
+
+                                        <dt class="duracao_total col-md-4" data-handlebars>{{labels.total_duration}}</dt>
+                                        <dd class="link col-md-8" data-mostrar="duracoes">
+                                            <span class="setinhas baixo">&nbsp;</span>
+                                            <span class="texto">&nbsp;</span>
+                                            <span class="setinhas baixo">&nbsp;</span>
+                                        </dd>
+                                            <dt data-mostrado="duracoes" class="sub duracao_pe col-md-4" data-handlebars>{{labels.by_foot}}</dt>
+                                            <dd data-mostrado="duracoes" class="sub col-md-8">&nbsp;</dd>
+
+                                            <dt data-mostrado="duracoes" class="sub duracao_transportes col-md-4" data-handlebars>{{labels.by_transport}}</dt>
+                                            <dd data-mostrado="duracoes" class="sub col-md-8">&nbsp;</dd>
+
+                                        <div class="clear"></div>
+                                    </dl>
+                                    <div class="clear"></div>
+                                </div>
+                                <!-- Info da trip FIM -->
+                                <div class="direcoes">&nbsp;</div>
+                            </div>
+                            </div>
+                        </div>
+
+                        <div class="panel panel-default it3">
+                            <div class="panel-heading">
+                                <h4 class="panel-title">
+                                    <a data-toggle="collapse" data-parent="#accordion" href="#coll_it3">#3</a>
+                                </h4>
+                            </div>
+                            <div id="coll_it3" class="panel-collapse collapse">
+                                <div class="panel-body">
+                                    <!-- Info da trip INICIO -->
+                                    <div class="info_trip escondido">
+                                        <h4 class="titulo_detalhes pull-left" data-handlebars>{{labels.trip_details}}</h4>
+                                        <a href="#" class="esconder_info pull-right" data-handlebars><i class="glyphicon glyphicon-eye-close icon_esconder_info"></i></a>
+                                        <div class="clear"></div><br><br>
+                                        <dl class="row">
+                                            <dt class="col-md-4 primeiro data_hora" data-handlebars>{{labels.date_time}}</dt>
+                                            <dd class="col-md-8 primeiro">&nbsp;</dd>
+
+                                            <dt class="validade col-md-4" data-handlebars>**{{labels.validity}}</dt>
+                                            <dd class="col-md-8">dd/mm/yyyy @ hh:ii:ss</dd>
+
+                                            <dt class="distancia_total col-md-4" data-handlebars>{{labels.total_distance}}</dt>
+                                            <dd class="link col-md-8" data-mostrar="distancias">
+                                                <span class="setinhas baixo">&nbsp;</span>
+                                                <span class="texto">&nbsp;</span>
+                                                <span class="setinhas baixo">&nbsp;</span>
+                                            </dd>
+                                                <dt data-mostrado="distancias" class="sub distancia_pe col-md-4" data-handlebars>{{labels.by_foot}}</dt>
+                                                <dd data-mostrado="distancias" class="sub col-md-8">&nbsp;</dd>
+
+                                                <dt data-mostrado="distancias" class="sub distancia_transportes col-md-4" data-handlebars>{{labels.by_transport}}</dt>
+                                                <dd data-mostrado="distancias" class="sub col-md-8">&nbsp;</dd>
+
+                                            <dt class="duracao_total col-md-4" data-handlebars>{{labels.total_duration}}</dt>
+                                            <dd class="link col-md-8" data-mostrar="duracoes">
+                                                <span class="setinhas baixo">&nbsp;</span>
+                                                <span class="texto">&nbsp;</span>
+                                                <span class="setinhas baixo">&nbsp;</span>
+                                            </dd>
+                                                <dt data-mostrado="duracoes" class="sub duracao_pe col-md-4" data-handlebars>{{labels.by_foot}}</dt>
+                                                <dd data-mostrado="duracoes" class="sub col-md-8">&nbsp;</dd>
+
+                                            <dt data-mostrado="duracoes" class="sub duracao_transportes col-md-4" data-handlebars>{{labels.by_transport}}</dt>
+                                            <dd data-mostrado="duracoes" class="sub col-md-8">&nbsp;</dd>
+
+                                            <div class="clear"></div>
+                                        </dl>
+                                        <div class="clear"></div>
+                                    </div>
+                                    <!-- Info da trip FIM -->
+                                    <div class="direcoes">&nbsp;</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <ul class="ul_itinerarios">&nbsp;</ul>
+                    </div>
+                    <!-- Itinerários FIM -->
+
+                    <!-- Resposta da API INICIO -->
+                    <div id="direcoes">&nbsp;</div>
+                    <!-- Resposta da API FIM -->
+                </div>
+            </article>
+            <footer>
+                <a href="#" class="toggle_esquerda"><i class="glyphicon glyphicon-chevron-right"></i></a>
+            </footer>
+        </div>
+        <!-- Topo FIM -->
+
+        <div class="direita">
+            <article>
+                <!-- Formulário INICIO -->
+                <form class="form-horizontal" role="form" id="trip_plan_form">
+              
+                    <div class="form-group">
+                        <label for="arriveBy" class="control-label col-lg-4" data-handlebars>{{labels.when}}</label>
+                        <div class="col-lg-8" data-handlebars>
+                            <select name="arriveBy" id="arriveBy" class="form-control">
+                                <option value="false" data-handlebars>{{labels.depart}}</option>
+                                <option value="true" data-handlebars>{{labels.arrive}}</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="time" class="control-label col-lg-4" data-handlebars>{{labels.time}}</label>
+                        <div class="col-lg-8 bootstrap-timepicker">
+                            <input type="text" value="" id="time" name="time" class="form-control">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="date" class="control-label col-lg-4" data-handlebars>{{labels.date}}</label>
+                        <div class="col-lg-8">
+                            <input type="text" value="2013-10-10" id="date" name="date" class="form-control" data-date-format="yyyy-mm-dd">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="mode" class="control-label col-lg-4" data-handlebars>{{labels.mode}}</label>
+                        <div class="col-lg-8" data-handlebars>
+                            <select name="mode" id="mode" class="form-control">
+                                {{#each vectors.modes}}
+                                    <option value="{{this.[0]}}">{{this.[1]}}</option>
+                                {{/each}}
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="opcoes_avancadas">
+                        <div class="form-group">
+                            <label class="control-label col-lg-4">&nbsp;</label>
+                            <div class="col-lg-8">
+                                <a href="#" class="mostrar" data-handlebars>{{messages.more_options}}</a>
+                            </div>
+                        </div>
+                        <div class="escondido mais_opcoes">
                             <div class="form-group optimize">
                                 <label for="optimize" class="control-label col-lg-4" data-handlebars>{{labels.minimize}}</label>
                                 <div class="col-lg-8" data-handlebars>
@@ -139,28 +314,30 @@
                                     <input type="hidden" value="false" name="wheelchair" id="wheelchair" class="form-control1">
                                 </div>
                             </div>
-
-                            <div class="form-group">
-                                <div class="col-lg-4">&nbsp;</div>
-                                <div class="col-lg-8">
-                                    <button type="submit" class="btn btn-primary" data-handlebars><i class="glyphicon glyphicon-road"></i> {{labels.planTrip}}</button><br>
-                                    <a class="trocar_idioma" lang="Portuguese">Idioma: PT</a>
-                                    <a class="trocar_idioma" lang="English">Idioma: EN</a>
-                                </div>
-                            </div>
                         </div>
-                    </form>
-                    <!-- Formulário FIM -->
-                </article>
-                <footer class="visible-md visible-sm visible-xs">
-                    <a href="#" class="esconde_rodape"><i class="glyphicon glyphicon-chevron-down"></i></a>
-                </footer>
-            </div>
+                    </div>
 
-            <!-- Mapa INICIO -->
-            <div id="mapa" class="mapa">&nbsp;</div>
-            <!-- Mapa FIM -->
+                    <div class="form-group">
+                        <div class="col-lg-4">&nbsp;</div>
+                        <div class="col-lg-8">
+                            <button type="submit" class="btn btn-primary" data-handlebars><i class="glyphicon glyphicon-road"></i> {{labels.planTrip}}</button><br>
+                            <a class="trocar_idioma" lang="Portuguese">Idioma: PT</a>
+                            <a class="trocar_idioma" lang="English">Idioma: EN</a>
+                        </div>
+                    </div>
+                </form>
+                <!-- Formulário FIM -->
+            </article>
+            <footer>
+                <a href="#" class="toggle_direita"><i class="glyphicon glyphicon-chevron-left"></i></a>
+            </footer>
         </div>
+
+        <!-- Mapa INICIO -->
+        <div id="mapa" class="mapa">&nbsp;</div>
+        <!-- Mapa FIM -->
+
+        
     </div>
 
     <!-- Mensagens de Alerta INICIO -->
@@ -208,10 +385,33 @@
 
             e.preventDefault();
         });
-        $('.esconde_topo').on('click', function(e) {
-            $('div.topo').slideToggle('fast', function() {
-                $('div.mostra_me_topo').toggle();
+        $('.toggle_esquerda').on('click', function(e) {
+            $('div.esquerda').toggleClass('fechado');
+            var largura = '15px';
+            if ( $('div.esquerda').hasClass('fechado') )
+            {
+                largura = '40%';
+            }
+            console.log(largura);
+            $('div.esquerda').animate({
+                width: largura
+            }, 400, function(){
+                if ( largura == '15px' )
+                {
+                    $('div.esquerda')
+                        .find('article')
+                        .hide();
+                }
+                else
+                {
+                    $('div.esquerda')
+                        .find('article')
+                        .show();
+                }
             });
+            //$('div.topo').slideToggle('fast', function() {
+            //    $('div.mostra_me_topo').toggle();
+            //});
 
             e.preventDefault();
         });
@@ -221,9 +421,29 @@
 
             e.preventDefault();
         });
-        $('.esconde_rodape').on('click', function(e) {
-            $('div.rodape').slideToggle('fast', function() {
-                $('div.mostra_me_rodape').toggle();
+        $('.toggle_direita').on('click', function(e) {
+            $('div.direita').toggleClass('fechado');
+            var largura = '15px';
+            if ( $('div.direita').hasClass('fechado') )
+            {
+                largura = '40%';
+            }
+
+            $('div.direita').animate({
+                width: largura
+            }, 400, function(){
+                if ( largura == '15px' )
+                {
+                    $('div.direita')
+                        .find('article')
+                        .hide();
+                }
+                else
+                {
+                    $('div.direita')
+                        .find('article')
+                        .show();
+                }
             });
 
             e.preventDefault();

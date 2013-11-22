@@ -1,0 +1,91 @@
+/* Funções INICIO */
+.clearfix() {
+  &:before,
+  &:after {
+    content: " "; /* 1 */
+    display: table; /* 2 */
+  }
+  &:after {
+    clear: both;
+  }
+}
+/* Funções FIM */
+div.escondido { display: none; margin-top: 15px; }
+body {
+    background: #FFF; overflow: hidden;
+    //Mesma altura da barra de menus fixa do topo
+    padding-top: 0px;
+    div.container-full {
+      width: 97.8%; margin: 0 auto;
+      .divs_topo(@zIndex) {
+        position: absolute; z-index: @zIndex;
+      }
+      div.topo {
+       .divs_topo(9000); background: #FFF; display: none; border-bottom: 1px solid #CCC; box-shadow: 5px 5px 10px #888; width: 100%;
+        article {
+          padding: 10px;
+        }
+        footer {
+          bottom: 0; left: 50%; position: absolute; text-align: center;
+        }
+      }
+      div.mostra_me_topo {
+        .divs_topo(9001); text-align: center; width: 100%;
+        a {
+          background: #333; opacity: 1; display: inline-block; padding: 5px 15px; border-bottom: 1px solid #CCC; border-bottom-left-radius: 5px; border-bottom-right-radius: 5px; box-shadow: 3px 3px 5px #888;
+          i { color: #FFF; }
+          &:hover {
+            background: #FFF;
+            i { color: #333; }
+          }
+        }
+      }
+      div.esconde_me {
+        .divs_topo(9000); display: none;
+      }
+
+      div.rodape {
+        .divs_topo(9000); background: #FFF; display: none; border-top: 1px solid #CCC; box-shadow: 5px 5px 10px #888; width: 100%; bottom: 0; opacity: 0.9;
+        header, footer {
+          top: 0; left: 50%; position: absolute; text-align: center; margin-bottom: 10px;
+        }
+        footer {
+          bottom: 0; top: auto;
+        }
+        article {
+          padding: 10px; padding-top: 20px; overflow-y: scroll; height: 300px;
+        }
+      }
+      div.mostra_me_rodape {
+        .divs_topo(9001); text-align: center; width: 100%; bottom: 0;
+        a {
+          background: #333; opacity: 1; display: inline-block; padding: 5px 15px; border-bottom: 1px solid #CCC; border-top-left-radius: 5px; border-top-right-radius: 5px; box-shadow: 3px 3px 5px #888;
+          i { color: #FFF; }
+          &:hover {
+            background: #FFF;
+            i { color: #333; }
+          }
+        }
+      }
+      div.esconde_me {
+        .divs_topo(9000); display: none;
+      }
+      div.mapa { min-height: 150px; }
+    }
+}
+/* Menu com o botão direito INICIO */
+.leaflet-contextmenu {
+    display: none; box-shadow: 0 1px 7px rgba(0,0,0,0.4); -webkit-border-radius: 4px; border-radius: 4px; padding: 4px 0; background-color: #fff; cursor: default; -webkit-user-select: none; -moz-user-select: none; user-select: none;
+    a.leaflet-contextmenu-item {
+        display: block; color: #222; font-size: 12px; line-height: 20px; text-decoration: none; padding: 0 12px; border-top: 1px solid transparent; border-bottom: 1px solid transparent; cursor: default;
+        &:hover { background-color: #f4f4f4; border-top: 1px solid #f0f0f0; border-bottom: 1px solid #f0f0f0; }
+    }
+    a.a.leaflet-contextmenu-item-disabled {
+        opacity: 0.5;
+        &:hover { background-color: inherit; border-top: 1px solid transparent; border-bottom: 1px solid transparent; }
+    }
+}
+.leaflet-contextmenu-icon { margin: 2px 8px 0 0; width: 16px; height: 16px; float: left; border: 0; }
+.leaflet-contextmenu-separator { border-bottom: 1px solid #ccc; margin: 5px 0 }
+/* Menu com o botão direito FIM */
+.leaflet-popup-content { min-width: 55px; }

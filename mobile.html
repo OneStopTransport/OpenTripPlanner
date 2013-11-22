@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="./css/bootstrap.min.css">
+    <!--
+    <link href='http://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="./css/bootstrap-ost.css">-->
+    <link rel="stylesheet" href="./css/datepicker.css">
+    <link rel="stylesheet" href="./css/bootstrap-timepicker.min.css">
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.6.4/leaflet.css" />
+    <!--[if lte IE 8]>
+        <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.6.4/leaflet.ie.css" />
+    <![endif]-->
+    <link rel="stylesheet" type="text/css" href="./css/jquery.nouislider.css">
+    <link rel="stylesheet" href="./css/mobile.css">
+    <!--[if lt IE 9]>
+        <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <script src="./js/css_browser_selector.js"></script>
+    <title></title>
+</head>
+<body>
+
+    <div class="container-full">
+        <div class="row">
+            <!-- Topo INICIO -->
+            <div class="topo">
+                <article>
+                    Aqui temos mais informações
+                </article>
+                <footer>
+                    <a href="#" class="esconde_topo"><i class="glyphicon glyphicon-chevron-up"></i></a>
+                </footer>
+            </div>
+            <div class="mostra_me_topo">
+                <a href="#" class="mostra_topo"><i class="glyphicon glyphicon-chevron-down"></i></a>
+            </div>
+            <!-- Topo FIM -->
+
+            <div class="mostra_me_rodape">
+                <a href="#" class="mostra_rodape"><i class="glyphicon glyphicon-chevron-up"></i></a>
+            </div>
+            <div class="rodape">
+                <header class="visible-lg">
+                    <a href="#" class="esconde_rodape"><i class="glyphicon glyphicon-chevron-down"></i></a>
+                </header>
+                <article>
+                    <!-- Formulário INICIO -->
+                    <form class="form-horizontal" role="form" id="trip_plan_form">
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label for="arriveBy" class="control-label col-lg-4" data-handlebars>{{labels.when}}</label>
+                                <div class="col-lg-8" data-handlebars>
+                                    <select name="arriveBy" id="arriveBy" class="form-control">
+                                        <option value="false" data-handlebars>{{labels.depart}}</option>
+                                        <option value="true" data-handlebars>{{labels.arrive}}</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="time" class="control-label col-lg-4" data-handlebars>{{labels.time}}</label>
+                                <div class="col-lg-8 bootstrap-timepicker">
+                                    <input type="text" value="" id="time" name="time" class="form-control">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="date" class="control-label col-lg-4" data-handlebars>{{labels.date}}</label>
+                                <div class="col-lg-8">
+                                    <input type="text" value="2013-10-10" id="date" name="date" class="form-control" data-date-format="yyyy-mm-dd">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="mode" class="control-label col-lg-4" data-handlebars>{{labels.mode}}</label>
+                                <div class="col-lg-8" data-handlebars>
+                                    <select name="mode" id="mode" class="form-control">
+                                        {{#each vectors.modes}}
+                                            <option value="{{this.[0]}}">{{this.[1]}}</option>
+                                        {{/each}}
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="form-group optimize">
+                                <label for="optimize" class="control-label col-lg-4" data-handlebars>{{labels.minimize}}</label>
+                                <div class="col-lg-8" data-handlebars>
+                                    <select class="form-control" name="optimize" id="optimize">
+                                        {{#each vectors.options}}
+                                            <option value="{{this.[0]}}">{{this.[1]}}</option>
+                                        {{/each}}
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group bike_options escondido">
+                                <label class="control-label col-lg-4" data-handlebars>{{labels.bike_options}}</label>
+                                <div class="col-lg-8">
+                                    <input type="checkbox" id="check_triangleSafetyFactor"> <label for="check_triangleSafetyFactor" data-handlebars>{{labels.bikeFriendly}}</label><br>
+                                    <input type="checkbox" id="check_triangleSlopeFactor"> <label for="check_triangleSlopeFactor" data-handlebars>{{labels.flat}}</label><br>
+                                    <input type="checkbox" id="check_triangleTimeFactor"> <label for="check_triangleTimeFactor" data-handlebars>{{labels.quick}}</label>
+
+                                    <input type="hidden" value="0" name="triangleSafetyFactor" id="triangleSafetyFactor">
+                                    <input type="hidden" value="0" name="triangleSlopeFactor" id="triangleSlopeFactor">
+                                    <input type="hidden" value="0" name="triangleTimeFactor" id="triangleTimeFactor">
+                                </div>
+                            </div>
+
+                            <div class="form-group maxWalkDistance">
+                                <label class="control-label col-lg-4" for="maxWalkDistance" data-handlebars>{{labels.maxWalkDistance}}</label>
+                                <div class="col-lg-8" data-handlebars>
+                                    <select id="maxWalkDistance" name="maxWalkDistance" class="form-control">
+                                        {{#each vectors.maxWalkDistance}}
+                                            <option value="{{this.[0]}}">{{this.[1]}}</option>
+                                        {{/each}}
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group walkSpeed">
+                                <label class="control-label col-lg-4" for="walkSpeed" data-handlebars>{{labels.walkSpeed}}</label>
+                                <div class="col-lg-8" data-handlebars>
+                                    <select id="walkSpeed" name="walkSpeed" class="form-control">
+                                        {{#each vectors.walkSpeed}}
+                                            <option value="{{this.[0]}}">{{this.[1]}}</option>
+                                        {{/each}}
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group wheelchair">
+                                <label class="control-label col-lg-4" for="wheelchair">&nbsp;</label>
+                                <div class="col-lg-8">
+                                    <button type="button" class="btn btn-default btn-xs btn-wheelchair" data-handlebars>{{labels.wheelchair}}</button>
+                                    <input type="hidden" value="false" name="wheelchair" id="wheelchair" class="form-control1">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-lg-4">&nbsp;</div>
+                                <div class="col-lg-8">
+                                    <button type="submit" class="btn btn-primary" data-handlebars><i class="glyphicon glyphicon-road"></i> {{labels.planTrip}}</button><br>
+                                    <a class="trocar_idioma" lang="Portuguese">Idioma: PT</a>
+                                    <a class="trocar_idioma" lang="English">Idioma: EN</a>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                    <!-- Formulário FIM -->
+                </article>
+                <footer class="visible-md visible-sm visible-xs">
+                    <a href="#" class="esconde_rodape"><i class="glyphicon glyphicon-chevron-down"></i></a>
+                </footer>
+            </div>
+
+            <!-- Mapa INICIO -->
+            <div id="mapa" class="mapa">&nbsp;</div>
+            <!-- Mapa FIM -->
+        </div>
+    </div>
+
+    <!-- Mensagens de Alerta INICIO -->
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <!-- Content INICIO -->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title">&nbsp;</h4>
+                </div>
+
+                <div class="modal-body">
+                    <div class="alert alert-block alert-danger fade in mensagem">
+                        <p>&nbsp;</p>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-dismiss="modal" data-handlebars>{{titles.close}}</button>
+                </div>
+            </div>
+            <!-- Content FIM -->
+        </div>
+    </div>
+    <!-- Mensagens de Alerta FIM -->
+
+    <!-- JQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+    <script>window.jQuery || document.write('<script src="./js/jquery.min.js"><\/script>')</script>
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="./js/bootstrap.min.js"></script>
+    <!-- Leaflet -->
+    <script src="http://cdn.leafletjs.com/leaflet-0.6.4/leaflet.js"></script>
+    <script src="./js/leaflet.contextmenu.js"></script>
+    <script src="./js/Polyline.encoded.js"></script>
+    <script src="./js/bootstrap-datepicker.js"></script>
+    <script src="./js/bootstrap-timepicker.min.js"></script>
+
+    <script type="text/javascript">
+    $(function(){
+        $('.mostra_topo').on('click', function(e) {
+            $('div.mostra_me_topo').toggle();
+            $('div.topo').slideToggle();
+
+            e.preventDefault();
+        });
+        $('.esconde_topo').on('click', function(e) {
+            $('div.topo').slideToggle('fast', function() {
+                $('div.mostra_me_topo').toggle();
+            });
+
+            e.preventDefault();
+        });
+        $('.mostra_rodape').on('click', function(e) {
+            $('div.mostra_me_rodape').toggle();
+            $('div.rodape').slideToggle();
+
+            e.preventDefault();
+        });
+        $('.esconde_rodape').on('click', function(e) {
+            $('div.rodape').slideToggle('fast', function() {
+                $('div.mostra_me_rodape').toggle();
+            });
+
+            e.preventDefault();
+        });
+    });
+    </script>
+
+    <script type="text/javascript" src="./js/locale/Portuguese.js"></script>
+    <!-- Handlebars -->
+    <script type="text/javascript" src="./js/handlebars.js"></script>
+    <script type="text/javascript" src="./js/handlebars_parser.js"></script>
+    <script type="text/javascript" src="./js/config.js"></script>
+    <script type="text/javascript">
+        var idioma = 'Portuguese';
+        //Por causa do cross-domain, não está sendo utilizado
+        // $.getScript('./js/locale/' + idioma + '.js')
+        //     .done(function(){
+        //         //
+        //     })
+        //     .fail(function(jqxhr, settings, exception){
+        //         alert('Não foi possível carregar o idioma: ' + idioma + jqxhr)
+        //     });
+        handlebars_parser.run({
+            userData: locale
+        });
+        var map, m1, m2, polyline, pontos = [];
+        // $(".collapse").collapse()
+    </script>
+    <script type="text/javascript" src="./js/scripts.js"></script>
+    <script type="text/javascript" src="./js/rotas.js"></script>
+    <script type="text/javascript" src="./js/mapas.js"></script>
+    <script type="text/javascript" src="./js/forms.js"></script>
+
+    <script type="text/javascript">
+    $(function(){
+        $('input#check_triangleTimeFactor, input#check_triangleSafetyFactor, input#check_triangleSlopeFactor')
+            .on('click', function(){
+                var _this = $(this);
+                var bike_options = [
+                    'triangleTimeFactor',
+                    'triangleSafetyFactor',
+                    'triangleSlopeFactor'
+                ];
+                var checked_total = 0;
+                var checked_array = [];
+                $.each(bike_options, function(index, value){
+                    if ( $('input#check_' + value).is(':checked') )
+                    {
+                        ++checked_total;
+                        checked_array.push(value);
+                    }
+                    $('input#' + value).val('0.0000000000');
+                });
+                // console.log(checked_array);
+                pesos = '0.0';
+                if ( checked_total > 0 )
+                {
+                    pesos = (1 / checked_total).toFixed(10);
+                }
+                $.each(checked_array, function(index, value){
+                    $('input#' + value).val(pesos);
+                })
+        });
+    });
+    </script>
+</body>
+</html>

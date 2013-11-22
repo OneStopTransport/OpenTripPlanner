@@ -160,4 +160,19 @@ $(function(){
     });
     $('input#triangleSafetyFactor,input#triangleTimeFactor,input#triangleSlopeFactor')
         .attr('disabled', 'disabled');
+
+    $('button.btn-wheelchair').on('click', function(e){
+        $(this).toggleClass('active');
+
+        if ( $(this).hasClass('active') )
+        {
+            $('input#wheelchair').val('true');
+        }
+        else
+        {
+            $('input#wheelchair').val('false');
+        }
+
+        e.preventDefault();
+    })
 });

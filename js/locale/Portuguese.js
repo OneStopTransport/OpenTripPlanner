@@ -66,8 +66,8 @@ var locale = {
         ]
     },
     messages: {
-        more_options:   'Clique aqui para mais opções',
-        less_options:   'Clique aqui para menos opções',
+        more_options:   '<i class="glyphicon glyphicon-plus"></i> Clique aqui para mais opções',
+        less_options:   '<i class="glyphicon glyphicon-minus"></i> Clique aqui para menos opções',
         miss_origin:    'É necessário definir um ponto de partida',
         miss_destiny:   'É necessário definir um ponto de chegada.',
         hide_info:      'Esconder info',

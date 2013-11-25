@@ -2,21 +2,76 @@ $(function(){
     //Altura e Largura dinamica
     resize_window = function(){
         var altura  = $(window).height();
-        var largura = $('div.direita').width();
 
-        // console.log( $('div.mapa').width() );
-        $('div.mapa')
-            .width(largura)
-            .height( altura - 70 );
-        // console.log( $('div.mapa').width() );
+        $('div.mapa').height(altura);
     };
     $(window).resize(function(){ resize_window(); });
 
-    //Início
-    $('div#sidebar').hide();
-    $('div.direita')
-        .addClass('col-md-12')
-        .removeClass('col-md-push-4');
+    mostra_direita = function() {
+        var largura = '40px';
+        if ( $('div.direita').hasClass('fechado') )
+        {
+            largura = '40%';
+        }
+        $('div.direita').toggleClass('fechado');
+
+        $('div.direita').animate({
+            width: largura
+        }, 400, function(){
+            if ( largura == '40px' )
+            {
+                $('div.direita')
+                    .find('article')
+                    .css('background', 'transparent')
+                    .hide();
+            }
+            else
+            {
+                $('div.direita')
+                    .find('article')
+                    .css('background', '#FFF')
+                    .show();
+            }
+        });
+    };
+    $('.toggle_direita').on('click', function(e) {
+        mostra_direita();
+
+        e.preventDefault();
+    });
+
+    mostra_esquerda = function() {
+        var largura = '40px';
+        if ( $('div.esquerda').hasClass('fechado') )
+        {
+            largura = '40%';
+        }
+
+        $('div.esquerda').toggleClass('fechado');
+        $('div.esquerda').animate({
+            width: largura
+        }, 400, function(){
+            if ( largura == '40px' )
+            {
+                $('div.esquerda')
+                    .find('article')
+                    .css('background', 'transparent')
+                    .hide();
+            }
+            else
+            {
+                $('div.esquerda')
+                    .find('article')
+                    .css('background', '#FFF')
+                    .show();
+            }
+        });
+    };
+    $('.toggle_esquerda').on('click', function(e) {
+        mostra_esquerda();
+
+        e.preventDefault();
+    });
 
     resize_window();
 

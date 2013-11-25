@@ -1,17 +1,29 @@
 $(function(){
+    var largura;
     //Altura e Largura dinamica
     resize_window = function(){
         var altura  = $(window).height();
-
-        $('div.mapa').height(altura);
+        largura = $(window).width();
+        $('div.mapa, div.esquerda, div.direita')
+            .height(altura);
+        $('div.esquerda article, div.direita article')
+            .height(altura)
+            .css('overflow-y', 'auto');
     };
     $(window).resize(function(){ resize_window(); });
+
+    largura_barras = function() {
+        if ( $('body').hasClass('mobile') || largura <= 760 )
+            return '96%';
+        else
+            return '40%';
+    };
 
     mostra_direita = function() {
         var largura = '40px';
         if ( $('div.direita').hasClass('fechado') )
         {
-            largura = '40%';
+            largura = largura_barras();
         }
         $('div.direita').toggleClass('fechado');
 
@@ -44,7 +56,7 @@ $(function(){
         var largura = '40px';
         if ( $('div.esquerda').hasClass('fechado') )
         {
-            largura = '40%';
+            largura = largura_barras();
         }
 
         $('div.esquerda').toggleClass('fechado');

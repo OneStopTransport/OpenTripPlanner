@@ -35,7 +35,6 @@ $(function(){
         });
     };
     $('.toggle_direita').on('click', function(e) {
-        
         mostra_direita();
 
         e.preventDefault();
@@ -70,6 +69,7 @@ $(function(){
     };
     $('.toggle_esquerda').on('click', function(e) {
         mostra_esquerda();
+
         e.preventDefault();
     });
 

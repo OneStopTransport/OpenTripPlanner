@@ -58,7 +58,6 @@ $(function(){
             icon: icone
         });
         m2.on('dragend', function(){
-
             if ( typeof(polyline) != 'undefined' )
                 map.removeLayer(polyline);
             if ( typeof(m1) != 'undefined' )

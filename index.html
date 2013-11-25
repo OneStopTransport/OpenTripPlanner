@@ -25,232 +25,202 @@
     <title></title>
 </head>
 <body>
-    <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
-        <!-- Brand and toggle get grouped for better mobile display -->
-        <div class="navbar-header">
-            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            </button>
-            <a class="navbar-brand" href="#">Home</a>
-        </div>
 
-        <!-- Collect the nav links, forms, and other content for toggling -->
-        <div class="collapse navbar-collapse navbar-ex1-collapse">
-            <ul class="nav navbar-nav">
-                <li><a href="#" class="direcoes fechado">Direções</a></li>
-                <!--
-                <li><a href="#">Link</a></li>
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown <b class="caret"></b></a>
-                    <ul class="dropdown-menu">
-                        <li><a href="#">Action</a></li>
-                        <li><a href="#">Another action</a></li>
-                        <li><a href="#">Something else here</a></li>
-                        <li><a href="#">Separated link</a></li>
-                        <li><a href="#">One more separated link</a></li>
-                    </ul>
-                </li>
-                -->
-            </ul>
-            
-            <ul class="nav navbar-nav navbar-right">
-                <li><a href="#"><i class="glyphicon glyphicon-info-sign"></i> <span data-handlebars>{{messages.right_mouse}}</span></a></li>
-            </ul>
-        </div><!-- /.navbar-collapse -->
-    </nav>
     <div class="container-full">
-
-        <div class="row">
-
-            <div class="direita col-md-8 col-md-push-4">
-                <div id="mapa" class="mapa">&nbsp;</div>
-            </div>
-
-            <div id="sidebar" class="col-md-4 col-md-pull-8">
+        <!-- Esquerda INICIO -->
+        <div class="esquerda fechado">
+            <article>
                 <!-- Direções após a chamada à API -->
                 <div class="resultados">
                     <!-- Itinerários INICIO -->
                     <div class="itinerarios escondido">
-                        <h4>Itinerários</h4>
+                    <h4>Itinerários</h4>
 
-                        <!-- Itinerários -->
-                        <div class="panel-group" id="accordion">
-                            <div class="panel panel-default it1">
-                                <div class="panel-heading">
-                                    <h4 class="panel-title">
-                                        <a data-toggle="collapse" data-parent="#accordion" href="#coll_it1">#1</a>
-                                    </h4>
-                                </div>
-                                <div id="coll_it1" class="panel-collapse collapse in">
-                                    <div class="panel-body">
-                                        <!-- Info da trip INICIO -->
-                                        <div class="info_trip escondido">
-                                            <h4 class="titulo_detalhes pull-left" data-handlebars>{{labels.trip_details}}</h4>
-                                            <a href="#" class="esconder_info pull-right" data-handlebars><i class="glyphicon glyphicon-eye-close icon_esconder_info"></i></a>
-                                            <div class="clear"></div><br><br>
-                                            <dl class="row">
-                                                <dt class="col-md-4 primeiro data_hora" data-handlebars>{{labels.date_time}}</dt>
-                                                <dd class="col-md-8 primeiro">&nbsp;</dd>
-
-                                                <dt class="validade col-md-4" data-handlebars>**{{labels.validity}}</dt>
-                                                <dd class="col-md-8">dd/mm/yyyy @ hh:ii:ss</dd>
-
-                                                <dt class="distancia_total col-md-4" data-handlebars>{{labels.total_distance}}</dt>
-                                                <dd class="link col-md-8" data-mostrar="distancias">
-                                                    <span class="setinhas baixo">&nbsp;</span>
-                                                    <span class="texto">&nbsp;</span>
-                                                    <span class="setinhas baixo">&nbsp;</span>
-                                                </dd>
-                                                    <dt data-mostrado="distancias" class="sub distancia_pe col-md-4" data-handlebars>{{labels.by_foot}}</dt>
-                                                    <dd data-mostrado="distancias" class="sub col-md-8">&nbsp;</dd>
-
-                                                    <dt data-mostrado="distancias" class="sub distancia_transportes col-md-4" data-handlebars>{{labels.by_transport}}</dt>
-                                                    <dd data-mostrado="distancias" class="sub col-md-8">&nbsp;</dd>
-
-                                                <dt class="duracao_total col-md-4" data-handlebars>{{labels.total_duration}}</dt>
-                                                <dd class="link col-md-8"data-mostrar="duracoes">
-                                                    <span class="setinhas baixo">&nbsp;</span>
-                                                    <span class="texto">&nbsp;</span>
-                                                    <span class="setinhas baixo">&nbsp;</span>
-                                                </dd>
-                                                    <dt data-mostrado="duracoes" class="sub duracao_pe col-md-4" data-handlebars>{{labels.by_foot}}</dt>
-                                                    <dd data-mostrado="duracoes" class="sub col-md-8">&nbsp;</dd>
-
-                                                    <dt data-mostrado="duracoes" class="sub duracao_transportes col-md-4" data-handlebars>{{labels.by_transport}}</dt>
-                                                    <dd data-mostrado="duracoes" class="sub col-md-8">&nbsp;</dd>
-
-                                                <div class="clear"></div>
-                                            </dl>
-                                            <div class="clear"></div>
-                                        </div>
-                                        <!-- Info da trip FIM -->
-                                        <div class="direcoes">&nbsp;</div>
-                                    </div>
-                                </div>
+                    <!-- Itinerários -->
+                    <div class="panel-group" id="accordion">
+                        <div class="panel panel-default it1">
+                            <div class="panel-heading">
+                                <h4 class="panel-title">
+                                    <a data-toggle="collapse" data-parent="#accordion" href="#coll_it1">#1</a>
+                                </h4>
                             </div>
+                            <div id="coll_it1" class="panel-collapse collapse in">
+                                <div class="panel-body">
+                                    <!-- Info da trip INICIO -->
+                                    <div class="info_trip escondido">
+                                        <h4 class="titulo_detalhes pull-left" data-handlebars>{{labels.trip_details}}</h4>
+                                        <a href="#" class="esconder_info pull-right" data-handlebars><i class="glyphicon glyphicon-eye-close icon_esconder_info"></i></a>
+                                        <div class="clear"></div><br><br>
+                                        <dl class="row">
+                                            <dt class="col-md-4 primeiro data_hora" data-handlebars>{{labels.date_time}}</dt>
+                                            <dd class="col-md-8 primeiro">&nbsp;</dd>
 
-                            <div class="panel panel-default it2">
-                                <div class="panel-heading">
-                                    <h4 class="panel-title">
-                                        <a data-toggle="collapse" data-parent="#accordion" href="#coll_it2">#2</a>
-                                    </h4>
-                                </div>
-                                <div id="coll_it2" class="panel-collapse collapse">
-                                    <div class="panel-body">
-                                        <!-- Info da trip INICIO -->
-                                        <div class="info_trip escondido">
-                                            <h4 class="titulo_detalhes pull-left" data-handlebars>{{labels.trip_details}}</h4>
-                                            <a href="#" class="esconder_info pull-right" data-handlebars><i class="glyphicon glyphicon-eye-close icon_esconder_info"></i></a>
-                                            <div class="clear"></div><br><br>
-                                            <dl class="row">
-                                                <dt class="col-md-4 primeiro data_hora" data-handlebars>{{labels.date_time}}</dt>
-                                                <dd class="col-md-8 primeiro">&nbsp;</dd>
+                                            <dt class="validade col-md-4" data-handlebars>**{{labels.validity}}</dt>
+                                            <dd class="col-md-8">dd/mm/yyyy @ hh:ii:ss</dd>
 
-                                                <dt class="validade col-md-4" data-handlebars>**{{labels.validity}}</dt>
-                                                <dd class="col-md-8">dd/mm/yyyy @ hh:ii:ss</dd>
+                                            <dt class="distancia_total col-md-4" data-handlebars>{{labels.total_distance}}</dt>
+                                            <dd class="link col-md-8" data-mostrar="distancias">
+                                                <span class="setinhas baixo">&nbsp;</span>
+                                                <span class="texto">&nbsp;</span>
+                                                <span class="setinhas baixo">&nbsp;</span>
+                                            </dd>
+                                                <dt data-mostrado="distancias" class="sub distancia_pe col-md-4" data-handlebars>{{labels.by_foot}}</dt>
+                                                <dd data-mostrado="distancias" class="sub col-md-8">&nbsp;</dd>
 
-                                                <dt class="distancia_total col-md-4" data-handlebars>{{labels.total_distance}}</dt>
-                                                <dd class="link col-md-8" data-mostrar="distancias">
-                                                    <span class="setinhas baixo">&nbsp;</span>
-                                                    <span class="texto">&nbsp;</span>
-                                                    <span class="setinhas baixo">&nbsp;</span>
-                                                </dd>
-                                                    <dt data-mostrado="distancias" class="sub distancia_pe col-md-4" data-handlebars>{{labels.by_foot}}</dt>
-                                                    <dd data-mostrado="distancias" class="sub col-md-8">&nbsp;</dd>
+                                                <dt data-mostrado="distancias" class="sub distancia_transportes col-md-4" data-handlebars>{{labels.by_transport}}</dt>
+                                                <dd data-mostrado="distancias" class="sub col-md-8">&nbsp;</dd>
 
-                                                    <dt data-mostrado="distancias" class="sub distancia_transportes col-md-4" data-handlebars>{{labels.by_transport}}</dt>
-                                                    <dd data-mostrado="distancias" class="sub col-md-8">&nbsp;</dd>
+                                            <dt class="duracao_total col-md-4" data-handlebars>{{labels.total_duration}}</dt>
+                                            <dd class="link col-md-8" data-mostrar="duracoes">
+                                                <span class="setinhas baixo">&nbsp;</span>
+                                                <span class="texto">&nbsp;</span>
+                                                <span class="setinhas baixo">&nbsp;</span>
+                                            </dd>
+                                                <dt data-mostrado="duracoes" class="sub duracao_pe col-md-4" data-handlebars>{{labels.by_foot}}</dt>
+                                                <dd data-mostrado="duracoes" class="sub col-md-8">&nbsp;</dd>
 
-                                                <dt class="duracao_total col-md-4" data-handlebars>{{labels.total_duration}}</dt>
-                                                <dd class="link col-md-8"data-mostrar="duracoes">
-                                                    <span class="setinhas baixo">&nbsp;</span>
-                                                    <span class="texto">&nbsp;</span>
-                                                    <span class="setinhas baixo">&nbsp;</span>
-                                                </dd>
-                                                    <dt data-mostrado="duracoes" class="sub duracao_pe col-md-4" data-handlebars>{{labels.by_foot}}</dt>
-                                                    <dd data-mostrado="duracoes" class="sub col-md-8">&nbsp;</dd>
+                                                <dt data-mostrado="duracoes" class="sub duracao_transportes col-md-4" data-handlebars>{{labels.by_transport}}</dt>
+                                                <dd data-mostrado="duracoes" class="sub col-md-8">&nbsp;</dd>
 
-                                                    <dt data-mostrado="duracoes" class="sub duracao_transportes col-md-4" data-handlebars>{{labels.by_transport}}</dt>
-                                                    <dd data-mostrado="duracoes" class="sub col-md-8">&nbsp;</dd>
-
-                                                <div class="clear"></div>
-                                            </dl>
                                             <div class="clear"></div>
-                                        </div>
-                                        <!-- Info da trip FIM -->
-                                        <div class="direcoes">&nbsp;</div>
+                                        </dl>
+                                        <div class="clear"></div>
                                     </div>
-                                </div>
-                            </div>
-
-                            <div class="panel panel-default it3">
-                                <div class="panel-heading">
-                                    <h4 class="panel-title">
-                                        <a data-toggle="collapse" data-parent="#accordion" href="#coll_it3">#3</a>
-                                    </h4>
-                                </div>
-                                <div id="coll_it3" class="panel-collapse collapse">
-                                    <div class="panel-body">
-                                        <!-- Info da trip INICIO -->
-                                        <div class="info_trip escondido">
-                                            <h4 class="titulo_detalhes pull-left" data-handlebars>{{labels.trip_details}}</h4>
-                                            <a href="#" class="esconder_info pull-right" data-handlebars><i class="glyphicon glyphicon-eye-close icon_esconder_info"></i></a>
-                                            <div class="clear"></div><br><br>
-                                            <dl class="row">
-                                                <dt class="col-md-4 primeiro data_hora" data-handlebars>{{labels.date_time}}</dt>
-                                                <dd class="col-md-8 primeiro">&nbsp;</dd>
-
-                                                <dt class="validade col-md-4" data-handlebars>**{{labels.validity}}</dt>
-                                                <dd class="col-md-8">dd/mm/yyyy @ hh:ii:ss</dd>
-
-                                                <dt class="distancia_total col-md-4" data-handlebars>{{labels.total_distance}}</dt>
-                                                <dd class="link col-md-8" data-mostrar="distancias">
-                                                    <span class="setinhas baixo">&nbsp;</span>
-                                                    <span class="texto">&nbsp;</span>
-                                                    <span class="setinhas baixo">&nbsp;</span>
-                                                </dd>
-                                                    <dt data-mostrado="distancias" class="sub distancia_pe col-md-4" data-handlebars>{{labels.by_foot}}</dt>
-                                                    <dd data-mostrado="distancias" class="sub col-md-8">&nbsp;</dd>
-
-                                                    <dt data-mostrado="distancias" class="sub distancia_transportes col-md-4" data-handlebars>{{labels.by_transport}}</dt>
-                                                    <dd data-mostrado="distancias" class="sub col-md-8">&nbsp;</dd>
-
-                                                <dt class="duracao_total col-md-4" data-handlebars>{{labels.total_duration}}</dt>
-                                                <dd class="link col-md-8"data-mostrar="duracoes">
-                                                    <span class="setinhas baixo">&nbsp;</span>
-                                                    <span class="texto">&nbsp;</span>
-                                                    <span class="setinhas baixo">&nbsp;</span>
-                                                </dd>
-                                                    <dt data-mostrado="duracoes" class="sub duracao_pe col-md-4" data-handlebars>{{labels.by_foot}}</dt>
-                                                    <dd data-mostrado="duracoes" class="sub col-md-8">&nbsp;</dd>
-
-                                                    <dt data-mostrado="duracoes" class="sub duracao_transportes col-md-4" data-handlebars>{{labels.by_transport}}</dt>
-                                                    <dd data-mostrado="duracoes" class="sub col-md-8">&nbsp;</dd>
-
-                                                <div class="clear"></div>
-                                            </dl>
-                                            <div class="clear"></div>
-                                        </div>
-                                        <!-- Info da trip FIM -->
-                                        <div class="direcoes">&nbsp;</div>
-                                    </div>
+                                    <!-- Info da trip FIM -->
+                                    <div class="direcoes">&nbsp;</div>
                                 </div>
                             </div>
                         </div>
-                        <ul class="ul_itinerarios">&nbsp;</ul>
+
+                        <div class="panel panel-default it2">
+                            <div class="panel-heading">
+                            <h4 class="panel-title">
+                                <a data-toggle="collapse" data-parent="#accordion" href="#coll_it2">#2</a>
+                            </h4>
+                            </div>
+                            <div id="coll_it2" class="panel-collapse collapse">
+                            <div class="panel-body">
+                                <!-- Info da trip INICIO -->
+                                <div class="info_trip escondido">
+                                    <h4 class="titulo_detalhes pull-left" data-handlebars>{{labels.trip_details}}</h4>
+                                    <a href="#" class="esconder_info pull-right" data-handlebars><i class="glyphicon glyphicon-eye-close icon_esconder_info"></i></a>
+                                    <div class="clear"></div><br><br>
+                                    <dl class="row">
+                                        <dt class="col-md-4 primeiro data_hora" data-handlebars>{{labels.date_time}}</dt>
+                                        <dd class="col-md-8 primeiro">&nbsp;</dd>
+
+                                        <dt class="validade col-md-4" data-handlebars>**{{labels.validity}}</dt>
+                                        <dd class="col-md-8">dd/mm/yyyy @ hh:ii:ss</dd>
+
+                                        <dt class="distancia_total col-md-4" data-handlebars>{{labels.total_distance}}</dt>
+                                        <dd class="link col-md-8" data-mostrar="distancias">
+                                            <span class="setinhas baixo">&nbsp;</span>
+                                            <span class="texto">&nbsp;</span>
+                                            <span class="setinhas baixo">&nbsp;</span>
+                                        </dd>
+                                            <dt data-mostrado="distancias" class="sub distancia_pe col-md-4" data-handlebars>{{labels.by_foot}}</dt>
+                                            <dd data-mostrado="distancias" class="sub col-md-8">&nbsp;</dd>
+
+                                            <dt data-mostrado="distancias" class="sub distancia_transportes col-md-4" data-handlebars>{{labels.by_transport}}</dt>
+                                            <dd data-mostrado="distancias" class="sub col-md-8">&nbsp;</dd>
+
+                                        <dt class="duracao_total col-md-4" data-handlebars>{{labels.total_duration}}</dt>
+                                        <dd class="link col-md-8" data-mostrar="duracoes">
+                                            <span class="setinhas baixo">&nbsp;</span>
+                                            <span class="texto">&nbsp;</span>
+                                            <span class="setinhas baixo">&nbsp;</span>
+                                        </dd>
+                                            <dt data-mostrado="duracoes" class="sub duracao_pe col-md-4" data-handlebars>{{labels.by_foot}}</dt>
+                                            <dd data-mostrado="duracoes" class="sub col-md-8">&nbsp;</dd>
+
+                                            <dt data-mostrado="duracoes" class="sub duracao_transportes col-md-4" data-handlebars>{{labels.by_transport}}</dt>
+                                            <dd data-mostrado="duracoes" class="sub col-md-8">&nbsp;</dd>
+
+                                        <div class="clear"></div>
+                                    </dl>
+                                    <div class="clear"></div>
+                                </div>
+                                <!-- Info da trip FIM -->
+                                <div class="direcoes">&nbsp;</div>
+                            </div>
+                            </div>
+                        </div>
+
+                        <div class="panel panel-default it3">
+                            <div class="panel-heading">
+                                <h4 class="panel-title">
+                                    <a data-toggle="collapse" data-parent="#accordion" href="#coll_it3">#3</a>
+                                </h4>
+                            </div>
+                            <div id="coll_it3" class="panel-collapse collapse">
+                                <div class="panel-body">
+                                    <!-- Info da trip INICIO -->
+                                    <div class="info_trip escondido">
+                                        <h4 class="titulo_detalhes pull-left" data-handlebars>{{labels.trip_details}}</h4>
+                                        <a href="#" class="esconder_info pull-right" data-handlebars><i class="glyphicon glyphicon-eye-close icon_esconder_info"></i></a>
+                                        <div class="clear"></div><br><br>
+                                        <dl class="row">
+                                            <dt class="col-md-4 primeiro data_hora" data-handlebars>{{labels.date_time}}</dt>
+                                            <dd class="col-md-8 primeiro">&nbsp;</dd>
+
+                                            <dt class="validade col-md-4" data-handlebars>**{{labels.validity}}</dt>
+                                            <dd class="col-md-8">dd/mm/yyyy @ hh:ii:ss</dd>
+
+                                            <dt class="distancia_total col-md-4" data-handlebars>{{labels.total_distance}}</dt>
+                                            <dd class="link col-md-8" data-mostrar="distancias">
+                                                <span class="setinhas baixo">&nbsp;</span>
+                                                <span class="texto">&nbsp;</span>
+                                                <span class="setinhas baixo">&nbsp;</span>
+                                            </dd>
+                                                <dt data-mostrado="distancias" class="sub distancia_pe col-md-4" data-handlebars>{{labels.by_foot}}</dt>
+                                                <dd data-mostrado="distancias" class="sub col-md-8">&nbsp;</dd>
+
+                                                <dt data-mostrado="distancias" class="sub distancia_transportes col-md-4" data-handlebars>{{labels.by_transport}}</dt>
+                                                <dd data-mostrado="distancias" class="sub col-md-8">&nbsp;</dd>
+
+                                            <dt class="duracao_total col-md-4" data-handlebars>{{labels.total_duration}}</dt>
+                                            <dd class="link col-md-8" data-mostrar="duracoes">
+                                                <span class="setinhas baixo">&nbsp;</span>
+                                                <span class="texto">&nbsp;</span>
+                                                <span class="setinhas baixo">&nbsp;</span>
+                                            </dd>
+                                                <dt data-mostrado="duracoes" class="sub duracao_pe col-md-4" data-handlebars>{{labels.by_foot}}</dt>
+                                                <dd data-mostrado="duracoes" class="sub col-md-8">&nbsp;</dd>
+
+                                            <dt data-mostrado="duracoes" class="sub duracao_transportes col-md-4" data-handlebars>{{labels.by_transport}}</dt>
+                                            <dd data-mostrado="duracoes" class="sub col-md-8">&nbsp;</dd>
+
+                                            <div class="clear"></div>
+                                        </dl>
+                                        <div class="clear"></div>
+                                    </div>
+                                    <!-- Info da trip FIM -->
+                                    <div class="direcoes">&nbsp;</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <ul class="ul_itinerarios">&nbsp;</ul>
                     </div>
                     <!-- Itinerários FIM -->
-
 
                     <!-- Resposta da API INICIO -->
                     <div id="direcoes">&nbsp;</div>
                     <!-- Resposta da API FIM -->
                 </div>
+            </article>
+            <footer>
+                <a href="#" class="toggle_esquerda btn btn-primary"><i class="glyphicon glyphicon-align-justify"></i></a>
+            </footer>
+        </div>
+        <!-- Esquerda FIM -->
+
+        <!-- Direita INICIO -->
+        <div class="direita fechado">
+            <article>
                 <!-- Formulário INICIO -->
                 <form class="form-horizontal" role="form" id="trip_plan_form">
+              
                     <div class="form-group">
                         <label for="arriveBy" class="control-label col-lg-4" data-handlebars>{{labels.when}}</label>
                         <div class="col-lg-8" data-handlebars>
@@ -285,7 +255,12 @@
                     </div>
 
                     <div class="opcoes_avancadas">
-                        <a href="#" class="mostrar">Clique aqui para mais opções</a>
+                        <div class="form-group">
+                            <label class="control-label col-lg-4">&nbsp;</label>
+                            <div class="col-lg-8">
+                                <a href="#" class="mostrar" data-handlebars>{{messages.more_options}}</a>
+                            </div>
+                        </div>
                         <div class="escondido mais_opcoes">
                             <div class="form-group optimize">
                                 <label for="optimize" class="control-label col-lg-4" data-handlebars>{{labels.minimize}}</label>
@@ -295,6 +270,18 @@
                                             <option value="{{this.[0]}}">{{this.[1]}}</option>
                                         {{/each}}
                                     </select>
+                                </div>
+                            </div>
+                            <div class="form-group bike_options escondido">
+                                <label class="control-label col-lg-4" data-handlebars>{{labels.bike_options}}</label>
+                                <div class="col-lg-8">
+                                    <input type="checkbox" id="check_triangleSafetyFactor"> <label for="check_triangleSafetyFactor" data-handlebars>{{labels.bikeFriendly}}</label><br>
+                                    <input type="checkbox" id="check_triangleSlopeFactor"> <label for="check_triangleSlopeFactor" data-handlebars>{{labels.flat}}</label><br>
+                                    <input type="checkbox" id="check_triangleTimeFactor"> <label for="check_triangleTimeFactor" data-handlebars>{{labels.quick}}</label>
+
+                                    <input type="hidden" value="0" name="triangleSafetyFactor" id="triangleSafetyFactor">
+                                    <input type="hidden" value="0" name="triangleSlopeFactor" id="triangleSlopeFactor">
+                                    <input type="hidden" value="0" name="triangleTimeFactor" id="triangleTimeFactor">
                                 </div>
                             </div>
 
@@ -321,17 +308,18 @@
                             </div>
 
                             <div class="form-group wheelchair">
-                                <label class="control-label col-lg-4" for="wheelchair" data-handlebars>{{labels.wheelchair}}</label>
+                                <label class="control-label col-lg-4" for="wheelchair">&nbsp;</label>
                                 <div class="col-lg-8">
-                                    <input type="checkbox" value="true" name="wheelchair" id="wheelchair" class="form-control1">
+                                    <button type="button" class="btn btn-default btn-xs btn-wheelchair" data-handlebars>{{labels.wheelchair}}</button>
+                                    <input type="hidden" value="false" name="wheelchair" id="wheelchair" class="form-control1">
                                 </div>
                             </div>
                         </div>
                     </div>
 
                     <div class="form-group">
-                        <div class="col-lg-3">&nbsp;</div>
-                        <div class="col-lg-9">
+                        <div class="col-lg-4">&nbsp;</div>
+                        <div class="col-lg-8">
                             <button type="submit" class="btn btn-primary" data-handlebars><i class="glyphicon glyphicon-road"></i> {{labels.planTrip}}</button><br>
                             <a class="trocar_idioma" lang="Portuguese">Idioma: PT</a>
                             <a class="trocar_idioma" lang="English">Idioma: EN</a>
@@ -339,10 +327,18 @@
                     </div>
                 </form>
                 <!-- Formulário FIM -->
-            </div>
-
+            </article>
+            <footer>
+                <a href="#" class="toggle_direita btn btn-success"><i class="glyphicon glyphicon-cog"></i></a>
+            </footer>
         </div>
+        <!-- Direita FIM -->
 
+        <!-- Mapa INICIO -->
+        <div id="mapa" class="mapa">&nbsp;</div>
+        <!-- Mapa FIM -->
+
+        
     </div>
 
     <!-- Mensagens de Alerta INICIO -->
@@ -372,6 +368,7 @@
 
     <!-- JQuery -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
     <script>window.jQuery || document.write('<script src="./js/jquery.min.js"><\/script>')</script>
     <!-- Latest compiled and minified JavaScript -->
     <script src="./js/bootstrap.min.js"></script>
@@ -381,6 +378,54 @@
     <script src="./js/Polyline.encoded.js"></script>
     <script src="./js/bootstrap-datepicker.js"></script>
     <script src="./js/bootstrap-timepicker.min.js"></script>
+
+    <script type="text/javascript">
+    $(function(){
+        /**
+        * Mostra esquerda (itinerários)
+        $('.toggle_esquerda').hover(function(){
+            pai = $(this).parents('div.esquerda');
+
+            if ( $(pai).hasClass('fechado') )
+            {
+                $(pai).animate({
+                    width: '40px'
+                });
+            }
+        }, function(){
+            pai = $(this).parents('div.esquerda');
+            if ( $(pai).hasClass('fechado') )
+            {
+                $(pai).animate({
+                    width: '15px'
+                });
+            }
+        });*/
+
+        /**
+        * Mover direita (Opções do formulário)
+        
+        $('.toggle_direita').hover(function(){
+            pai = $(this).parents('div.direita');
+
+            if ( $(pai).hasClass('fechado') )
+            {
+                $(pai).animate({
+                    width: '40px'
+                });
+            }
+        }, function(){
+            pai = $(this).parents('div.direita');
+            if ( $(pai).hasClass('fechado') )
+            {
+                $(pai).animate({
+                    width: '15px'
+                });
+            }
+        });*/
+    });
+    </script>
+
     <script type="text/javascript" src="./js/locale/Portuguese.js"></script>
     <!-- Handlebars -->
     <script type="text/javascript" src="./js/handlebars.js"></script>
@@ -406,5 +451,38 @@
     <script type="text/javascript" src="./js/rotas.js"></script>
     <script type="text/javascript" src="./js/mapas.js"></script>
     <script type="text/javascript" src="./js/forms.js"></script>
+
+    <script type="text/javascript">
+    $(function(){
+        $('input#check_triangleTimeFactor, input#check_triangleSafetyFactor, input#check_triangleSlopeFactor')
+            .on('click', function(){
+                var _this = $(this);
+                var bike_options = [
+                    'triangleTimeFactor',
+                    'triangleSafetyFactor',
+                    'triangleSlopeFactor'
+                ];
+                var checked_total = 0;
+                var checked_array = [];
+                $.each(bike_options, function(index, value){
+                    if ( $('input#check_' + value).is(':checked') )
+                    {
+                        ++checked_total;
+                        checked_array.push(value);
+                    }
+                    $('input#' + value).val('0.0000000000');
+                });
+                // console.log(checked_array);
+                pesos = '0.0';
+                if ( checked_total > 0 )
+                {
+                    pesos = (1 / checked_total).toFixed(10);
+                }
+                $.each(checked_array, function(index, value){
+                    $('input#' + value).val(pesos);
+                })
+        });
+    });
+    </script>
 </body>
 </html>

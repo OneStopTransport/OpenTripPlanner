@@ -7,11 +7,8 @@ $(function() {
 
         Rotas.tracar();
 
-        altura  = $(window).height();
-        largura = $(window).width();
-
-        fechado = $('a.direcoes').hasClass('fechado');
-        if ( fechado != false )
+        var fechado = $('a.direcoes').hasClass('fechado');
+        if ( fechado !== false )
         {
             $('a.direcoes').removeClass('fechado');
             $('div#sidebar').show();
@@ -21,6 +18,7 @@ $(function() {
 
             resize_window();
         }
+        mostra_esquerda();
         setTimeout( map.invalidateSize.bind(map) );
 
         if ( $('div#coll_it1').css('display') == 'none' )

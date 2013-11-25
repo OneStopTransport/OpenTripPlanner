@@ -1,22 +1,77 @@
 $(function(){
     //Altura e Largura dinamica
-    $(window).resize(function(){ resize_window(); });
     resize_window = function(){
-        altura  = $(window).height();
-        largura = $('div.direita').width();
+        var altura  = $(window).height();
 
-        // console.log( $('div.mapa').width() );
-        $('div.mapa')
-            .width(largura)
-            .height( altura - 70 );
-        // console.log( $('div.mapa').width() );
+        $('div.mapa').height(altura);
     };
+    $(window).resize(function(){ resize_window(); });
 
-    //Início
-    $('div#sidebar').hide();
-    $('div.direita')
-        .addClass('col-md-12')
-        .removeClass('col-md-push-4');
+    mostra_direita = function() {
+        var largura = '40px';
+        if ( $('div.direita').hasClass('fechado') )
+        {
+            largura = '40%';
+        }
+        $('div.direita').toggleClass('fechado');
+
+        $('div.direita').animate({
+            width: largura
+        }, 400, function(){
+            if ( largura == '40px' )
+            {
+                $('div.direita')
+                    .find('article')
+                    .css('background', 'transparent')
+                    .hide();
+            }
+            else
+            {
+                $('div.direita')
+                    .find('article')
+                    .css('background', '#FFF')
+                    .show();
+            }
+        });
+    };
+    $('.toggle_direita').on('click', function(e) {
+        mostra_direita();
+
+        e.preventDefault();
+    });
+
+    mostra_esquerda = function() {
+        var largura = '40px';
+        if ( $('div.esquerda').hasClass('fechado') )
+        {
+            largura = '40%';
+        }
+
+        $('div.esquerda').toggleClass('fechado');
+        $('div.esquerda').animate({
+            width: largura
+        }, 400, function(){
+            if ( largura == '40px' )
+            {
+                $('div.esquerda')
+                    .find('article')
+                    .css('background', 'transparent')
+                    .hide();
+            }
+            else
+            {
+                $('div.esquerda')
+                    .find('article')
+                    .css('background', '#FFF')
+                    .show();
+            }
+        });
+    };
+    $('.toggle_esquerda').on('click', function(e) {
+        mostra_esquerda();
+
+        e.preventDefault();
+    });
 
     resize_window();
 
@@ -30,11 +85,11 @@ $(function(){
 
     //Mostra os passos de cada instrução
     $('a.direcoes').on('click', function(e){
-        fechado = $(this).hasClass('fechado');
+        var fechado = $(this).hasClass('fechado');
         //Pai do <a>, neste caso <li>
-        link    = $(this).parent();
+        var link    = $(this).parent();
 
-        if ( true == fechado )
+        if ( true === fechado )
         {
             $(link).addClass('active');
             $(this).removeClass('fechado');
@@ -59,23 +114,27 @@ $(function(){
 
     //Opções avançadas
     $('div.opcoes_avancadas a.mostrar').on('click', function(e){
-        link = $(this);
+        var link = $(this);
         $('div.mais_opcoes').toggle('slow', function(){
             if ( $(this).css('display') == 'none')
+            {
                 $(link).html(locale.messages.more_options);
+            }
             else
+            {
                 $(link).html(locale.messages.less_options);
+            }
         });
 
         e.preventDefault();
     });
 
-    $('dd.link').on('click', function(e){
-        data_mostrar = $(this).data('mostrar');
+    $('dd.link').on('click', function(){
+        var data_mostrar = $(this).data('mostrar');
         // THIS = $(this);
         var dtds = 'dt[data-mostrado="' + data_mostrar + '"], dd[data-mostrado="' + data_mostrar + '"]';
         $(dtds).toggle();
-        visivel = $(dtds).css('display');
+        var visivel = $(dtds).css('display');
 
         if ( visivel == 'block' )
         {
@@ -99,13 +158,19 @@ $(function(){
             $('div.info_trip dl').hide();
         }
         else
+        {
             $('div.info_trip dl').toggle();
+        }
 
-        dl_show = $('div.info_trip dl').css('display');
+        var dl_show = $('div.info_trip dl').css('display');
         if ( dl_show == 'block' )
+        {
             link.html('<i class="glyphicon glyphicon-eye-close"></i>');
+        }
         else
+        {
             link.html('<i class="glyphicon glyphicon-eye-open"></i>');
+        }
     };
     //
     $('a.esconder_info').on('click', function(e){
@@ -116,12 +181,14 @@ $(function(){
 
     //Objetos que não estão no DOM original
     $('body').on('click', 'ul.direcoes li.primeiro_nivel', function() {
-        proximo = $(this).children(".escondido");
-        if ( proximo.html() == '' )
+        var proximo = $(this).children('.escondido');
+        if ( proximo.html() === '' )
+        {
             $(this).css('cursor', 'auto');
+        }
 
         //Escondo todas
-        $('ul.escondido').each(function(index, value){
+        $('ul.escondido').each(function(){
             $(this).hide();
         });
 
@@ -131,4 +198,36 @@ $(function(){
     $('body').on('click', 'ul.direcoes li ul li', function() {
         return false;
     });
+
+    $('form select#optimize').on('change', function(){
+        if ( $(this).val() == 'TRIANGLE' )
+        {
+            $('div.bike_options').removeClass('escondido');
+            $('input#triangleSafetyFactor,input#triangleTimeFactor,input#triangleSlopeFactor')
+                .attr('disabled', 'disabled');
+        }
+        else
+        {
+            $('div.bike_options').addClass('escondido');
+            $('input#triangleSafetyFactor,input#triangleTimeFactor,input#triangleSlopeFactor')
+                .removeAttr('disabled');
+        }
+    });
+    $('input#triangleSafetyFactor,input#triangleTimeFactor,input#triangleSlopeFactor')
+        .attr('disabled', 'disabled');
+
+    $('button.btn-wheelchair').on('click', function(e){
+        $(this).toggleClass('active');
+
+        if ( $(this).hasClass('active') )
+        {
+            $('input#wheelchair').val('true');
+        }
+        else
+        {
+            $('input#wheelchair').val('false');
+        }
+
+        e.preventDefault();
+    })
 });

@@ -62,18 +62,18 @@ Rotas = {
     */
     validar: function() {
         //Validação do formulário
-        form = 'form' + this.formulario;
-        error = 0;
-        date = $(form + ' input#date');
-        time = $(form + ' input#time');
-        if ( $(date).val() == '' )
+        var form = 'form' + this.formulario;
+        var error = 0;
+        var date = $(form + ' input#date');
+        var time = $(form + ' input#time');
+        if ( $(date).val() === '' )
         {
             $(date).parents('.form-group').addClass('has-error');
             ++error;
         }
         else
             --error;
-        if ( $(time).val() == '' )
+        if ( $(time).val() === '' )
         {
             $(time).parents('.form-group').addClass('has-error');
             ++error;
@@ -94,7 +94,7 @@ Rotas = {
                 .removeClass('alert-info')
                 .removeClass('alert-warning')
                 .html('<i class="glyphicon glyphicon-exclamation-sign"></i> ' + locale.messages.miss_origin);
-            $("#myModal").modal();
+            $('#myModal').modal();
 
             return false;
         }
@@ -108,7 +108,7 @@ Rotas = {
                 .removeClass('alert-info')
                 .removeClass('alert-warning')
                 .html('<i class="glyphicon glyphicon-exclamation-sign"></i> ' + locale.messages.miss_destiny);
-            $("#myModal").modal();
+            $('#myModal').modal();
 
             return false;
         }
@@ -122,30 +122,31 @@ Rotas = {
     */
     invocar_api: function() {
         //Coordenadas
-        fromPlace = m1.getLatLng().lat + ',' + m1.getLatLng().lng;
-        toPlace = m2.getLatLng().lat + ',' + m2.getLatLng().lng;
+        var fromPlace = m1.getLatLng().lat + ',' + m1.getLatLng().lng;
+        var toPlace = m2.getLatLng().lat + ',' + m2.getLatLng().lng;
 
-        time = $('form' + this.formulario + ' input#time').val();
+        var time = $('form' + this.formulario + ' input#time').val();
         time = time.toLowerCase();
-        $('input#time').val( (time).replace(/\s/g, "") );
-        form = $('form' + this.formulario).serialize();
+        $('input#time').val( (time).replace(/\s/g, '') );
+        var form = $('form' + this.formulario).serialize();
+        var url = '';
 
         if ( Rotas.tipo_api == 'otp' )
         {
             //API da OST
-            url = Config.api_url + 'trips/plan/?' + 
+            url = Config.api_url + 'trips/plan/?' +
                 'fromPlace=' + fromPlace +
                 '&toPlace=' + toPlace +
                 '&' + form +
                 '&key=' + Config.api_key;
         }
         else
-        {     
+        {
             //API da Cloudmade - Para teste apenas
-            url = 'http://routes.cloudmade.com/13e2ed112d194f36afc6c568fa65811d/api/0.3/' + 
+            url = 'http://routes.cloudmade.com/13e2ed112d194f36afc6c568fa65811d/api/0.3/' +
               fromPlace + ',' + toPlace + '/foot.js';
         }
-        ajax = $.ajax({ url: url, dataType: 'JSONP' });
+        var ajax = $.ajax({ url: url, dataType: 'JSONP' });
         console.log(url);
 
         return ajax;
@@ -159,9 +160,10 @@ Rotas = {
        
         Rotas.clearMap();
         Rotas.itinerario_mostrar = 0;
+        var objeto_json = {};
 
-        api = this.invocar_api();
-        THIS = this;
+        var api = this.invocar_api();
+        var THIS = this;
         api
         //Deu certo
         .done( function(retorno){
@@ -169,7 +171,7 @@ Rotas = {
             $('a[href="#trip_resultados"]').show();
             $('#Tab a[href="#trip_resultados"]').tab('show');
             // $('div#trip_resultados').empty();
-            resultado = retorno;
+            var resultado = retorno;
             resultado = resultado.Objects;
             Rotas.objeto_json = resultado;
 
@@ -198,7 +200,7 @@ Rotas = {
     * @return {Void}
     */
     formatar_cloudmade: function() {
-        objeto_json = Rotas.objeto_json;
+        var objeto_json = Rotas.objeto_json;
         var point, route, points = [];
         var instrucoes = [];
         for (var i=0; i<objeto_json.route_geometry.length; i++)
@@ -244,18 +246,20 @@ Rotas = {
         var cores               = [];
         var instrucoes_gerais   = [];
         var itinerarios         = [];
-        objeto_json             = Rotas.objeto_json;
+        var objeto_json         = Rotas.objeto_json;
         $.each(objeto_json, function(index, value){
-            if ( typeof(value.from.lat) != 'undefined' || typeof(value.from.lon) != 'undefined' )
+            // console.log( value );
+            if ( value && (typeof(value.from.lat) != 'undefined' || typeof(value.from.lon) != 'undefined') )
             {
                 Rotas.distanciaPe           = 0;
                 Rotas.distanciaTransporte   = 0;
                 Rotas.itinerarios           = [];
-                i = 0;
+                var i = 0;
                 toLat = value.to.lat;
                 toLon = value.to.lon;
                 var latlngs = new L.latLng(value.from.lat, value.from.lon);
                 points.push(latlngs);
+                var array_it = {};
                 $.each(value.itineraries, function(index, legs){
 
                     //No primeiro momento, Rotas.itinerario_mostrar = 0;
@@ -263,7 +267,7 @@ Rotas = {
                     {
                         Rotas.clearMap();
                         var primeiro_itinerario = Rotas.desenhar_rota(value, legs, instrucoes_gerais, instrucoes, i, true);
-                        var array_it = {
+                        array_it = {
                             polyline:   primeiro_itinerario,
                             startTime:  legs.startTime,
                             duration:   legs.duration,
@@ -283,7 +287,7 @@ Rotas = {
                     else
                     {
                         var retorno = Rotas.desenhar_rota(value, legs, instrucoes_gerais, instrucoes, i, false);
-                        var array_it = {
+                        array_it = {
                             polyline:   retorno,
                             startTime:  legs.startTime,
                             duration:   legs.duration,
@@ -295,6 +299,13 @@ Rotas = {
                     }
                     ++i;
                 });
+            }
+            else
+            {
+                alert('Não foram encontradas rotas para estes pontos.');
+                Rotas.clearMap();
+                // map.removeLayer(m1);
+                // map.removeLayer(m2);
             }
         });
         // console.log('Contador ' + i);
@@ -328,7 +339,7 @@ Rotas = {
         instrucoes_gerais.push(ins_ger);
 
         //Subcontador
-        j = 0;
+        var j = 0;
         var polylines = [];
         var centro = [];
         $.each(legs.legs, function(index, leg){
@@ -358,7 +369,7 @@ Rotas = {
             polylines.push(polyline);
 
             //Se for para escrever a rota (itinerario selecionado OK)
-            if ( escrever_rota == true )
+            if ( escrever_rota === true )
             {
                 // polyline.addTo(map);
                 //@TODO: Verificar onde estão as paragens de autocarro.
@@ -402,16 +413,20 @@ Rotas = {
                 }
 
                 //Informações dos transportes (lateral esquerda)
-                if ( leg.mode == "BUS" )
+                if ( leg.mode == 'BUS' )
                 {
-                    var div_ruas = '<div class="div_ruas">'
-                        + locale.info.stop_depart + leg.from.stopCode + locale.info.at + Rotas.formata_hora(leg.startTime, 2) + '<br>~'
-                        + Math.floor(leg.duration / 60000) + ' min.<br>'
-                        + locale.info.stop_arrive + leg.to.stopCode + locale.info.at + Rotas.formata_hora(leg.endTime, 2) + '<br>'
-                        + leg.agencyName
-                        + '<br>'
-                        + '<a href="#" class="trip_viewer" data-tripId="' + leg.tripId + '" data-stop-to="' + leg.to.stopId.id + '" data-stop-from="' + leg.from.stopId.id + '">[' + locale.info.see_stops + ']</a>'
-                        + '</div>';
+                    var div_ruas = '<div class="div_ruas">' +
+                        locale.info.stop_depart + leg.from.stopCode + locale.info.at +
+                        Rotas.formata_hora(leg.startTime, 2) +
+                        '<br>~' + Math.floor(leg.duration / 60000) + ' min.<br>' +
+                        locale.info.stop_arrive + leg.to.stopCode + locale.info.at +
+                        Rotas.formata_hora(leg.endTime, 2) +
+                        '<br>' +
+                        leg.agencyName +
+                        '<br>' +
+                        '<a href="#" class="trip_viewer" data-tripId="' + leg.tripId + '" data-stop-to="' + leg.to.stopId.id + '" data-stop-from="' + leg.from.stopId.id + '">[' +
+                        locale.info.see_stops + ']</a>' +
+                        '</div>';
                     var info_paragens = {
                         distancia:  leg.distance.toFixed(2),
                         rua:        div_ruas,
@@ -425,7 +440,7 @@ Rotas = {
                     Rotas.distanciaTransporte += leg.distance;
                 }
                 //Distância a lapatex
-                else if ( leg.mode == "WALK" )
+                else if ( leg.mode == 'WALK' )
                     Rotas.distanciaPe += leg.distance;
 
                 //Este contador serve para as sub-instruções
@@ -438,7 +453,7 @@ Rotas = {
             }
         });
 
-        if ( escrever_rota == true )
+        if ( escrever_rota === true )
         {
             map.fitBounds( centro );
         }
@@ -454,6 +469,8 @@ Rotas = {
     */
     informacoes: function(info, it) {
         ++it;
+        var div_it = 'div#coll_it' + it + ' div.panel-body ';
+        var link = 'div#coll_it' + it + ' a.esconder_info';
         $.each(info, function(index, value){
             var data_hora   = Rotas.formata_data(value.data_hora);
             var hora        = Rotas.formata_hora(value.data_hora);
@@ -463,8 +480,7 @@ Rotas = {
             var endTime     = Rotas.formata_hora(value.endTime);
             var du_trans    = duration - walkTime;
             var walkTotal   = Rotas.distanciaPe + Rotas.distanciaTransporte;
-            div_it = 'div#coll_it' + it + ' div.panel-body ';
-            link = 'div#coll_it' + it + ' a.esconder_info';
+
             link = $(link);
             $(div_it + 'div.info_trip').removeClass('escondido');
 
@@ -494,7 +510,7 @@ Rotas = {
         //data-api é que faz a mágica (HTML + CSS)
         var html = '<ul class="direcoes" data-api="resultados_' + this.tipo_api + '">';
         
-        div_it = 'div#coll_it' + it + ' div.panel-body div.direcoes ';
+        var div_it = 'div#coll_it' + it + ' div.panel-body div.direcoes ';
         
         // console.log(direcoes);
         
@@ -534,10 +550,10 @@ Rotas = {
     * @return {String} retorno
     */
     formata_html: function(obj, i) {
-        retorno = '<li';
-        if ( 'undefined' == typeof(obj.lat)
-                && 'undefined' == typeof(obj.lon)
-                && obj.lat == null )
+        var retorno = '<li';
+        if ( 'undefined' == typeof(obj.lat) &&
+            'undefined' == typeof(obj.lon) &&
+            obj.lat == null )
         {
             retorno += ' class="primeiro_nivel"';
         }
@@ -546,20 +562,24 @@ Rotas = {
         retorno += '<span class="norte_sul ' + obj.norte_sul + '"></span> <span class="direcao ' + obj.direcao + '"></span>';
         retorno += '<span class="texto">';
 
-        if ( 'undefined' != typeof(obj.lat)
-                && 'undefined' != typeof(obj.lon)
-                && obj.lat !== null )
+        if ( 'undefined' != typeof(obj.lat) &&
+            'undefined' != typeof(obj.lon) &&
+            obj.lat !== null )
+        {
             retorno += '<a href="#" class="mostra_informacao" data-lat="' + obj.lat + '" data-lon="' + obj.lon + '">';
+        }
 
         retorno += ' ' + obj.rua;
 
-        if ( obj.modo == "WALK" )
+        if ( obj.modo == 'WALK' )
             retorno += ' em ' + obj.distancia + ' metros';
 
-        if ( 'undefined' != typeof(obj.lat)
-                && 'undefined' != typeof(obj.lon)
-                && obj.lat !== null )
+        if ( 'undefined' != typeof(obj.lat) &&
+            'undefined' != typeof(obj.lon) &&
+            obj.lat !== null )
+        {
             retorno += '</a>';
+        }
 
         retorno += '</span><div class="clearfix"></div>';
         // console.log(obj);
@@ -572,8 +592,8 @@ Rotas = {
     * @return {Void}
     */
     mostra_itinerarios: function() {
-        for ( j = 1; j <= 3; ++j )
-            $('div.it' + j).show();
+        for ( var i = 1; i <= 3; ++i )
+            $('div.it' + i).show();
 
         var contador = 1;
         $.each(Rotas.itinerarios, function(index, it){
@@ -583,7 +603,7 @@ Rotas = {
             fim     = Rotas.formata_hora(it.endTime);
             duracao = Math.floor(it.duration / 60000);
 
-            div_it = 'div.it' + contador + ' ';
+            var div_it = 'div.it' + contador + ' ';
             i = contador - 1;
 
             $(div_it + 'a[href="#coll_it' + contador + '"]')
@@ -596,7 +616,7 @@ Rotas = {
         $('div.itinerarios').removeClass('escondido');
 
         //Quem vai ser removido
-        for ( j = contador; j <= 3; ++j )
+        for ( var j = contador; j <= 3; ++j )
             $('div.it' + j).hide();
 
         // console.log(Rotas.itinerarios);
@@ -622,24 +642,24 @@ Rotas = {
     */
     clearMap: function() {
         //É meio hack, mas o plugin não tem nada parecido.
-        for(i in map._layers) {
+        for(var i in map._layers) {
             //Aqui é melhor testar com constante ao invés do typeof
-            if(map._layers[i]._path != undefined) {
+            if(map._layers[i]._path !== undefined) {
                 try
                 {
                     map.removeLayer(map._layers[i]);
                 }
                 catch(e)
                 {
-                    console.log("Verifique isso pois deu problema " + e + map._layers[i]);
+                    console.log('Verifique isso pois deu problema ' + e + map._layers[i]);
                 }
             }
         }
         //Apaga também os pontinhos (paragens e desvios)
         if ( typeof(pontos) != 'undefined' )
         {
-            for ( var i = 0; i < pontos.length; ++i )
-                map.removeLayer(pontos[i]);
+            for ( var j = 0; j < pontos.length; ++j )
+                map.removeLayer(pontos[j]);
             pontos = [];
         }
     },
@@ -676,21 +696,22 @@ Rotas = {
     * @return {Void}
     */
     criar_pontos: function(leg, latlngs, it, escrever) {
+        var icone_info = '';
         //Bolinhas para troca de tipo de rota
         if ( leg.mode == 'BUS' )
             icone_info = leg.to.stopCode;
         else
             icone_info = leg.to.name;
-        icone = L.icon({
+        var icone = L.icon({
             iconUrl: 'images/xferdisk.png'
         });
         //Crio a bolinha
-        marker = L.marker( latlngs, {
+        var marker = L.marker( latlngs, {
             draggable:  false,
             icon:       icone
         })
         .bindPopup(icone_info);
-        if ( escrever == true )
+        if ( escrever === true )
         {
             marker.addTo(map);
             pontos.push(marker);
@@ -707,9 +728,9 @@ Rotas = {
     * @return {String} hours:minutes
     */
     formata_hora: function(hora) {
-        date    = new Date(hora);
-        hours   = Rotas.zero_data(date.getHours());
-        minutes = Rotas.zero_data(date.getMinutes(), 2);
+        var date    = new Date(hora);
+        var hours   = Rotas.zero_data(date.getHours());
+        var minutes = Rotas.zero_data(date.getMinutes(), 2);
 
         return hours + ':' + minutes;
     },
@@ -722,13 +743,13 @@ Rotas = {
     formata_data: function(data) {
         var data_obj = new Date(data);
 
-        data = Rotas.zero_data(data_obj.getDate(), 2)
-            + '/'
-            + Rotas.zero_data(data_obj.getMonth() + 1, 2)
-            + '/'
-            + Rotas.zero_data(data_obj.getFullYear(), 4);
-        hours = data_obj.getHours();
-        minutes = data_obj.getMinutes();
+        data = Rotas.zero_data(data_obj.getDate(), 2) +
+            '/' +
+            Rotas.zero_data(data_obj.getMonth() + 1, 2) +
+            '/' +
+            Rotas.zero_data(data_obj.getFullYear(), 4);
+        var hours = data_obj.getHours();
+        var minutes = data_obj.getMinutes();
 
         // console.log( data_obj );
 
@@ -744,7 +765,7 @@ Rotas = {
     zero_data: function(num, count) {
         var z = num + '';
         while (z.length < count) {
-            z = "0" + z;
+            z = '0' + z;
         }
 
         return z;
@@ -836,13 +857,13 @@ Rotas = {
                         html += 'class="fim"';
                     }
                     //Paragens que estão no meu caminho
-                    if ( minimo > 0 && sequencia >= minimo && maximo == 0 )
+                    if ( minimo > 0 && sequencia >= minimo && maximo === 0 )
                     {
                         html += 'class="meu_caminho"';
                     }
 
-                    html += '><span class="paragem"></span><span class="nome">' + contador + '. '
-                        + value.stop.stop_name + '</span>';
+                    html += '><span class="paragem"></span><span class="nome">' + contador + '. ' +
+                        value.stop.stop_name + '</span>';
 
                     //Os spans acima têm float ^-^
                     html += '<div class="clearfix"></div></li>';
@@ -857,7 +878,7 @@ Rotas = {
                     .removeClass('alert-danger')
                     .removeClass('alert-warning')
                     .html(html);
-                $("#myModal").modal();
+                $('#myModal').modal();
             })
             .fail(function(retorno){
                 //
@@ -866,20 +887,18 @@ Rotas = {
     }
 };
 
-$('body').on('mouseover', 'div.itinerarios h4.panel-title a', function(e){
-    id_itinerario = $(this).data('itinerario');
+$('body').on('mouseover', 'div.itinerarios h4.panel-title a', function(){
+    var id_itinerario = $(this).data('itinerario');
 
     Rotas.oculta_itinerarios();
     Rotas.mostra_itinerario(id_itinerario);
 });
-$('body').on('mouseout', 'div.itinerarios h4.panel-title a', function(e){
-    id_itinerario = $(this).data('itinerario');
-
+$('body').on('mouseout', 'div.itinerarios h4.panel-title a', function(){
     Rotas.oculta_itinerarios();
     Rotas.mostra_primeiro_itinerario();
 });
-$('body').on('click', ' div.itinerarios h4.panel-title a', function(e){
-    id_itinerario = $(this).data('itinerario');
+$('body').on('click', ' div.itinerarios h4.panel-title a', function(){
+    var id_itinerario = $(this).data('itinerario');
 
     Rotas.itinerario_mostrar = id_itinerario;
     Rotas.formatar_otp();
@@ -887,15 +906,15 @@ $('body').on('click', ' div.itinerarios h4.panel-title a', function(e){
 
 //Clique nas informações do percurso (não existe no DOM)
 $('body').on('click', 'a.mostra_informacao', function(e) {
-    lat = $(this).data('lat');
-    lon = $(this).data('lon');
-    if ( ('undefined' != typeof(lat) && lat !== null)
-            && ('undefined' != typeof(lon) && lon !== null) )
+    var lat = $(this).data('lat');
+    var lon = $(this).data('lon');
+    if ( ('undefined' != typeof(lat) && lat !== null) &&
+        ('undefined' != typeof(lon) && lon !== null) )
     {
-        latlng = new L.LatLng(lat, lon);
+        var latlng = new L.LatLng(lat, lon);
         map.panTo(latlng);
-        span_css = $(this).parents('span').prev().attr('class');
-        conteudo = '<span class="' + span_css + '"></span><span class="texto">' + $(this).html() + '</span>';
+        var span_css = $(this).parents('span').prev().attr('class');
+        var conteudo = '<span class="' + span_css + '"></span><span class="texto">' + $(this).html() + '</span>';
 
         var popup = L.popup()
             .setLatLng(latlng)
@@ -908,9 +927,9 @@ $('body').on('click', 'a.mostra_informacao', function(e) {
 
 //Mostra as paragens da rota selecionada
 $('body').on('click', 'a.trip_viewer', function(e) {
-    tripId = $(this).data('tripid');
-    stopIdto = $(this).data('stop-to');
-    stopIdfrom = $(this).data('stop-from');
+    var tripId = $(this).data('tripid');
+    var stopIdto = $(this).data('stop-to');
+    var stopIdfrom = $(this).data('stop-from');
 
     Rotas.trips(tripId, stopIdto, stopIdfrom);
 

@@ -1,6 +1,4 @@
-var locale = {};
-
-locale = {
+var locale = {
     titles: {
         panelTitle: 'Simulador de Viagens',
         tabTitle:   'Planear uma viagem',
@@ -20,14 +18,17 @@ locale = {
         planTrip:           'Simular percurso',
         trip_details:       'Detalhes da viagem',
         date_time:          'Data e Hora',
-        time:               'Hora',
         validity:           'Validade',
         total_distance:     'Distância total',
         by_foot:            'A pé', 
         by_transport:       'Transportes',
         total_duration:     'Duração total',
         startTime:          'Início',
-        endTime:            'Fim'
+        endTime:            'Fim',
+        bike_options:       'Opções de bicicleta',
+        bikeFriendly:       'Amigável',
+        flat:               'Plano',
+        quick:              'Mais curto'
     },
     vectors: {
         modes: [
@@ -65,8 +66,8 @@ locale = {
         ]
     },
     messages: {
-        more_options:   'Clique aqui para mais opções',
-        less_options:   'Clique aqui para menos opções',
+        more_options:   '<i class="glyphicon glyphicon-plus"></i> Clique aqui para mais opções',
+        less_options:   '<i class="glyphicon glyphicon-minus"></i> Clique aqui para menos opções',
         miss_origin:    'É necessário definir um ponto de partida',
         miss_destiny:   'É necessário definir um ponto de chegada.',
         hide_info:      'Esconder info',
@@ -92,4 +93,4 @@ locale = {
         arrive_at:      'Chegada às:',
         service_by:     'Serviço prestado por:'
     }
-}
+};

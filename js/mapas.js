@@ -1,9 +1,10 @@
 $(function(){
+    var fromPlace = '';
     //HTML5 native geoLocation support
     if ( navigator.geoLocation )
     {
         navigator.geolocation.getCurrentPosition(function(position) {
-            var fromPlace = [position.coords.latitude, position.coords.longitude];
+            fromPlace = [position.coords.latitude, position.coords.longitude];
         });
     }
     else
@@ -11,7 +12,7 @@ $(function(){
         /*file:// fica bloqueado o uso do geoLocation, sempre vai cair aqui rodando local>
             >quer dizer, sem webserver: file://c:....
             Coordenadas de Coimbra */
-        var fromPlace = [40.1922,-8.4139];
+        fromPlace = [40.1922,-8.4139];
     }
 
     function marcador_inicio(e)
@@ -19,13 +20,13 @@ $(function(){
         if ( typeof(m1) != 'undefined' )
             map.removeLayer(m1);
 
-        icone_inicio = L.icon({
+        var icone = L.icon({
             iconUrl: 'images/start.png',
             iconAnchor: [10, 35]
         });
         m1 = L.marker(e.latlng, {
             draggable: true,
-            icon: icone_inicio
+            icon: icone
         });
         m1.on('dragend', function(){
             if ( typeof(polyline) != 'undefined' )
@@ -48,7 +49,7 @@ $(function(){
         if ( typeof(m2) != 'undefined' )
             map.removeLayer(m2);
 
-        icone = L.icon({
+        var icone = L.icon({
             iconUrl: 'images/end.png',
             iconAnchor: [10, 35]
         });
@@ -57,7 +58,6 @@ $(function(){
             icon: icone
         });
         m2.on('dragend', function(){
-
             if ( typeof(polyline) != 'undefined' )
                 map.removeLayer(polyline);
             if ( typeof(m1) != 'undefined' )
@@ -67,7 +67,6 @@ $(function(){
                 for ( var i = 0; i < pontos.length; ++i )
                     map.removeLayer(pontos[i]);
             }
-
         });
         m2.addTo(map);
         if ( typeof(m1) != 'undefined' )
@@ -116,12 +115,13 @@ $(function(){
 
     //O mapa responde por clique, verificando se tenho m1 e m2
     map.on('click', function(e){
-        // console.log( typeof(m1) );
-        // console.log( typeof(m2) );
         if ( typeof(m1) != 'undefined' && typeof(m2) == 'undefined' )
             marcador_fim(e);
         if ( typeof(m1) == 'undefined' )
             marcador_inicio(e);
+
+        if ( typeof(m1) != 'undefined' && typeof(m2) != 'undefined' )
+            map.contextmenu.showAt(e.latlng);
     });
 
     var osmLayer = new L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {

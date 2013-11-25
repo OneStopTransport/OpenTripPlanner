@@ -18,6 +18,7 @@ $(function() {
 
             resize_window();
         }
+        mostra_esquerda();
         setTimeout( map.invalidateSize.bind(map) );
 
         if ( $('div#coll_it1').css('display') == 'none' )

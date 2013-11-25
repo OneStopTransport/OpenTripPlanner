@@ -28,8 +28,8 @@
 <body>
 
     <div class="container-full">
-        <!-- Topo INICIO -->
-        <div class="esquerda">
+        <!-- Esquerda INICIO -->
+        <div class="esquerda fechado">
             <article>
                 <!-- Direções após a chamada à API -->
                 <div class="resultados">
@@ -211,12 +211,13 @@
                 </div>
             </article>
             <footer>
-                <a href="#" class="toggle_esquerda"><i class="glyphicon glyphicon-chevron-right"></i></a>
+                <a href="#" class="toggle_esquerda btn btn-primary"><i class="glyphicon glyphicon-align-justify"></i></a>
             </footer>
         </div>
-        <!-- Topo FIM -->
+        <!-- Esquerda FIM -->
 
-        <div class="direita">
+        <!-- Direita INICIO -->
+        <div class="direita fechado">
             <article>
                 <!-- Formulário INICIO -->
                 <form class="form-horizontal" role="form" id="trip_plan_form">
@@ -329,9 +330,10 @@
                 <!-- Formulário FIM -->
             </article>
             <footer>
-                <a href="#" class="toggle_direita"><i class="glyphicon glyphicon-chevron-left"></i></a>
+                <a href="#" class="toggle_direita btn btn-success"><i class="glyphicon glyphicon-cog"></i></a>
             </footer>
         </div>
+        <!-- Direita FIM -->
 
         <!-- Mapa INICIO -->
         <div id="mapa" class="mapa">&nbsp;</div>
@@ -367,6 +369,7 @@
 
     <!-- JQuery -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
     <script>window.jQuery || document.write('<script src="./js/jquery.min.js"><\/script>')</script>
     <!-- Latest compiled and minified JavaScript -->
     <script src="./js/bootstrap.min.js"></script>
@@ -379,75 +382,48 @@
 
     <script type="text/javascript">
     $(function(){
-        $('.mostra_topo').on('click', function(e) {
-            $('div.mostra_me_topo').toggle();
-            $('div.topo').slideToggle();
+        /**
+        * Mostra esquerda (itinerários)
+        $('.toggle_esquerda').hover(function(){
+            pai = $(this).parents('div.esquerda');
 
-            e.preventDefault();
-        });
-        $('.toggle_esquerda').on('click', function(e) {
-            $('div.esquerda').toggleClass('fechado');
-            var largura = '15px';
-            if ( $('div.esquerda').hasClass('fechado') )
+            if ( $(pai).hasClass('fechado') )
             {
-                largura = '40%';
+                $(pai).animate({
+                    width: '40px'
+                });
             }
-            console.log(largura);
-            $('div.esquerda').animate({
-                width: largura
-            }, 400, function(){
-                if ( largura == '15px' )
-                {
-                    $('div.esquerda')
-                        .find('article')
-                        .hide();
-                }
-                else
-                {
-                    $('div.esquerda')
-                        .find('article')
-                        .show();
-                }
-            });
-            //$('div.topo').slideToggle('fast', function() {
-            //    $('div.mostra_me_topo').toggle();
-            //});
-
-            e.preventDefault();
-        });
-        $('.mostra_rodape').on('click', function(e) {
-            $('div.mostra_me_rodape').toggle();
-            $('div.rodape').slideToggle();
-
-            e.preventDefault();
-        });
-        $('.toggle_direita').on('click', function(e) {
-            $('div.direita').toggleClass('fechado');
-            var largura = '15px';
-            if ( $('div.direita').hasClass('fechado') )
+        }, function(){
+            pai = $(this).parents('div.esquerda');
+            if ( $(pai).hasClass('fechado') )
             {
-                largura = '40%';
+                $(pai).animate({
+                    width: '15px'
+                });
             }
+        });*/
 
-            $('div.direita').animate({
-                width: largura
-            }, 400, function(){
-                if ( largura == '15px' )
-                {
-                    $('div.direita')
-                        .find('article')
-                        .hide();
-                }
-                else
-                {
-                    $('div.direita')
-                        .find('article')
-                        .show();
-                }
-            });
+        /**
+        * Mover direita (Opções do formulário)
+        
+        $('.toggle_direita').hover(function(){
+            pai = $(this).parents('div.direita');
 
-            e.preventDefault();
-        });
+            if ( $(pai).hasClass('fechado') )
+            {
+                $(pai).animate({
+                    width: '40px'
+                });
+            }
+        }, function(){
+            pai = $(this).parents('div.direita');
+            if ( $(pai).hasClass('fechado') )
+            {
+                $(pai).animate({
+                    width: '15px'
+                });
+            }
+        });*/
     });
     </script>
 

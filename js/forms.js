@@ -19,7 +19,7 @@ $(function() {
             resize_window();
         }
         $('div.esquerda').show();
-        mostra_esquerda();
+        mostrar_aba('esquerda');
         setTimeout( map.invalidateSize.bind(map) );
 
         if ( $('div#coll_it1').css('display') == 'none' )

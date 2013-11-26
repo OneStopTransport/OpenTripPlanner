@@ -879,6 +879,10 @@ Rotas = {
                     .removeClass('alert-warning')
                     .html(html);
                 $('#myModal').modal();
+                esconder_aba('esquerda');
+                $('#myModal').on('hidden.bs.modal', function(){
+                    mostrar_aba('esquerda');
+                })
             })
             .fail(function(retorno){
                 //

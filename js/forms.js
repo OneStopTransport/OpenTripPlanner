@@ -10,15 +10,16 @@ $(function() {
         var fechado = $('a.direcoes').hasClass('fechado');
         if ( fechado !== false )
         {
-            $('a.direcoes').removeClass('fechado');
-            $('div#sidebar').show();
-            $('div.direita')
-                .removeClass('col-md-12')
-                .addClass('col-md-push-4');
+            // $('a.direcoes').removeClass('fechado');
+            // $('div#sidebar').show();
+            // $('div.direita')
+            //     .removeClass('col-md-12')
+            //     .addClass('col-md-push-4');
 
             resize_window();
         }
-        mostra_esquerda();
+        $('div.esquerda').show();
+        mostrar_aba('esquerda');
         setTimeout( map.invalidateSize.bind(map) );
 
         if ( $('div#coll_it1').css('display') == 'none' )

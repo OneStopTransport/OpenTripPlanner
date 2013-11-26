@@ -22,7 +22,7 @@ body {
       position: absolute; z-index: @zIndex;
     }
     div.esquerda {
-      .divs_position(9000); width: 40px; height: 100%;
+      .divs_position(9000); width: 40px; height: 100%; display: none;
       article {
         padding: 10px; margin-right: 35px; height: 100%; border-right: 1px solid #CCC; box-shadow: 5px 5px 10px #888; display: none;
         /* Informações globais */
@@ -152,7 +152,7 @@ body {
         left: 0; bottom: 20%; position: absolute;
       }
       article {
-        padding: 10px; margin-left: 35px; height: 100%;
+        padding: 10px; margin-left: 35px; height: 100%; box-shadow: -5px 5px 10px #888; display: none;
       }
     }
     /* Mapa */
@@ -231,4 +231,8 @@ body {
       &.meu_caminho span { background-color: #CCC; }
     }
   }
+}
+@media screen and (min-device-width: 0px) and (max-device-width: 760px) {
+  h4.titulo_detalhes { font-size: 0.875em; }
+  dl dt.sub { text-align: left; }
 }

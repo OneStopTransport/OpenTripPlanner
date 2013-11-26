@@ -19,68 +19,70 @@ $(function(){
             return '40%';
     };
 
-    mostra_direita = function() {
+    toggle_abas = function(aba) {
         var largura = '40px';
-        if ( $('div.direita').hasClass('fechado') )
+        div = 'div.' + aba;
+
+        if ( $(div).hasClass('fechado') )
         {
             largura = largura_barras();
         }
-        $('div.direita').toggleClass('fechado');
+        $(div).toggleClass('fechado');
 
-        $('div.direita').animate({
+        $(div).animate({
             width: largura
         }, 400, function(){
             if ( largura == '40px' )
             {
-                $('div.direita')
+                $(div)
                     .find('article')
                     .css('background', 'transparent')
                     .hide();
             }
             else
             {
-                $('div.direita')
+                $(div)
                     .find('article')
                     .css('background', '#FFF')
                     .show();
             }
         });
     };
+
+    mostrar_aba = function(aba) {
+        div = 'div.' + aba;
+        $(div).removeClass('fechado');
+        $(div).animate({
+            width: largura_barras()
+        }, 400, function(){
+            $(div)
+                .find('article')
+                .css('background', '#FFF')
+            .show();
+        });
+    };
+
+    esconder_aba = function(aba) {
+        div = 'div.' + aba;
+        $(div).addClass('fechado');
+        $(div).animate({
+            width: '40px'
+        }, 400, function(){
+            $(div)
+                .find('article')
+                .css('background', 'transparent')
+            .hide();
+        });
+    }
+
     $('.toggle_direita').on('click', function(e) {
-        mostra_direita();
+        toggle_abas('direita');
 
         e.preventDefault();
     });
 
-    mostra_esquerda = function() {
-        var largura = '40px';
-        if ( $('div.esquerda').hasClass('fechado') )
-        {
-            largura = largura_barras();
-        }
-
-        $('div.esquerda').toggleClass('fechado');
-        $('div.esquerda').animate({
-            width: largura
-        }, 400, function(){
-            if ( largura == '40px' )
-            {
-                $('div.esquerda')
-                    .find('article')
-                    .css('background', 'transparent')
-                    .hide();
-            }
-            else
-            {
-                $('div.esquerda')
-                    .find('article')
-                    .css('background', '#FFF')
-                    .show();
-            }
-        });
-    };
     $('.toggle_esquerda').on('click', function(e) {
-        mostra_esquerda();
+        toggle_abas('esquerda');
 
         e.preventDefault();
     });

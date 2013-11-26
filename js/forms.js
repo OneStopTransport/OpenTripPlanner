@@ -10,14 +10,15 @@ $(function() {
         var fechado = $('a.direcoes').hasClass('fechado');
         if ( fechado !== false )
         {
-            $('a.direcoes').removeClass('fechado');
-            $('div#sidebar').show();
-            $('div.direita')
-                .removeClass('col-md-12')
-                .addClass('col-md-push-4');
+            // $('a.direcoes').removeClass('fechado');
+            // $('div#sidebar').show();
+            // $('div.direita')
+            //     .removeClass('col-md-12')
+            //     .addClass('col-md-push-4');
 
             resize_window();
         }
+        $('div.esquerda').show();
         mostra_esquerda();
         setTimeout( map.invalidateSize.bind(map) );
 

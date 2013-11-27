@@ -435,7 +435,7 @@ Rotas = {
                     Rotas.distanciaTransporte += leg.distance;
                 }
                 //Distância a lapatex
-                else if ( leg.mode == 'WALK' )
+                else if ( leg.mode == 'WALK' || leg.mode == 'BICYCLE' )
                     Rotas.distanciaPe += leg.distance;
 
                 //Este contador serve para as sub-instruções

@@ -120,7 +120,7 @@ $(function(){
         if ( typeof(m1) == 'undefined' )
             marcador_inicio(e);
 
-        if ( ! $('body').hasClass('mobile') )
+        if ( ! $('html').hasClass('mobile') )
         {
             if ( typeof(m1) != 'undefined' && typeof(m2) != 'undefined' )
                 map.contextmenu.showAt(e.latlng);

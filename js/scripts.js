@@ -218,13 +218,13 @@ $(function(){
         {
             $('div.bike_options').removeClass('escondido');
             $('input#triangleSafetyFactor,input#triangleTimeFactor,input#triangleSlopeFactor')
-                .attr('disabled', 'disabled');
+                .removeAttr('disabled');
         }
         else
         {
             $('div.bike_options').addClass('escondido');
             $('input#triangleSafetyFactor,input#triangleTimeFactor,input#triangleSlopeFactor')
-                .removeAttr('disabled');
+                .attr('disabled', 'disabled');
         }
     });
     $('input#triangleSafetyFactor,input#triangleTimeFactor,input#triangleSlopeFactor')
@@ -243,5 +243,8 @@ $(function(){
         }
 
         e.preventDefault();
-    })
+    });
+
+    //Velocidade média de caminhada = 5km/h ou 1.38889 m/s
+    $("option[value='1.389']").attr('selected', 'selected');
 });

@@ -679,14 +679,11 @@ Rotas = {
         else
         {
             info += '<div class="col-md-4 first">' + locale.info.depart_at + '</div>';
-            info += '<div class="col-md-8 first">' + this.formata_hora(obj.from.departure) + ' ' + obj.from.name + '</div>';
+            info += '<div class="col-md-8 first">' + this.formata_hora(obj.from.departure) + ' - ' + obj.from.name + '</div>';
             info += '<div class="col-md-4">' + locale.info.arrive_at + '</div>';
-            info += '<div class="col-md-8">' + this.formata_hora(obj.to.arrival) + ' ' + obj.to.name + '</div>';
-            info += '<div class="col-md-4">' + 'Duração' + '</div>';
+            info += '<div class="col-md-8">' + this.formata_hora(obj.to.arrival) + ' - ' + obj.to.name + '</div>';
+            info += '<div class="col-md-4">' + locale.labels.total_duration + '</div>';
             info += '<div class="col-md-8">' + this.formata_hora(obj.duration) + '</div>';
-
-            /*obj.from.name + '(' + this.formata_hora(obj.from.departure) + ') - ' +
-                obj.to.name + '(' + this.formata_hora(obj.to.arrival) + ') ~ ' + this.formata_hora(obj.duration);*/
         }
 
         return info + '</section>';

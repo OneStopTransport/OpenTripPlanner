@@ -165,33 +165,28 @@ Rotas = {
         var api = this.invocar_api();
         var THIS = this;
         api
-        //Deu certo
-        .done( function(retorno){
-            console.log( retorno );
-            $('a[href="#trip_resultados"]').show();
-            $('#Tab a[href="#trip_resultados"]').tab('show');
-            // $('div#trip_resultados').empty();
-            var resultado = retorno;
-            resultado = resultado.Objects;
-            Rotas.objeto_json = resultado;
+            //Deu certo
+            .done( function(retorno){
+                console.log( retorno );
+                var resultado = retorno;
+                resultado = resultado.Objects;
+                Rotas.objeto_json = resultado;
 
-            //Depende do serviço, a resposta é diferente.
-            if ( THIS.tipo_api == 'otp' )
-                objeto_json = THIS.formatar_otp( resultado );
-            else
-                objeto_json = THIS.formatar_cloudmade( retorno );
-        })
-        .fail(function(jqXHR, textStatus) {
-            console.log( jqXHR );
-            alert('Ops ' + textStatus);
-            return false;
-            //Mensagem de erro da chamada a API.
+                //Depende do serviço, a resposta é diferente.
+                if ( THIS.tipo_api == 'otp' )
+                    objeto_json = THIS.formatar_otp( resultado );
+                else
+                    objeto_json = THIS.formatar_cloudmade( retorno );
+            }
+        )
             /* A api pode entrar no .done() e mesmo
-            assim não ser satisfatória para o utilizador.
-            $('div#trip_resultados')
-                .empty()
-                .html('Ocorreu um erro: ' + textStatus);*/
-        });
+                assim não ser satisfatória para o utilizador.*/
+            .fail(function(jqXHR, textStatus) {
+                console.log( jqXHR );
+                alert('Error: ' + textStatus);
+                return false;
+            }
+        );
     },
     /**
     * Formatar resposta da Cloudmade
@@ -682,7 +677,14 @@ Rotas = {
             info += '<div class="col-md-4">' + locale.info.service_by + '</div><div class="col-md-8">' + obj.agencyName + '</div>';
         }
         else
-            info += '@TODO Informações do caminho por outros métodos (a pé, bike, carro, etc...)';
+        {
+            info += '<div class="col-md-4 first">' + locale.info.depart_at + '</div>';
+            info += '<div class="col-md-8 first">' + this.formata_hora(obj.from.departure) + ' - ' + obj.from.name + '</div>';
+            info += '<div class="col-md-4">' + locale.info.arrive_at + '</div>';
+            info += '<div class="col-md-8">' + this.formata_hora(obj.to.arrival) + ' - ' + obj.to.name + '</div>';
+            info += '<div class="col-md-4">' + locale.labels.total_duration + '</div>';
+            info += '<div class="col-md-8">' + this.formata_hora(obj.duration) + '</div>';
+        }
 
         return info + '</section>';
     },

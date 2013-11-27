@@ -120,8 +120,11 @@ $(function(){
         if ( typeof(m1) == 'undefined' )
             marcador_inicio(e);
 
-        if ( typeof(m1) != 'undefined' && typeof(m2) != 'undefined' )
-            map.contextmenu.showAt(e.latlng);
+        if ( ! $('body').hasClass('mobile') )
+        {
+            if ( typeof(m1) != 'undefined' && typeof(m2) != 'undefined' )
+                map.contextmenu.showAt(e.latlng);
+        }
     });
 
     var osmLayer = new L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {

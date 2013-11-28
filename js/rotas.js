@@ -329,7 +329,8 @@ Rotas = {
             walkDistance:   legs.walkDistance,
             startTime:      legs.startTime,
             endTime:        legs.endTime,
-            duration:       legs.duration
+            duration:       legs.duration,
+            validaty:       this.formata_data(legs.legs[0].to.arrival)
         };
         instrucoes_gerais.push(ins_ger);
 
@@ -466,6 +467,7 @@ Rotas = {
         ++it;
         var div_it = 'div#coll_it' + it + ' div.panel-body ';
         var link = 'div#coll_it' + it + ' a.esconder_info';
+
         $.each(info, function(index, value){
             var data_hora   = Rotas.formata_data(value.data_hora);
             var hora        = Rotas.formata_hora(value.data_hora);
@@ -482,6 +484,8 @@ Rotas = {
             var div_trip = div_it + 'div.info_trip ';
             // console.log(div_trip);
             $(div_trip + 'dt.data_hora').next('dd').html(data_hora);
+
+            $(div_trip + 'dt.validade').next('dd').html(value.validaty);
 
             $(div_trip + 'dt.distancia_total').next('dd').children('.texto').html(walkTotal.toFixed(2) + ' m');
             $(div_trip + 'dt.distancia_pe').next('dd').html(Rotas.distanciaPe.toFixed(2) + ' m');
@@ -751,7 +755,7 @@ Rotas = {
             '/' +
             Rotas.zero_data(data_obj.getFullYear(), 4);
         var hours = data_obj.getHours();
-        var minutes = data_obj.getMinutes();
+        var minutes = Rotas.zero_data(data_obj.getMinutes(), 2);
 
         // console.log( data_obj );
 

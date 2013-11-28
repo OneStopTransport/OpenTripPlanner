@@ -8,13 +8,13 @@ var locale = {
         when:               'Quando',
         time:               'Hora',
         date:               'Data',
-        depart:             'Embarcar',
+        depart:             'Partida',
         arrive:             'Chegada',
-        mode:               'Viaja por',
-        minimize:           'Mostrar o(a)',
-        maxWalkDistance:    'Distância máxima a pé',
+        mode:               'Tipo de Viagem',
+        minimize:           'Preferência de percurso',
+        maxWalkDistance:    'Distância máx. a pé',
         walkSpeed:          'Velocidade a pé',
-        wheelchair:         'Accessível à cadeira de rodas',
+        wheelchair:         'Accessível a cadeira de rodas',
         planTrip:           'Simular percurso',
         trip_details:       'Detalhes da viagem',
         date_time:          'Data e Hora',
@@ -25,25 +25,25 @@ var locale = {
         total_duration:     'Duração total',
         startTime:          'Início',
         endTime:            'Fim',
-        bike_options:       'Opções de bicicleta',
-        bikeFriendly:       'Amigável',
-        flat:               'Plano',
-        quick:              'Mais curto'
+        bike_options:       'Percurso de bicicleta',
+        bikeFriendly:       'com ciclovia',
+        flat:               'mais plano possivel',
+        quick:              'mais rápido'
     },
     vectors: {
         modes: [
-            ['TRANSIT,WALK',    'Transportes'],
-            ['BUSISH,WALK',     'Apenas Autocarro'],
-            ['TRAINISH,WALK',   'Apenas Comboio'],
-            ['WALK',            'Apenas a pe'],
+            ['TRANSIT,WALK',    'Transportes públicos'],
+            ['BUSISH,WALK',     'Apenas autocarro'],
+            ['TRAINISH,WALK',   'Apenas comboio'],
+            ['WALK',            'Apenas a pé'],
             ['BICYCLE',         'Apenas de bicicleta'],
-            ['TRANSIT,BICYCLE', 'Carros & Bicicletas']
+            ['TRANSIT,BICYCLE', 'Transportes e bicicleta']
         ],
         options: [
             ['TRANSFERS', 'Menos transferências'],
-            ['QUICK',     'Viagem curta'],
-            ['SAFE',      'Possivel por bicicleta'],
-            ['TRIANGLE',  'Viagem personalizada...']
+            ['QUICK',     'Viagem mais rápida'],
+            ['SAFE',      'Bicicleta em segurança'],
+            ['TRIANGLE',  'Personalizada de bicicleta...']
         ],
         maxWalkDistance: [
             ['500',     '500 metros'],
@@ -75,9 +75,9 @@ var locale = {
         right_mouse:    'Utilize o botão direito do rato para traçar rotas'
     },
     context_menu: {
-        start_here:     'Começar daqui',
+        start_here:     'Começar aqui',
         end_here:       'Terminar aqui',
-        center_map:     'Centralizar mapa',
+        center_map:     'Centrar mapa',
         more_zoom:      'Mais zoom',
         less_zoom:      'Menos zoom'
     },
@@ -88,7 +88,7 @@ var locale = {
         at:             ' às ',
         bus:            'Autocarro',
         get_in_stop:    'Entrar na paragem:',
-        get_out_stop:   'Descer na paragem:',
+        get_out_stop:   'Sair na paragem:',
         depart_at:      'Partida às:',
         arrive_at:      'Chegada às:',
         service_by:     'Serviço prestado por:'

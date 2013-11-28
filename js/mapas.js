@@ -21,8 +21,8 @@ $(function(){
             map.removeLayer(m1);
 
         var icone = L.icon({
-            iconUrl: 'images/start.png',
-            iconAnchor: [10, 35]
+            iconUrl: 'images/partida.png',
+            iconAnchor: [17, 27]
         });
         m1 = L.marker(e.latlng, {
             draggable: true,
@@ -50,8 +50,8 @@ $(function(){
             map.removeLayer(m2);
 
         var icone = L.icon({
-            iconUrl: 'images/end.png',
-            iconAnchor: [10, 35]
+            iconUrl: 'images/chegada.png',
+            iconAnchor: [17, 27]
         });
         m2 = L.marker(e.latlng, {
             draggable: true,

@@ -248,6 +248,7 @@
                     <div class="form-group">
                         <label for="mode" class="control-label col-lg-4" data-handlebars>{{labels.mode}}</label>
                         <div class="col-lg-8" data-handlebars>
+                            <span data-handlebars>{{vectors.modes.[0]}}</span>
                             <select name="mode" id="mode" class="form-control">
                                 {{#each vectors.modes}}
                                     <option value="{{this.[0]}}">{{this.[1]}}</option>

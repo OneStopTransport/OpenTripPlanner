@@ -196,6 +196,10 @@ $(function(){
 
         e.preventDefault();
     });
+    $('h4.titulo_detalhes').on('click', function() {
+        link = $(this).next('a');
+        $(link).trigger('click');
+    });
 
     //Objetos que não estão no DOM original
     $('body').on('click', 'ul.direcoes li.primeiro_nivel', function() {

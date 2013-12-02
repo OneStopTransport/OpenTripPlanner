@@ -35,6 +35,7 @@ $(function(){
             if ( largura == '40px' )
             {
                 $(div)
+                    .css('z-index', '1')
                     .find('article')
                     .css('background', 'transparent')
                     .hide();
@@ -42,6 +43,7 @@ $(function(){
             else
             {
                 $(div)
+                    .css('z-index', '1001')
                     .find('article')
                     .css('background', '#FFF')
                     .show();
@@ -56,6 +58,7 @@ $(function(){
             width: largura_barras()
         }, 400, function(){
             $(div)
+                .css('z-index', '1001')
                 .find('article')
                 .css('background', '#FFF')
             .show();
@@ -69,6 +72,7 @@ $(function(){
             width: '40px'
         }, 400, function(){
             $(div)
+                .css('z-index', '1')
                 .find('article')
                 .css('background', 'transparent')
             .hide();

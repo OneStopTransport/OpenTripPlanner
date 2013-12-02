@@ -35,13 +35,13 @@ $(function(){
             if ( largura == '40px' )
             {
                 $(div)
-                    .css('z-index', '1')
+                    .css('z-index', '30')
                     .find('article')
                     .css('background', 'transparent')
                     .hide();
             }
             else
-            {
+            { 
                 $(div)
                     .css('z-index', '1001')
                     .find('article')
@@ -72,7 +72,7 @@ $(function(){
             width: '40px'
         }, 400, function(){
             $(div)
-                .css('z-index', '1')
+                .css('z-index', '30')
                 .find('article')
                 .css('background', 'transparent')
             .hide();

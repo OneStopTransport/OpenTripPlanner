@@ -183,7 +183,7 @@ Rotas = {
                 assim não ser satisfatória para o utilizador.*/
             .fail(function(jqXHR, textStatus) {
                 console.log( jqXHR );
-                alert('Error: ' + textStatus);
+                alert('Não foi possível contactar o servidor para cálculo das rotas, tente novamente mais tarde.');
                 return false;
             }
         );

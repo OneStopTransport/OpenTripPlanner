@@ -248,12 +248,9 @@
                     <div class="form-group">
                         <label for="mode" class="control-label col-lg-4" data-handlebars>{{labels.mode}}</label>
                         <div class="col-lg-8" data-handlebars>
-                            <span data-handlebars>{{vectors.modes.[0]}}</span>
-                            <select name="mode" id="mode" class="form-control">
-                                {{#each vectors.modes}}
-                                    <option value="{{this.[0]}}">{{this.[1]}}</option>
-                                {{/each}}
-                            </select>
+                            {{#each vectors.modes}}
+                                <input type="radio" id="{{this.[0]}}" name="mode" value="{{this.[0]}}"> <label for="{{this.[0]}}">{{this.[1]}}</label><br>
+                            {{/each}}
                         </div>
                     </div>
 
@@ -268,11 +265,9 @@
                             <div class="form-group optimize">
                                 <label for="optimize" class="control-label col-lg-4" data-handlebars>{{labels.minimize}}</label>
                                 <div class="col-lg-8" data-handlebars>
-                                    <select class="form-control" name="optimize" id="optimize">
-                                        {{#each vectors.options}}
-                                            <option value="{{this.[0]}}">{{this.[1]}}</option>
-                                        {{/each}}
-                                    </select>
+                                    {{#each vectors.options}}
+                                        <input type="radio" name="optimize" id="{{this.[1]}}" value="{{this.[0]}}"><label for="{{this.[1]}}">{{this.[1]}}</label><br>
+                                    {{/each}}
                                 </div>
                             </div>
                             <div class="form-group bike_options escondido">
@@ -291,22 +286,18 @@
                             <div class="form-group maxWalkDistance">
                                 <label class="control-label col-lg-4" for="maxWalkDistance" data-handlebars>{{labels.maxWalkDistance}}</label>
                                 <div class="col-lg-8" data-handlebars>
-                                    <select id="maxWalkDistance" name="maxWalkDistance" class="form-control">
-                                        {{#each vectors.maxWalkDistance}}
-                                            <option value="{{this.[0]}}">{{this.[1]}}</option>
-                                        {{/each}}
-                                    </select>
+                                    {{#each vectors.maxWalkDistance}}
+                                        <input type="radio" name="maxWalkDistance" id="{{this.[1]}}" value="{{this.[0]}}"><label for="{{this.[1]}}">{{this.[1]}}</label><br>
+                                    {{/each}}
                                 </div>
                             </div>
 
                             <div class="form-group walkSpeed">
                                 <label class="control-label col-lg-4" for="walkSpeed" data-handlebars>{{labels.walkSpeed}}</label>
                                 <div class="col-lg-8" data-handlebars>
-                                    <select id="walkSpeed" name="walkSpeed" class="form-control">
-                                        {{#each vectors.walkSpeed}}
-                                            <option value="{{this.[0]}}">{{this.[1]}}</option>
-                                        {{/each}}
-                                    </select>
+                                    {{#each vectors.walkSpeed}}
+                                        <input type="radio" name="walkSpeed" id="{{this.[1]}}" value="{{this.[0]}}"><label for="{{this.[1]}}">{{this.[1]}}</label><br>
+                                    {{/each}}
                                 </div>
                             </div>
 

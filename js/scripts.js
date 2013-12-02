@@ -213,7 +213,7 @@ $(function(){
         return false;
     });
 
-    $('form select#optimize').on('change', function(){
+    $('form input[name="optimize"]').on('click', function(){
         if ( $(this).val() == 'TRIANGLE' )
         {
             $('div.bike_options').removeClass('escondido');
@@ -245,6 +245,15 @@ $(function(){
         e.preventDefault();
     });
 
+    //Tipo de Viagem
+    $("input[value='TRANSIT,WALK']").attr('checked', 'checked');
+
+    //Preferência de Percurso
+    $("input[value='QUICK']").attr('checked', 'checked');
+
+    //Distância Máxima a Pé
+    $("input[value='1000']").attr('checked', 'checked');
+
     //Velocidade média de caminhada = 5km/h ou 1.38889 m/s
-    $("option[value='1.389']").attr('selected', 'selected');
+    $("input[value='1.389']").attr('checked', 'checked');
 });

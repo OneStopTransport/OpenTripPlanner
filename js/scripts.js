@@ -20,7 +20,7 @@ $(function(){
     };
 
     toggle_abas = function(aba) {
-        var largura = '40px';
+        var largura = '50px';
         div = 'div.' + aba;
 
         if ( $(div).hasClass('fechado') )
@@ -32,7 +32,7 @@ $(function(){
         $(div).animate({
             width: largura
         }, 400, function(){
-            if ( largura == '40px' )
+            if ( largura == '50px' )
             {
                 $(div)
                     .css('z-index', '30')
@@ -69,7 +69,7 @@ $(function(){
         div = 'div.' + aba;
         $(div).addClass('fechado');
         $(div).animate({
-            width: '40px'
+            width: '45px'
         }, 400, function(){
             $(div)
                 .css('z-index', '30')

@@ -266,7 +266,7 @@
                                 <label for="optimize" class="control-label col-lg-4" data-handlebars>{{labels.minimize}}</label>
                                 <div class="col-lg-8" data-handlebars>
                                     {{#each vectors.options}}
-                                        <input type="radio" name="optimize" id="{{this.[1]}}" value="{{this.[0]}}"><label for="{{this.[1]}}">{{this.[1]}}</label><br>
+                                        <input type="radio" name="optimize" id="{{this.[1]}}" value="{{this.[0]}}"> <label for="{{this.[1]}}">{{this.[1]}}</label><br>
                                     {{/each}}
                                 </div>
                             </div>
@@ -287,7 +287,7 @@
                                 <label class="control-label col-lg-4" for="maxWalkDistance" data-handlebars>{{labels.maxWalkDistance}}</label>
                                 <div class="col-lg-8" data-handlebars>
                                     {{#each vectors.maxWalkDistance}}
-                                        <input type="radio" name="maxWalkDistance" id="{{this.[1]}}" value="{{this.[0]}}"><label for="{{this.[1]}}">{{this.[1]}}</label><br>
+                                        <input type="radio" name="maxWalkDistance" id="{{this.[1]}}" value="{{this.[0]}}"> <label for="{{this.[1]}}">{{this.[1]}}</label><br>
                                     {{/each}}
                                 </div>
                             </div>
@@ -296,7 +296,7 @@
                                 <label class="control-label col-lg-4" for="walkSpeed" data-handlebars>{{labels.walkSpeed}}</label>
                                 <div class="col-lg-8" data-handlebars>
                                     {{#each vectors.walkSpeed}}
-                                        <input type="radio" name="walkSpeed" id="{{this.[1]}}" value="{{this.[0]}}"><label for="{{this.[1]}}">{{this.[1]}}</label><br>
+                                        <input type="radio" name="walkSpeed" id="{{this.[1]}}" value="{{this.[0]}}"> <label for="{{this.[1]}}">{{this.[1]}}</label><br>
                                     {{/each}}
                                 </div>
                             </div>
@@ -429,6 +429,28 @@
                 })
         });
     });
+    window.addEventListener("load",function() {
+        // Set a timeout...
+        setTimeout(function(){
+            // Hide the address bar!
+            window.scrollTo(0, 1);
+        }, 0);
+    });
+    var today = new Date();
+    var dd = today.getDate();
+    var mm = today.getMonth()+1;
+
+    var yyyy = today.getFullYear();
+    if (dd<10)
+    {
+        dd='0'+dd
+    }
+    if (mm<10)
+    {
+        mm='0'+mm;
+    }
+    today = yyyy + '-' + mm + '-' + dd;
+    $('input#date').val(today);
     </script>
 </body>
 </html>

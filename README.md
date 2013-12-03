@@ -13,8 +13,8 @@ Esta aplicação encontra-se em desenvolvimento activo, podendo vir a sofrer alt
 
 Para usar esta aplicação, poderá alojá-la num servidor *web* à sua escolha ou, em alternativa, descarregar este projecto e abrir o ficheiro `index.html` no *browser* (com `Javascript` activo), que este deverá importar os recursos necessários para funcionar.
 
-![Menu do OTP](http://d.pr/i/rAVu+)
+![Cálculo de itinerários](http://d.pr/i/iwmn+ "Cálculo de itinerários")
 
-![OTP](http://d.pr/i/Vuzh+)
+![Opções de itinerários](http://d.pr/i/Qjmd+ "Opções de itinerários")
 
 Em caso de dúvidas, encorajamos a utilização do nosso [**fórum de suporte**](https://support.ost.pt).
